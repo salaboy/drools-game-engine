@@ -3,6 +3,7 @@ Simple Drools Game Engine for creating Escape The Room (point and click) style g
 # Requirements:
 - JDK 8
 - Maven 3.2.3 + 
+- GIT 
 - IDE with Maven plugin, and you need to know how to use it ;)
 
 # Instructions:
