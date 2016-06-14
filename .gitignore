@@ -10,3 +10,10 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/drools-game-engine-model/nbproject/
+/drools-game-engine-model/target/
+/drools-game-engine-core/nbproject/
+/drools-game-engine-core/target/
+/drools-game-engine-rules/nbproject/
+/drools-game-engine-rules/target/
+/drools-game-engine-services/target/
