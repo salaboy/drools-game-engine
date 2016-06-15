@@ -20,4 +20,15 @@ There are three incomplete DRL files with their corresponding tests:
 - Medium: https://github.com/Salaboy/drools-game-engine/blob/master/drools-game-engine-rules/src/main/resources/rules/game/game-rules.drl With two tests -> https://github.com/Salaboy/drools-game-engine/blob/master/drools-game-engine-rules/src/test/java/org/drools/workshop/rules/tests/B_GameRulesTest.java and https://github.com/Salaboy/drools-game-engine/blob/master/drools-game-engine-rules/src/test/java/org/drools/workshop/rules/tests/C_GameAPITest.java
 - Medium/Advanced:  https://github.com/Salaboy/drools-game-engine/blob/master/drools-game-engine-rules/src/main/resources/rules/suggestions/game-suggestions-rules.drl with the test -> https://github.com/Salaboy/drools-game-engine/blob/master/drools-game-engine-rules/src/test/java/org/drools/workshop/rules/tests/D_GameSuggestionRulesTest.java
 
+# Homework
+Write more rules, improve the existing ones, create more complex scenarios. 
+Some ideas:
+- Create sub goals and expose the compleated subgoals via a query
+- Generalize the concept of a House to be a building with multiple rooms in multiple floors
+- Add the time variable, for example, create a hint mechanism that kicks in after a period of inactivity
+- Expose the GameSession interface using Rest Services and wildfly swarm
+- Provide your own implementation of GameSession, without using the rule engine, so you can compare both impls
+- Add Enemies and rules to avoid entering rooms with enemies
+
+Finally send your Pull Request! or contact me via twitter if you have questions @salaboy
 
