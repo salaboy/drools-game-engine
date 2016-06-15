@@ -1,4 +1,13 @@
 Simple Drools Game Engine for creating Escape The Room (point and click) style games.
+
+#Scenario
+You wake up in a room, you don't know where you are, you need to: ESCAPE THE ROOM! 
+
+![alt tag](https://raw.githubusercontent.com/Salaboy/drools-game-engine/master/drools-game-engine-rules/escape-the-maryland-1.jpg)
+
+![alt tag](https://raw.githubusercontent.com/Salaboy/drools-game-engine/master/drools-game-engine-rules/escape-the-maryland-2.jpg)
+
+
 This example was created originally for the conference JBCNConf (June - 2016)
 # Requirements:
 - JDK 8
