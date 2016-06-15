@@ -1,0 +1,81 @@
+package org.drools.workshop.game;
+
+import org.drools.workshop.model.*;
+import org.drools.workshop.model.house.*;
+import org.drools.workshop.model.items.*;
+import org.drools.workshop.core.*;
+import org.drools.workshop.rules.*;
+import org.drools.workshop.rules.cmds.*;
+import java.util.List;
+
+
+global List errors;
+
+query "getAllSuggestions"
+    $c: Command()
+end
+
+rule "Suggest: WhereAmICmd when there is a player"
+    when
+        
+    then
+        insertLogical( new WhereAmICommand( $p ) );
+end
+
+rule "Suggest: Use Door when there is an open door in the room"
+    when
+        
+    then
+        insertLogical( new UseDoorCommand( $p, $r, $d ) );
+end
+
+rule "Suggest: Turn On The Lights when there is a lightswitch off"
+    when
+        
+    then
+        insertLogical( new TurnOnTheLightsCommand($ls) );
+end
+
+rule "Suggest: Turn Off The Lights when there is a lightswitch on"
+    when
+        
+    then
+        insertLogical( new TurnOffTheLightsCommand($ls) );
+end
+
+rule "Suggest: PickItemCmd when there is a PickableItem around"
+    when
+        
+    then
+        insertLogical( new PickItemCommand( $p, $ic, $pi ) );
+end
+
+
+rule "Suggest: ExploreRoomCmd when there is a Player in the room"
+    when
+        
+    then
+        insertLogical( new ExploreRoomCommand( $r ) );
+end
+
+rule "Suggest: ExploreDoorsCmd when there is a player in the room"
+    when
+        
+    then
+        insertLogical( new ExploreDoorsCommand( $r ) );
+end
+
+rule "Suggest: ExploreContainerCmd when there is at least one container in the room"
+    when
+        
+    then
+        insertLogical( new ExploreContainersCommand( $r ) );
+end
+
+rule "Suggest: OpenContainerCmd when there is a closed container around"
+    when
+        
+    then
+        insertLogical( new OpenContainerCommand( $ic ) );
+end
+

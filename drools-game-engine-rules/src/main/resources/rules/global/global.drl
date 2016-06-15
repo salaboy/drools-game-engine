@@ -1,0 +1,6 @@
+package org.drools.workshop.game;
+
+declare Light
+end
+
+global List errors;

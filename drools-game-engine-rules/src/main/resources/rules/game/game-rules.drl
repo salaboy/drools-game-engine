@@ -1,0 +1,120 @@
+package org.drools.workshop.game;
+
+import org.drools.workshop.model.*;
+import org.drools.workshop.model.house.*;
+import org.drools.workshop.model.items.*;
+import org.drools.workshop.core.*;
+import org.drools.workshop.rules.*;
+import java.util.List;
+
+global List errors;
+
+query "getRoomByName" (String $name)
+    $r: Room(name == $name)
+end
+
+query "getVisibleItems" (String $roomName)
+    
+end
+
+query "getDarkItems" (String $roomName)
+    
+end
+
+query "getDoors" (String $roomName)
+    $d: Door( )
+    $r: Room( name == $roomName, doors contains $d )
+end
+
+// all containers that are not a room
+query "getAllContainers" 
+    $ic: ItemContainer() 
+    not(Room (this == $ic))
+end
+
+query "getAllMessages"
+    $m: GameMessage()
+end
+
+query "WhereAmI"
+    
+end
+
+rule "There is a house in the world"
+    when
+        
+    then
+        insert( new GameMessage( "There is a house(" + $h.getName() + ") in the world"  ) );
+end
+
+rule "There is a room in the house"
+    when
+        
+    then
+        insert( new GameMessage( "There is a room(" + $r.getName() + ") in the house" ) );
+end
+
+rule "The player is in a room inside the house, wake up!"
+    when
+        
+    then
+        insert( new GameMessage( "Wake up! You are trapped in " + $r.getName() + "! You need to escape!" ) );
+end
+
+
+rule "There is a new item in the player's inventory"
+    when
+       
+    then
+        insert( new GameMessage( "There is a new item in our inventory!" + $i ) );
+end
+
+
+rule "Light in the room when there is lightbulb and switch on"
+    when
+        
+    then
+        insertLogical( new Light() );
+        insert( new GameMessage( "There is light in the room!" ) );
+end
+
+
+rule "If we have a key for a (locked and closed) door in our room then open the door"
+    when
+        
+    then
+        modify( $d ){
+            setLocked( false ),
+            setOpen( true )
+        };
+        insert( new GameMessage( "Door '" + $doorName + "' Unlocked and Opened!" ) );
+end
+
+rule "Items can be picked when you see them (lights off -> shine in the dark)"
+    when
+        
+    then
+        insertLogical( new PickableItem( $p ) );
+end
+
+rule "Items can be picked when you see them (lights on -> day light)"
+    when
+        
+    then
+        insertLogical(new PickableItem($p));
+end
+
+
+rule "When we open a container we can pick the items inside"
+    when
+        
+    then
+        insertLogical( new PickableItem( $p ) );
+end
+
+rule "Out Goal is to go outside"
+    when
+        
+    then
+        insert( new GameMessage( "Congrats! You manage to escape the Room!" ) );
+end

@@ -1,0 +1,45 @@
+package org.drools.workshop.game;
+
+import org.drools.workshop.model.*;
+import org.drools.workshop.model.house.*;
+import org.drools.workshop.model.items.*;
+import org.drools.workshop.core.*;
+import org.drools.workshop.rules.*;
+import java.util.List;
+
+global List errors;
+
+rule "Warn on House with no Rooms"
+    when
+        
+    then
+        errors.add("Warn: Your House ( " + $h.getName() + " ) has no Rooms");
+end
+
+rule "Warn: on Room that is not in a House"
+    when
+        
+    then
+        errors.add( "Warn: the room ( " + $r.getName() + " ) does not belong to a house" );
+end
+
+rule "Warn: on Room without a house"
+    when
+        
+    then
+        errors.add( "Warn: there is room ( " + $r.getName() + " ) but there is no house" );
+end
+
+rule "Warn: on Rooms with no Doors"
+    when
+        
+    then
+        errors.add( "Warn: Your Room ( " + $r.getName() + " ) has no Doors" );
+end
+
+rule "Warn: on Closed Door without a corresponding key"
+    when
+        
+    then
+        errors.add( "Warn: There is no key for this Door ( " + $d.getName() + " )" );
+end
