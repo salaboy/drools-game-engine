@@ -56,10 +56,14 @@ public class UseDoorCommand implements Command<Void> {
             roomTo = ( Room ) iterator.next().get( "$r" );
             break;
         }
-        FactHandle roomToFH = session.getFactHandle( roomTo );
-        roomTo.getPeopleInTheRoom().add( player.getName() );
-        session.update( roomToFH, roomTo );
-        session.insert( new GameMessage( "Player moved from  " + roomIn.getName() + " to " + roomTo.getName() ) );
+        if ( roomTo != null ) {
+            FactHandle roomToFH = session.getFactHandle( roomTo );
+            roomTo.getPeopleInTheRoom().add( player.getName() );
+            session.update( roomToFH, roomTo );
+            session.insert( new GameMessage( "Player moved from  " + roomIn.getName() + " to " + roomTo.getName() ) );
+        } else {
+            session.insert( new GameMessage( "ERROR: Door cannot be used because the room:   " + door.getLeadsTo() + " was not found. " ) );
+        }
         return null;
     }
 

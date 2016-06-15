@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package org.drools.workshop.rules.tests;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
-import org.drools.workshop.core.Command;
 import org.drools.workshop.core.CommandExecutor;
 import org.drools.workshop.model.Player;
 import org.drools.workshop.model.house.Door;
@@ -33,12 +30,14 @@ import org.drools.workshop.rules.cmds.TurnOffTheLightsCommand;
 import org.drools.workshop.rules.cmds.TurnOnTheLightsCommand;
 import org.drools.workshop.rules.cmds.UseDoorCommand;
 import org.drools.workshop.rules.cmds.WhereAmICommand;
+import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,24 +45,33 @@ import org.junit.runner.RunWith;
 /**
  *
  * @author salaboy
+ *
  */
 @RunWith( Arquillian.class )
-public class GameRulesCDITest {
+public class C_GameAPITest {
 
     @Deployment
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
-                .addClass(GameSessionImpl.class )
+                .addClass( GameSessionImpl.class )
                 .addClass( CommandExecutor.class )
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
-        System.out.println( jar.toString( true ) );
+//        System.out.println( jar.toString( true ) );
         return jar;
     }
 
     @Inject
     private GameSession game;
 
+    /*
+     * Test that the main hookpoints for a game are kicking in
+     * Hook points: 
+     * - There is a house , then we can do something here.. some extra initializations
+     * - There is a room, extra initialization per room
+     * - Everything is ready for the player to start ("Wake up call")
+     * - There is light, so you can see things...
+     */
     @Test
     public void bootstrapGameTest() {
         Player player = new Player( "salaboy" );
@@ -76,19 +84,21 @@ public class GameRulesCDITest {
         List<GameMessage> messages = game.getAllMessages();
         assertEquals( 5, messages.size() );
 
-        assertTrue( messages.get( 4 ).getText().startsWith( "There is a house in the world" ) );
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
 
-        assertTrue( messages.get( 3 ).getText().startsWith( "There is a room(Room A" ) );
-
-        assertTrue( messages.get( 2 ).getText().startsWith( "There is a room(Outside" ) );
-
-        assertTrue( messages.get( 1 ).getText().startsWith( "Wake up! You are trapped" ) );
-
-        assertTrue( messages.get( 0 ).getText().startsWith( "There is light in the room!" ) );
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!" ) );
 
         game.destroy();
     }
 
+    /*
+     * This test shows how to execute actions agains the world by modifying our facts
+     */
     @Test
     public void exploreRoomTest() {
         Player player = new Player( "salaboy" );
@@ -103,9 +113,6 @@ public class GameRulesCDITest {
         List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
 
         assertEquals( 3, itemsInRoom.size() );
-        for ( Item i : itemsInRoom ) {
-            System.out.println( "Item: " + i );
-        }
 
         assertTrue( itemsInRoom.get( 0 ) instanceof LightSwitch );
         assertTrue( itemsInRoom.get( 1 ) instanceof LightBulb );
@@ -113,27 +120,25 @@ public class GameRulesCDITest {
 
         List<GameMessage> messages = game.getAllMessages();
         assertEquals( 7, messages.size() );
-        for ( GameMessage m : messages ) {
-            System.out.println( "Message: " + m.getText() );
-        }
 
-        assertTrue( messages.get( 6 ).getText().startsWith( "There is a house in the world" ) );
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
 
-        assertTrue( messages.get( 5 ).getText().startsWith( "There is a room(Room A" ) );
-
-        assertTrue( messages.get( 4 ).getText().startsWith( "There is a room(Outside" ) );
-
-        assertTrue( messages.get( 3 ).getText().startsWith( "Wake up! You are trapped" ) );
-
-        assertTrue( messages.get( 2 ).getText().startsWith( "There is light in the room!" ) );
-
-        assertTrue( messages.get( 1 ).getText().startsWith( "You are in Room A" ) );
-
-        assertTrue( messages.get( 0 ).getText().startsWith( "3 Items available" ) );
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available" ) );
 
         game.destroy();
     }
 
+    /*
+     * This test shows what happens when we turn of the lights of the room.
+     * Now after the lights are off, we can see objects that Shine In the Dark (implements ShineInTheDarkItem interface)
+     */
     @Test
     public void turnOffTheLightsTest() {
         Player player = new Player( "salaboy" );
@@ -148,9 +153,6 @@ public class GameRulesCDITest {
         List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
 
         assertEquals( 3, itemsInRoom.size() );
-        for ( Item i : itemsInRoom ) {
-            System.out.println( "Item: " + i );
-        }
 
         assertTrue( itemsInRoom.get( 0 ) instanceof LightSwitch );
         assertTrue( itemsInRoom.get( 1 ) instanceof LightBulb );
@@ -161,9 +163,7 @@ public class GameRulesCDITest {
         game.execute( new TurnOffTheLightsCommand( lightSwitch ) );
 
         itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
-        for ( Item i : itemsInRoom ) {
-            System.out.println( "Item: " + i );
-        }
+
         assertEquals( 1, itemsInRoom.size() );
         assertTrue( itemsInRoom.get( 0 ) instanceof ShineInTheDarkItem );
         assertTrue( itemsInRoom.get( 0 ) instanceof MagicStone );
@@ -173,9 +173,30 @@ public class GameRulesCDITest {
         itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
         assertEquals( 3, itemsInRoom.size() );
 
+        List<GameMessage> messages = game.getAllMessages();
+        assertEquals( 12, messages.size() );
+
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
+
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available",
+                        "Lights Turned Off",
+                        "1 Items available",
+                        "Lights Turned On") );
+
         game.destroy();
     }
 
+    /*
+     * This test shows how when the user picks a key from the Chest, the door labeled with 
+     *  the same name as the key automatically unlocks, based on the rule that define that behavior
+     */
     @Test
     public void exploreContainerAndOpenDoorTest() {
         Player player = new Player( "salaboy" );
@@ -195,9 +216,6 @@ public class GameRulesCDITest {
         List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
 
         assertEquals( 3, itemsInRoom.size() );
-        for ( Item i : itemsInRoom ) {
-            System.out.println( "Item: " + i );
-        }
 
         assertTrue( itemsInRoom.get( 2 ) instanceof Chest );
         assertTrue( itemsInRoom.get( 2 ) instanceof ItemContainer );
@@ -215,9 +233,22 @@ public class GameRulesCDITest {
 
         assertEquals( 1, player.getItems().size() );
 
-        List<GameMessage> allMessages = game.getAllMessages();
-        assertEquals( 11, allMessages.size() );
-        assertTrue( allMessages.get( 0 ).getText().startsWith( "Door 'Door A' Unlocked and Opened!" ) );
+        List<GameMessage> messages = game.getAllMessages();
+        assertEquals( 11, messages.size() );
+
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
+
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available",
+                        "Item Picked! PickableItem{pickable=Key{name=Door A}}",
+                        "There is a new item in our inventory!Key{name=Door A}",
+                        "Door 'Door A' Unlocked and Opened!" ) );
 
         assertTrue( !doors.get( 0 ).isLocked() );
         assertTrue( doors.get( 0 ).isOpen() );
@@ -225,6 +256,9 @@ public class GameRulesCDITest {
         game.destroy();
     }
 
+    /*
+     * This test Open the door and uses it to walk Outside and accomplish the game goal! 
+     */
     @Test
     public void useOpenedDoorReachGoalTest() {
         Player player = new Player( "salaboy" );
@@ -261,10 +295,6 @@ public class GameRulesCDITest {
 
         assertEquals( 1, player.getItems().size() );
 
-        List<GameMessage> allMessages = game.getAllMessages();
-        assertEquals( 12, allMessages.size() );
-        assertTrue( allMessages.get( 0 ).getText().startsWith( "Door 'Door A' Unlocked and Opened!" ) );
-
         Door door = doors.get( 0 );
         assertTrue( !door.isLocked() );
         assertTrue( door.isOpen() );
@@ -275,24 +305,28 @@ public class GameRulesCDITest {
 
         assertEquals( "Outside", roomIn.getName() );
 
+        List<GameMessage> messages = game.getAllMessages();
+        assertEquals( 18, messages.size() );
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
+
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available",
+                        "There is a new item in our inventory!Key{name=Door A}",
+                        "Door 'Door A' Unlocked and Opened!",
+                        "Congrats! You manage to escape the Room!",
+                        "You are in Outside",
+                        "Player moved from  Room A to Outside",
+                        "1 Door(s) unlocked and open",
+                        "Item Picked! PickableItem{pickable=Key{name=Door A}}" ) );
+
         game.destroy();
     }
-
-    @Test
-    public void gameSuggestionsTest() {
-        Player player = new Player( "salaboy" );
-
-        House house = createHouse( "My Escape The Room House", player );
-
-        // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( house, player );
-
-        List<Command> suggestions = game.getSuggestions();
-
-        assertEquals( 7, suggestions.size() );
-
-    }
-
 
     /* House With:
         * Room A:

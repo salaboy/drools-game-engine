@@ -1,21 +1,8 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     
-    <kbase name="globalKBase" packages="rules.global" default="false"> 
-    </kbase>
-    
-    <kbase name="confKBase" includes="globalKBase" packages="rules.conf" default="false"> 
-        
-    </kbase>
-    
-    <kbase name="gameKBase" includes="globalKBase" packages="rules.game" default="false"> 
-        
-    </kbase>
-    
-    <kbase name="engineKBase" includes="globalKBase" packages="rules.engine" default="false"> 
-        
-    </kbase>
-    
-    <kbase name="fullKBase" includes="globalKBase" packages="rules.game, rules.engine" default="true"> 
-        
-    </kbase>
+    <kbase name="globalKBase" packages="rules.global" default="false"></kbase>
+    <kbase name="confKBase" includes="globalKBase" packages="rules.conf" default="false"></kbase>
+    <kbase name="gameKBase" includes="globalKBase" packages="rules.game" default="false"></kbase>
+    <kbase name="suggestionsKBase" includes="gameKBase" packages="rules.suggestions" default="false"></kbase>
+    <kbase name="fullKBase" includes="globalKBase" packages="rules.game, rules.suggestions" default="true"></kbase>
 </kmodule>

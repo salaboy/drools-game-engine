@@ -41,7 +41,6 @@ public class OpenContainerCommand implements Command<Void> {
         FactHandle containerFH = session.getFactHandle( container );
         container.setOpen( true );
         session.update( containerFH, container );
-
         session.insert( new GameMessage( "Container Opened: " + container.getName() ) );
         return null;
     }

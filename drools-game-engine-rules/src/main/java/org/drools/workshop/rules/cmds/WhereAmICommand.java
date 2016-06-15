@@ -34,7 +34,7 @@ public class WhereAmICommand implements Command<Room> {
     public Room execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
 
-        QueryResults queryResults = session.getQueryResults( "whereAmI", player.getName() );
+        QueryResults queryResults = session.getQueryResults( "WhereAmI", player.getName() );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         Room room = null;
         while ( iterator.hasNext() ) {

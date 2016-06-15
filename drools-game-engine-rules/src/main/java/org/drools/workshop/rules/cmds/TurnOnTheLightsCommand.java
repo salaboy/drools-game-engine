@@ -40,7 +40,7 @@ public class TurnOnTheLightsCommand implements Command<Void> {
         FactHandle lightSwitchFH = session.getFactHandle( lightSwitch );
         lightSwitch.setOn( true );
         session.update( lightSwitchFH, lightSwitch );
-        session.insert( new GameMessage( "Lights Turned On " ) );
+        session.insert( new GameMessage( "Lights Turned On" ) );
         return null;
     }
 

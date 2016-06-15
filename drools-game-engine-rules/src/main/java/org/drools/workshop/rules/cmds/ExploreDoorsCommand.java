@@ -42,7 +42,7 @@ public class ExploreDoorsCommand implements Command<List<Door>> {
             Door door = ( Door ) iterator.next().get( "$d" );
             doors.add( door );
         }
-        session.insert( new GameMessage( doors.size() + " Doors unlocked and open" ) );
+        session.insert( new GameMessage( doors.size() + " Door(s) unlocked and open" ) );
         return doors;
     }
 
