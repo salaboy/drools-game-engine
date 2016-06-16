@@ -22,6 +22,13 @@ This example was created originally for the conference JBCNConf (June - 2016)
 - cd drools-game-engine/
 - mvn clean install -DskipTests (if you run it with tests it will fail on purpose, the rules are missing, you need to write them)
 
+# Update your fork from this "blessed" repository
+- git stash
+- git remote add blessed http://github.com/salaboy/drools-game-engine/
+- git fetch blessed master
+- git rebase blessed master
+- git stash apply
+
 # Objective
 Write the missing rules to make all the test green again! 
 There are three incomplete DRL files with their corresponding tests:
