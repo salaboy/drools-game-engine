@@ -26,7 +26,7 @@ This example was created originally for the conference JBCNConf (June - 2016)
 - git stash
 - git remote add blessed http://github.com/salaboy/drools-game-engine/
 - git fetch blessed master
-- git rebase blessed master
+- git rebase blessed/master
 - git stash apply
 
 # Objective
