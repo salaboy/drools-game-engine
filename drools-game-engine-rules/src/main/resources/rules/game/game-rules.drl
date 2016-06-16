@@ -14,7 +14,7 @@ query "getRoomByName" (String $name)
 end
 
 query "getVisibleItems" (String $roomName)
-    
+    $v: VisibleItems( roomName == $roomName )
 end
 
 query "getDarkItems" (String $roomName)
@@ -42,11 +42,11 @@ end
 
 rule "There is a house in the world"
     when
-        
+        insertLogic( new House() );
     then
         insert( new GameMessage( "There is a house(" + $h.getName() + ") in the world"  ) );
 end
-
+/*
 rule "There is a room in the house"
     when
         
@@ -118,3 +118,4 @@ rule "Out Goal is to go outside"
     then
         insert( new GameMessage( "Congrats! You manage to escape the Room!" ) );
 end
+*/
