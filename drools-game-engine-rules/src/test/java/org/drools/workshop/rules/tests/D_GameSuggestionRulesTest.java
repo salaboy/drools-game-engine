@@ -135,7 +135,7 @@ public class D_GameSuggestionRulesTest {
         configureListeners( kSession );
         // Create house & Bootstrap
         Player player = new Player( "salaboy" );
-        House house = new House( "Manic Mansion" );
+        House house = new House( "Maniac Mansion" );
         Room roomA = new Room( "Room A" );
         Door doorA = new Door( "Door A" );
         doorA.setLeadsTo( "Outside" );
@@ -260,7 +260,7 @@ public class D_GameSuggestionRulesTest {
 
         kSession.insert( player );
 
-        House house = createHouse( "Manic Mansion", player );
+        House house = createHouse( "Maniac Mansion", player );
 
         kSession.insert( house );
 

@@ -32,7 +32,7 @@ public class E_NoCDIRulesTest {
         KieSession kSession = kBase.newKieSession();
         ArrayList<String> errors = new ArrayList<String>();
         kSession.setGlobal( "errors", errors );
-        House house = new House( "Manic Mansion" );
+        House house = new House( "Maniac Mansion" );
         kSession.insert( house );
 
         int fired = kSession.fireAllRules();
