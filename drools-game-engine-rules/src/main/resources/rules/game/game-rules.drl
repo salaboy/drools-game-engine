@@ -14,11 +14,15 @@ query "getRoomByName" (String $name)
 end
 
 query "getVisibleItems" (String $roomName)
-    
+    Light()
+    $i: VisibleInDayLightItem()
+    $r: Room(name == $roomName, items contains $i)
 end
 
 query "getDarkItems" (String $roomName)
-    
+    not(Light())
+    $i: ShineInTheDarkItem()
+    $r: Room(name == $roomName, items contains $i)
 end
 
 query "getDoors" (String $roomName)
@@ -37,18 +41,21 @@ query "getAllMessages"
 end
 
 query "WhereAmI"
-    
+    $p: Player()
+    $r: Room( peopleInTheRoom contains $p.getName() )
 end
 
 rule "There is a house in the world"
     when
-        
+        $h: House()
     then
         insert( new GameMessage( "There is a house(" + $h.getName() + ") in the world"  ) );
 end
 
 rule "There is a room in the house"
     when
+        $r: Room( )
+        $h: House( rooms contains $r )
         
     then
         insert( new GameMessage( "There is a room(" + $r.getName() + ") in the house" ) );
@@ -56,7 +63,9 @@ end
 
 rule "The player is in a room inside the house, wake up!"
     when
-        
+        $p: Player( )
+        $r: Room( name != "Outside", peopleInTheRoom contains $p.getName() )
+        $h: House( rooms contains $r )
     then
         insert( new GameMessage( "Wake up! You are trapped in " + $r.getName() + "! You need to escape!" ) );
 end
@@ -64,7 +73,8 @@ end
 
 rule "There is a new item in the player's inventory"
     when
-       
+        $p: Player()
+        $i: Item() from $p.getItems()
     then
         insert( new GameMessage( "There is a new item in our inventory!" + $i ) );
 end
@@ -72,6 +82,9 @@ end
 
 rule "Light in the room when there is lightbulb and switch on"
     when
+        $lb: LightBulb(connected == true, broken == false)
+        $ls: LightSwitch(on == true)
+        $r:  Room(items contains $lb, items contains $ls)
         
     then
         insertLogical( new Light() );
@@ -81,7 +94,10 @@ end
 
 rule "If we have a key for a (locked and closed) door in our room then open the door"
     when
-        
+        $p: Player( )
+        $d: Door( $doorName: name, open == false, locked == true ) 
+        $r: Room( peopleInTheRoom contains $p.getName(), doors contains $d )
+        Key( name == $doorName ) from $p.getItems()
     then
         modify( $d ){
             setLocked( false ),
@@ -92,14 +108,18 @@ end
 
 rule "Items can be picked when you see them (lights off -> shine in the dark)"
     when
-        
+        not(Light())
+        $p: Pickable()
+        $s: ShineInTheDarkItem( this == $p)
     then
         insertLogical( new PickableItem( $p ) );
 end
 
 rule "Items can be picked when you see them (lights on -> day light)"
     when
-        
+        Light()
+        $p: Pickable()
+        $v: VisibleInDayLightItem( this == $p)
     then
         insertLogical(new PickableItem($p));
 end
@@ -107,14 +127,17 @@ end
 
 rule "When we open a container we can pick the items inside"
     when
-        
+        $ic: ItemContainer( open == true )
+        not (Room( this == $ic ) ) 
+        $p: Pickable() from $ic.getItems()
     then
         insertLogical( new PickableItem( $p ) );
 end
 
 rule "Out Goal is to go outside"
     when
-        
+        $p: Player()
+        $o: Outside( peopleInTheRoom contains $p.getName())
     then
         insert( new GameMessage( "Congrats! You manage to escape the Room!" ) );
 end

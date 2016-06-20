@@ -11,39 +11,38 @@ global List errors;
 
 rule "Warn on House with no Rooms"
     when
-        $h: House(rooms.size == 0)
+        $h: House( rooms.size == 0 )
     then
         errors.add("Warn: Your House ( " + $h.getName() + " ) has no Rooms");
 end
 
 rule "Warn: on Room that is not in a House"
     when
-        $r: Room()
-        $h: House(rooms not contains $r)
+        $r: Room( )
+        $h: House( rooms not contains $r )
     then
         errors.add( "Warn: the room ( " + $r.getName() + " ) does not belong to a house" );
 end
 
 rule "Warn: on Room without a house"
     when
-         $r: Room()
-         not(House())
+        not( House())
+        $r: Room()
     then
         errors.add( "Warn: there is room ( " + $r.getName() + " ) but there is no house" );
 end
 
-
 rule "Warn: on Rooms with no Doors"
     when
-        $r: Room(doors.size == 0)
+        $r: Room( doors.size == 0 )
     then
         errors.add( "Warn: Your Room ( " + $r.getName() + " ) has no Doors" );
 end
 
 rule "Warn: on Closed Door without a corresponding key"
     when
-        $d: Door(locked == true)
-        not(Key(name == $d.name))
+        $d: Door( open == false, locked == true)
+        not( Key( name == $d.getName() ) )
     then
         errors.add( "Warn: There is no key for this Door ( " + $d.getName() + " )" );
 end
