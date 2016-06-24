@@ -14,25 +14,28 @@
  * limitations under the License.
  */
 
-package org.drools.workshop.rules;
+package org.drools.game.services.endpoint.api;
 
 import java.util.List;
-import org.drools.workshop.core.Command;
-import org.drools.workshop.model.Player;
-import org.drools.workshop.model.house.House;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import org.drools.game.services.infos.GameSessionInfo;
 
-public interface GameSession {
+@Path( "game" )
+public interface GameService {
 
-    void bootstrap( House house, Player player );
+    @POST
+    @Path( "" )
+    String newGameSession( @NotNull String playerId );
 
-    void destroy();
-
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages();
-
-    List<Command> getSuggestions();
-    
-    Player getPlayer();
-
+    @GET
+    @Path( "" )
+    @Consumes( value = APPLICATION_JSON )
+    @Produces( value = APPLICATION_JSON )
+    List<GameSessionInfo> getAllGameSessions();
 }

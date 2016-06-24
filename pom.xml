@@ -9,6 +9,7 @@
         <module>drools-game-engine-model</module>
         <module>drools-game-engine-core</module>
         <module>drools-game-engine-rules</module>
+        <module>drools-game-engine-services</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

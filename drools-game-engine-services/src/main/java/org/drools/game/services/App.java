@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package org.drools.workshop.rules;
+package org.drools.game.services;
 
-import java.util.List;
-import org.drools.workshop.core.Command;
-import org.drools.workshop.model.Player;
-import org.drools.workshop.model.house.House;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.wildfly.swarm.container.Container;
+import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
-public interface GameSession {
+public class App {
 
-    void bootstrap( House house, Player player );
+    public static void main( String[] args ) throws Exception {
+        Container container = new Container();
 
-    void destroy();
+        container.start();
 
-    <T> T execute( Command<T> cmd );
+        JAXRSArchive deployment = ShrinkWrap.create( JAXRSArchive.class );
 
-    List<GameMessage> getAllMessages();
+        deployment.setContextRoot( "/api" );
 
-    List<Command> getSuggestions();
-    
-    Player getPlayer();
+        deployment.addAsLibrary( container.createDefaultDeployment() );
+        deployment.addAllDependencies();
 
+        container.deploy( deployment );
+    }
 }

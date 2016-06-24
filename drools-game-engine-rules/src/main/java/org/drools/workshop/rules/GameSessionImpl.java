@@ -59,6 +59,8 @@ public class GameSessionImpl implements GameSession {
     private LiveQuery gameMessageNotifications = null;
 
     private final Context context;
+    
+    private Player currentPlayer;
 
     public GameSessionImpl() {
         context = new Context();
@@ -68,6 +70,10 @@ public class GameSessionImpl implements GameSession {
         if ( currentSession != null ) {
             throw new IllegalStateException( "Error: There is another game session in progress, destroy the current session first!" );
         }
+        if( player == null){
+            throw new IllegalStateException( "Error: We need a player to bootstrap a new game session" );
+        }
+        this.currentPlayer = player;
         //Setting globals first
         currentSession = kBase.newKieSession();
         if ( debugEnabled ) {
@@ -95,6 +101,12 @@ public class GameSessionImpl implements GameSession {
         context.getData().put( "session", currentSession );
     }
 
+    @Override
+    public Player getPlayer() {
+        return currentPlayer;
+    }
+
+    
     @Override
     public void bootstrap( House house, Player player ) {
         bootstrap( house, player, false, System.out );
@@ -222,6 +234,8 @@ public class GameSessionImpl implements GameSession {
             }
         } );
     }
+    
+    
 
     @Override
     public void destroy() {
