@@ -5,6 +5,8 @@
  */
 package org.drools.workshop.model.items;
 
+import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.ItemContainer;
 import java.util.ArrayList;
 import java.util.List;
 

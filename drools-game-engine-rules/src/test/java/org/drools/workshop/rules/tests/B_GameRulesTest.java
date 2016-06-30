@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Door;
 import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Outside;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.items.Chest;
-import org.drools.workshop.model.items.Item;
-import org.drools.workshop.model.items.ItemContainer;
+import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.ItemContainer;
 import org.drools.workshop.model.items.Key;
 import org.drools.workshop.model.items.LightBulb;
 import org.drools.workshop.model.items.LightSwitch;
@@ -74,7 +74,7 @@ public class B_GameRulesTest {
     public void gameRulesForANewHouseTest() {
         KieSession kSession = kBase.newKieSession();
 
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         kSession.insert( player );
 
@@ -128,7 +128,7 @@ public class B_GameRulesTest {
     public void exploreTheRoomToFindItemsTest() {
         KieSession kSession = kBase.newKieSession();
 
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -231,7 +231,7 @@ public class B_GameRulesTest {
         // Bootstrap the game
         KieSession kSession = kBase.newKieSession();
 
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -382,7 +382,7 @@ public class B_GameRulesTest {
         // Bootstrap Game
         KieSession kSession = kBase.newKieSession();
 
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -474,11 +474,11 @@ public class B_GameRulesTest {
 
         Key key = ( Key ) itemsInChest.get( 0 );
 
-        assertEquals( 0, player.getItems().size() );
+        assertEquals( 0, player.getInventory().getItems().size() );
 
         // Pick up the key
         FactHandle playerFH = kSession.getFactHandle( player );
-        player.getItems().add( key );
+        player.getInventory().getItems().add( key );
         FactHandle containerFH = kSession.getFactHandle( container );
         container.getItems().remove( key );
         kSession.update( playerFH, player );
@@ -488,7 +488,7 @@ public class B_GameRulesTest {
         
         assertEquals( 3, fired );
 
-        assertEquals( 1, player.getItems().size() );
+        assertEquals( 1, player.getInventory().getItems().size() );
 
         queryResults = kSession.getQueryResults( "getAllMessages", ( Object ) null );
         iterator = queryResults.iterator();
@@ -530,7 +530,7 @@ public class B_GameRulesTest {
         // Bootstrap Game
         KieSession kSession = kBase.newKieSession();
 
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -622,11 +622,11 @@ public class B_GameRulesTest {
 
         Key key = ( Key ) itemsInChest.get( 0 );
 
-        assertEquals( 0, player.getItems().size() );
+        assertEquals( 0, player.getInventory().getItems().size() );
 
         // Pick up the key
         FactHandle playerFH = kSession.getFactHandle( player );
-        player.getItems().add( key );
+        player.getInventory().getItems().add( key );
         FactHandle containerFH = kSession.getFactHandle( container );
         container.getItems().remove( key );
         kSession.update( playerFH, player );
@@ -636,7 +636,7 @@ public class B_GameRulesTest {
         
         assertEquals( 3, fired );
 
-        assertEquals( 1, player.getItems().size() );
+        assertEquals( 1, player.getInventory().getItems().size() );
         
         assertTrue( !doors.get( 0 ).isLocked() );
         assertTrue( doors.get( 0 ).isOpen() );
@@ -718,7 +718,7 @@ public class B_GameRulesTest {
         *  - 1 Magic Stone
         * Outside (Goal)
      */
-    private House createHouse( String name, Player player ) {
+    private House createHouse( String name, PlayerImpl player ) {
         House house = new House( name );
 
         Room roomA = new Room( "Room A" );

@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.drools.workshop.model.house.Door;
 import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Room;
-import org.drools.workshop.model.items.Item;
+import org.drools.workshop.model.api.Item;
 import org.drools.workshop.model.items.Key;
 import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;

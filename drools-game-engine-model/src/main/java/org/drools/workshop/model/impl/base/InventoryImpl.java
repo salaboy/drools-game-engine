@@ -14,36 +14,42 @@
  * limitations under the License.
  */
 
-package org.drools.workshop.model.items;
+package org.drools.workshop.model.impl.base;
 
-import org.drools.workshop.model.api.Pickable;
+import java.util.ArrayList;
+import java.util.List;
+import org.drools.workshop.model.api.Inventory;
+import org.drools.workshop.model.api.Item;
 
-public class Broom implements VisibleInDayLightItem, Pickable {
+public class InventoryImpl implements Inventory {
 
-    private String name;
+    private List<Item> items = new ArrayList<Item>();
 
-    public Broom() {
+    public InventoryImpl() {
     }
 
-    public Broom( String name ) {
-        this.name = name;
+    public InventoryImpl( List<Item> items ) {
+        this.items = items;
+    }
+
+    @Override
+    public List<Item> getItems() {
+        return items;
     }
 
     @Override
     public String getName() {
-        return name;
-    }
-
-    public void setName( String name ) {
-        this.name = name;
+        return "Players Inventory";
     }
 
     @Override
-    public String toString() {
-        return "Broom{" + "name=" + name + '}';
+    public boolean isOpen() {
+        return true;
     }
-    
-    
-    
+
+    @Override
+    public void setOpen( boolean open ) {
+        // the player's inventory is always open by default to browse
+    }
 
 }

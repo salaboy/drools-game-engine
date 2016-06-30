@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.drools.workshop.model.items;
+package org.drools.workshop.model.api;
 
 import org.drools.workshop.model.api.Item;
 
-public interface VisibleInDayLightItem extends Item {
+public interface Pickable extends Item {
 
 }

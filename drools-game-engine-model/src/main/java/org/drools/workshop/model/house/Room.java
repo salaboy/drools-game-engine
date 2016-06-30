@@ -7,8 +7,8 @@ package org.drools.workshop.model.house;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.drools.workshop.model.items.Item;
-import org.drools.workshop.model.items.ItemContainer;
+import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.ItemContainer;
 
 /**
  *

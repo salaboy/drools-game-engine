@@ -11,15 +11,15 @@ import java.util.List;
 import javax.inject.Inject;
 import org.drools.workshop.core.Command;
 import org.drools.workshop.core.Context;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Door;
 import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Outside;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.items.Broom;
 import org.drools.workshop.model.items.Chest;
-import org.drools.workshop.model.items.Item;
-import org.drools.workshop.model.items.ItemContainer;
+import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.ItemContainer;
 import org.drools.workshop.model.items.Key;
 import org.drools.workshop.model.items.LightBulb;
 import org.drools.workshop.model.items.LightSwitch;
@@ -84,7 +84,7 @@ public class D_GameSuggestionRulesTest {
     public void engineSuggestionsSimpleTest() {
         KieSession kSession = kieBase.newKieSession();
 
-        FactHandle playerFH = kSession.insert( new Player( "salaboy" ) );
+        FactHandle playerFH = kSession.insert(new PlayerImpl( "salaboy" ) );
 
         kSession.fireAllRules();
 
@@ -134,7 +134,7 @@ public class D_GameSuggestionRulesTest {
         KieSession kSession = kieBase.newKieSession();
         configureListeners( kSession );
         // Create house & Bootstrap
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
         House house = new House( "Maniac Mansion" );
         Room roomA = new Room( "Room A" );
         Door doorA = new Door( "Door A" );
@@ -256,7 +256,7 @@ public class D_GameSuggestionRulesTest {
         KieSession kSession = kieBase.newKieSession();
         //Create House and Bootstrap
         configureListeners( kSession );
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         kSession.insert( player );
 
@@ -414,7 +414,7 @@ public class D_GameSuggestionRulesTest {
         *  - 1 Magic Stone
         * Outside (Goal)
      */
-    private House createHouse( String name, Player player ) {
+    private House createHouse( String name, PlayerImpl player ) {
         House house = new House( name );
 
         Room roomA = new Room( "Room A" );

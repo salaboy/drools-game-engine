@@ -26,8 +26,8 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import org.drools.game.services.endpoint.api.GameService;
 import org.drools.game.services.infos.GameSessionInfo;
-import org.drools.workshop.model.Player;
 import org.drools.workshop.model.house.House;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.rules.GameSession;
 
 @ApplicationScoped
@@ -41,7 +41,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public String newGameSession( String playerId ) {
         GameSession gameSession = sessions.get();
-        gameSession.bootstrap( new House( "My Mansion" ), new Player( playerId ) );
+        gameSession.bootstrap( new House( "My Mansion" ), new PlayerImpl( playerId ) );
         String id = UUID.randomUUID().toString().substring( 0, 6 );
         games.put( id, gameSession );
         return id;

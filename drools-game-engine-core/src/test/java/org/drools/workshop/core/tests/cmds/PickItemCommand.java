@@ -8,10 +8,10 @@ package org.drools.workshop.core.tests.cmds;
 import java.util.List;
 import org.drools.workshop.core.Context;
 import org.drools.workshop.core.Command;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Room;
-import org.drools.workshop.model.items.Item;
-import org.drools.workshop.model.items.ItemContainer;
+import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.ItemContainer;
 
 /**
  *
@@ -27,25 +27,25 @@ public class PickItemCommand implements Command<Void> {
 
     @Override
     public Void execute( Context ctx ) {
-        Player player = ( Player ) ctx.getData().get( "player" );
+        PlayerImpl player = ( PlayerImpl ) ctx.getData().get( "player" );
         Room localRoom = ( Room ) ctx.getData().get( "room" );
         List<String> messages = ( List<String> ) ctx.getData().get( "messages" );
         boolean removed = localRoom.getItems().remove( item );
         if ( removed ) {
-            player.getItems().add( item );
+            player.getInventory().getItems().add( item );
             messages.add( "Item picked! " + item );
         } else {
             for ( Item i : localRoom.getItems() ) {
                 if ( i instanceof ItemContainer ) {
                     removed = ( ( ItemContainer ) i ).getItems().remove( item );
                     if ( removed ) {
-                        player.getItems().add( item );
-                        messages.add( "Item picked!");
+                        player.getInventory().getItems().add( item );
+                        messages.add( "Item picked!" );
                         return null;
                     }
                 }
             }
-            messages.add( "Item not found!");
+            messages.add( "Item not found!" );
         }
         return null;
     }

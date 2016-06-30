@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package org.drools.workshop.model.items;
+package org.drools.workshop.model.api;
 
-public interface Pickable extends Item {
+public interface Inventory extends ItemContainer {
 
 }

@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package org.drools.workshop.model.items;
+package org.drools.workshop.model.api;
 
-import org.drools.workshop.model.api.Item;
+public interface Player {
 
-public interface VisibleInDayLightItem extends Item {
+    String getId();
+
+    String getName();
+
+    Inventory getInventory();
+
+    void setInventory( Inventory inventory );
 
 }

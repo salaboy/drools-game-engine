@@ -11,7 +11,7 @@ import java.util.List;
 import org.drools.workshop.core.Command;
 import org.drools.workshop.core.Context;
 import org.drools.workshop.model.house.Room;
-import org.drools.workshop.model.items.Item;
+import org.drools.workshop.model.api.Item;
 import org.drools.workshop.rules.GameMessage;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.QueryResults;

@@ -16,6 +16,8 @@
 
 package org.drools.workshop.model.items;
 
+import org.drools.workshop.model.api.Pickable;
+
 public class PickableItem {
 
     private final Pickable pickable;

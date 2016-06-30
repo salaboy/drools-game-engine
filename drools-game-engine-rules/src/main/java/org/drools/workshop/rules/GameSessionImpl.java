@@ -13,11 +13,11 @@ import javax.inject.Inject;
 import org.drools.workshop.core.Command;
 import org.drools.workshop.core.CommandExecutor;
 import org.drools.workshop.core.Context;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Door;
 import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Room;
-import org.drools.workshop.model.items.Item;
+import org.drools.workshop.model.api.Item;
 import org.kie.api.KieBase;
 import org.kie.api.cdi.KBase;
 import org.kie.api.event.rule.AfterMatchFiredEvent;
@@ -60,13 +60,13 @@ public class GameSessionImpl implements GameSession {
 
     private final Context context;
     
-    private Player currentPlayer;
+    private PlayerImpl currentPlayer;
 
     public GameSessionImpl() {
         context = new Context();
     }
 
-    public void bootstrap( House house, Player player, boolean debugEnabled, PrintStream out ) {
+    public void bootstrap( House house, PlayerImpl player, boolean debugEnabled, PrintStream out ) {
         if ( currentSession != null ) {
             throw new IllegalStateException( "Error: There is another game session in progress, destroy the current session first!" );
         }
@@ -102,13 +102,13 @@ public class GameSessionImpl implements GameSession {
     }
 
     @Override
-    public Player getPlayer() {
+    public PlayerImpl getPlayer() {
         return currentPlayer;
     }
 
     
     @Override
-    public void bootstrap( House house, Player player ) {
+    public void bootstrap( House house, PlayerImpl player ) {
         bootstrap( house, player, false, System.out );
     }
 

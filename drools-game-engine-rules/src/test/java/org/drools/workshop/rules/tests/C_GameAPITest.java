@@ -6,14 +6,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.drools.workshop.core.CommandExecutor;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Door;
 import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Outside;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.items.Chest;
-import org.drools.workshop.model.items.Item;
-import org.drools.workshop.model.items.ItemContainer;
+import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.ItemContainer;
 import org.drools.workshop.model.items.Key;
 import org.drools.workshop.model.items.LightBulb;
 import org.drools.workshop.model.items.LightSwitch;
@@ -74,7 +74,7 @@ public class C_GameAPITest {
      */
     @Test
     public void bootstrapGameTest() {
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
 
@@ -101,7 +101,7 @@ public class C_GameAPITest {
      */
     @Test
     public void exploreRoomTest() {
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
 
@@ -141,7 +141,7 @@ public class C_GameAPITest {
      */
     @Test
     public void turnOffTheLightsTest() {
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
 
@@ -199,7 +199,7 @@ public class C_GameAPITest {
      */
     @Test
     public void exploreContainerAndOpenDoorTest() {
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
 
@@ -227,11 +227,11 @@ public class C_GameAPITest {
 
         Key key = ( Key ) itemsInChest.get( 0 );
 
-        assertEquals( 0, player.getItems().size() );
+        assertEquals( 0, player.getInventory().getItems().size() );
 
         game.execute( new PickItemCommand( player, container, new PickableItem( key ) ) );
 
-        assertEquals( 1, player.getItems().size() );
+        assertEquals( 1, player.getInventory().getItems().size() );
 
         List<GameMessage> messages = game.getAllMessages();
         assertEquals( 11, messages.size() );
@@ -261,7 +261,7 @@ public class C_GameAPITest {
      */
     @Test
     public void useOpenedDoorReachGoalTest() {
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
 
@@ -289,11 +289,11 @@ public class C_GameAPITest {
 
         Key key = ( Key ) itemsInChest.get( 0 );
 
-        assertEquals( 0, player.getItems().size() );
+        assertEquals( 0, player.getInventory().getItems().size() );
 
         game.execute( new PickItemCommand( player, container, new PickableItem( key ) ) );
 
-        assertEquals( 1, player.getItems().size() );
+        assertEquals( 1, player.getInventory().getItems().size() );
 
         Door door = doors.get( 0 );
         assertTrue( !door.isLocked() );
@@ -337,7 +337,7 @@ public class C_GameAPITest {
         *  - 1 Magic Stone
         * Outside (Goal)
      */
-    private House createHouse( String name, Player player ) {
+    private House createHouse( String name, PlayerImpl player ) {
         House house = new House( name );
 
         Room roomA = new Room( "Room A" );

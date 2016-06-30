@@ -18,8 +18,8 @@ package org.drools.workshop.rules.cmds;
 
 import org.drools.workshop.core.Command;
 import org.drools.workshop.core.Context;
-import org.drools.workshop.model.Player;
-import org.drools.workshop.model.items.ItemContainer;
+import org.drools.workshop.model.api.ItemContainer;
+import org.drools.workshop.model.api.Player;
 import org.drools.workshop.rules.GameMessage;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
@@ -44,7 +44,7 @@ public class PickItemCommand implements Command<Void> {
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         FactHandle playerFH = session.getFactHandle( player );
-        player.getItems().add( pickableItem.getPickable() );
+        player.getInventory().getItems().add( pickableItem.getPickable() );
         FactHandle containerFH = session.getFactHandle( container );
         container.getItems().remove( pickableItem.getPickable() );
         session.update( playerFH, player );
@@ -76,8 +76,6 @@ public class PickItemCommand implements Command<Void> {
     public void setContainer( ItemContainer container ) {
         this.container = container;
     }
-    
-    
     
 
     @Override

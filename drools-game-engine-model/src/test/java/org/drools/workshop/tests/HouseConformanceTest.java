@@ -7,12 +7,12 @@ package org.drools.workshop.tests;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Door;
 import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.items.Chest;
-import org.drools.workshop.model.items.Item;
+import org.drools.workshop.model.api.Item;
 import org.drools.workshop.model.items.Key;
 import org.drools.workshop.model.items.MagicStone;
 import org.junit.After;
@@ -49,7 +49,7 @@ public class HouseConformanceTest {
 
     @Test
     public void helloHouse() {
-        Player player = new Player("salaboy");
+        PlayerImpl player = new PlayerImpl("salaboy");
 
         House house = new House("My Test Mansion!");
 
@@ -110,7 +110,7 @@ public class HouseConformanceTest {
 
         Assert.assertEquals(3, house.getRooms().size());
         Assert.assertTrue(roomA.getPeopleInTheRoom().contains(player.getName()));
-        Assert.assertTrue(player.getItems().isEmpty());
+        Assert.assertTrue(player.getInventory().getItems().isEmpty());
 
     }
 }

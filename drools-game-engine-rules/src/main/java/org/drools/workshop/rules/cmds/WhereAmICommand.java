@@ -8,7 +8,7 @@ package org.drools.workshop.rules.cmds;
 import java.util.Iterator;
 import org.drools.workshop.core.Command;
 import org.drools.workshop.core.Context;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.api.Player;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.rules.GameMessage;
 import org.kie.api.runtime.KieSession;

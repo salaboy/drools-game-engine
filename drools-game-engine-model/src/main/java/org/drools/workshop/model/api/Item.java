@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.drools.workshop.model.items;
+package org.drools.workshop.model.api;
 
 /**
  *

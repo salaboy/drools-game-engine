@@ -12,12 +12,12 @@ import org.drools.workshop.core.Context;
 import org.drools.workshop.core.tests.cmds.ExploreCommand;
 import org.drools.workshop.core.tests.cmds.OpenDoorCommand;
 import org.drools.workshop.core.tests.cmds.PickItemCommand;
-import org.drools.workshop.model.Player;
+import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Door;
 import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.items.Chest;
-import org.drools.workshop.model.items.Item;
+import org.drools.workshop.model.api.Item;
 import org.drools.workshop.model.items.Key;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -55,7 +55,7 @@ public class PlayersCommandsTest {
 
     @Test
     public void hello() {
-        Player player = new Player( "salaboy" );
+        PlayerImpl player = new PlayerImpl( "salaboy" );
 
         House house = new House( "my mansion" );
 
@@ -90,7 +90,7 @@ public class PlayersCommandsTest {
 
         Assert.assertEquals( 1, house.getRooms().size() );
         Assert.assertTrue( roomA.getPeopleInTheRoom().contains( player.getName() ) );
-        Assert.assertTrue( player.getItems().isEmpty() );
+        Assert.assertTrue( player.getInventory().getItems().isEmpty() );
 
         CommandExecutor executor = new CommandExecutor();
         List<String> messages = new ArrayList<String>();
