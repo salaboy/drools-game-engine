@@ -1,4 +1,4 @@
-package org.drools.workshop.game;
+package org.drools.game;
 
 declare Light
 end

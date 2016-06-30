@@ -24,11 +24,11 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import org.drools.game.core.api.GameSession;
 import org.drools.game.services.endpoint.api.GameService;
 import org.drools.game.services.infos.GameSessionInfo;
-import org.drools.workshop.core.GameSession;
 
-import org.drools.workshop.model.impl.base.PlayerImpl;
+import org.drools.game.model.impl.base.PlayerImpl;
 
 @ApplicationScoped
 public class GameServiceImpl implements GameService {

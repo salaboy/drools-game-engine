@@ -1,12 +1,13 @@
-package org.drools.workshop.game;
+package org.drools.game;
 
-import org.drools.workshop.model.api.*;
-import org.drools.workshop.model.impl.base.*;
-import org.drools.workshop.model.house.*;
-import org.drools.workshop.model.items.*;
-import org.drools.workshop.core.*;
-import org.drools.workshop.rules.*;
-import org.drools.workshop.rules.cmds.*;
+import org.drools.game.model.api.*;
+import org.drools.game.model.impl.base.*;
+import org.drools.game.model.house.*;
+import org.drools.game.model.items.*;
+import org.drools.game.core.api.*;
+import org.drools.game.core.*;
+import org.drools.game.rules.*;
+import org.drools.game.rules.cmds.*;
 import java.util.List;
 
 

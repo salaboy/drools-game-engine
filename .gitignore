@@ -21,3 +21,6 @@ hs_err_pid*
 /drools-game-engine-services/target/
 /drools-game-engine-escape-room-kjar/target/
 /drools-game-engine-escape-room-model/target/
+/drools-game-engine-core-impl/nbproject/
+/drools-game-engine-core-impl/target/
+/drools-game-engine-core-api/target/
