@@ -18,6 +18,7 @@ import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.items.Chest;
 import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.Player;
 import org.drools.workshop.model.items.Key;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -55,7 +56,7 @@ public class PlayersCommandsTest {
 
     @Test
     public void hello() {
-        PlayerImpl player = new PlayerImpl( "salaboy" );
+        Player player = new PlayerImpl( "salaboy" );
 
         House house = new House( "my mansion" );
 

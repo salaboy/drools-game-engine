@@ -8,10 +8,10 @@ package org.drools.workshop.core.tests.cmds;
 import java.util.List;
 import org.drools.workshop.core.Context;
 import org.drools.workshop.core.Command;
-import org.drools.workshop.model.impl.base.PlayerImpl;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.api.Item;
 import org.drools.workshop.model.api.ItemContainer;
+import org.drools.workshop.model.api.Player;
 
 /**
  *
@@ -27,7 +27,7 @@ public class PickItemCommand implements Command<Void> {
 
     @Override
     public Void execute( Context ctx ) {
-        PlayerImpl player = ( PlayerImpl ) ctx.getData().get( "player" );
+        Player player = ( Player ) ctx.getData().get( "player" );
         Room localRoom = ( Room ) ctx.getData().get( "room" );
         List<String> messages = ( List<String> ) ctx.getData().get( "messages" );
         boolean removed = localRoom.getItems().remove( item );

@@ -13,13 +13,10 @@ import org.drools.workshop.model.house.House;
 import org.drools.workshop.model.house.Room;
 import org.drools.workshop.model.items.Chest;
 import org.drools.workshop.model.api.Item;
+import org.drools.workshop.model.api.Player;
 import org.drools.workshop.model.items.Key;
 import org.drools.workshop.model.items.MagicStone;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,28 +25,10 @@ import org.junit.Test;
  */
 public class HouseConformanceTest {
 
-    public HouseConformanceTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void helloHouse() {
-        PlayerImpl player = new PlayerImpl("salaboy");
+        Player player = new PlayerImpl("salaboy");
 
         House house = new House("My Test Mansion!");
 
