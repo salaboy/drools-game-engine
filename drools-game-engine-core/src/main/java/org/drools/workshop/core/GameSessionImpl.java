@@ -10,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
-import org.drools.workshop.model.house.Door;
-import org.drools.workshop.model.house.House;
-import org.drools.workshop.model.house.Room;
-import org.drools.workshop.model.api.Item;
 import org.drools.workshop.model.api.Player;
 import org.kie.api.KieBase;
 import org.kie.api.cdi.KBase;
@@ -63,7 +59,7 @@ public class GameSessionImpl implements GameSession {
         context = new Context();
     }
 
-    public void bootstrap( House house, Player player, boolean debugEnabled, PrintStream out ) {
+    public void bootstrap( Player player, List initialFacts, boolean debugEnabled, PrintStream out ) {
         if ( currentSession != null ) {
             throw new IllegalStateException( "Error: There is another game session in progress, destroy the current session first!" );
         }
@@ -79,19 +75,12 @@ public class GameSessionImpl implements GameSession {
         if ( out != null ) {
             setupMessageNotifications( out );
         }
-        //inserting world facts
-        currentSession.insert( house );
-        for ( Room r : house.getRooms() ) {
-            currentSession.insert( r );
-            for ( Item i : r.getItems() ) {
-                currentSession.insert( i );
-            }
-            for ( Door d : r.getDoors() ) {
-                currentSession.insert( d );
-            }
-        }
-        currentSession.insert( player );
 
+        currentSession.insert( player );
+        //insert all the initial facts
+        for ( Object o : initialFacts ) {
+            currentSession.insert( o );
+        }
         // firing all the rules for the initial state
         currentSession.fireAllRules();
 
@@ -104,8 +93,8 @@ public class GameSessionImpl implements GameSession {
     }
 
     @Override
-    public void bootstrap( House house, Player player ) {
-        bootstrap( house, player, false, System.out );
+    public void bootstrap( Player player, List initialFacts ) {
+        bootstrap( player, initialFacts, false, System.out );
     }
 
     @Override

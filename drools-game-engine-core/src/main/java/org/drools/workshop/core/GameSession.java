@@ -18,11 +18,10 @@ package org.drools.workshop.core;
 
 import java.util.List;
 import org.drools.workshop.model.api.Player;
-import org.drools.workshop.model.house.House;
 
 public interface GameSession {
 
-    void bootstrap( House house, Player player );
+    void bootstrap( Player player, List initialFacts );
 
     void destroy();
 
@@ -31,7 +30,7 @@ public interface GameSession {
     List<GameMessage> getAllMessages();
 
     List<Command> getSuggestions();
-    
+
     Player getPlayer();
 
 }

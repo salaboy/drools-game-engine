@@ -1,6 +1,7 @@
 
 package org.drools.workshop.rules.tests;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -79,8 +80,19 @@ public class C_GameAPITest {
 
         House house = createHouse( "My Escape The Room House", player );
 
+        List initFacts = new ArrayList();
+        initFacts.add( house );
+        for ( Room r : house.getRooms() ) {
+            initFacts.add( r );
+            for ( Item i : r.getItems() ) {
+                initFacts.add( i );
+            }
+            for ( Door d : r.getDoors() ) {
+                initFacts.add( d );
+            }
+        }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( house, player );
+        game.bootstrap( player, initFacts );
 
         List<GameMessage> messages = game.getAllMessages();
         assertEquals( 5, messages.size() );
@@ -105,9 +117,19 @@ public class C_GameAPITest {
         Player player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
-
+        List initFacts = new ArrayList();
+        initFacts.add( house );
+        for ( Room r : house.getRooms() ) {
+            initFacts.add( r );
+            for ( Item i : r.getItems() ) {
+                initFacts.add( i );
+            }
+            for ( Door d : r.getDoors() ) {
+                initFacts.add( d );
+            }
+        }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( house, player );
+        game.bootstrap( player, initFacts );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
@@ -146,8 +168,19 @@ public class C_GameAPITest {
 
         House house = createHouse( "My Escape The Room House", player );
 
+        List initFacts = new ArrayList();
+        initFacts.add( house );
+        for ( Room r : house.getRooms() ) {
+            initFacts.add( r );
+            for ( Item i : r.getItems() ) {
+                initFacts.add( i );
+            }
+            for ( Door d : r.getDoors() ) {
+                initFacts.add( d );
+            }
+        }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( house, player );
+        game.bootstrap( player, initFacts );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
@@ -189,7 +222,7 @@ public class C_GameAPITest {
                         "3 Items available",
                         "Lights Turned Off",
                         "1 Items available",
-                        "Lights Turned On") );
+                        "Lights Turned On" ) );
 
         game.destroy();
     }
@@ -203,9 +236,19 @@ public class C_GameAPITest {
         Player player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
-
+        List initFacts = new ArrayList();
+        initFacts.add( house );
+        for ( Room r : house.getRooms() ) {
+            initFacts.add( r );
+            for ( Item i : r.getItems() ) {
+                initFacts.add( i );
+            }
+            for ( Door d : r.getDoors() ) {
+                initFacts.add( d );
+            }
+        }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( house, player );
+        game.bootstrap( player, initFacts );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
@@ -265,9 +308,19 @@ public class C_GameAPITest {
         Player player = new PlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
-
+        List initFacts = new ArrayList();
+        initFacts.add( house );
+        for ( Room r : house.getRooms() ) {
+            initFacts.add( r );
+            for ( Item i : r.getItems() ) {
+                initFacts.add( i );
+            }
+            for ( Door d : r.getDoors() ) {
+                initFacts.add( d );
+            }
+        }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( house, player );
+        game.bootstrap( player, initFacts );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
         assertEquals( "Room A", roomIn.getName() );

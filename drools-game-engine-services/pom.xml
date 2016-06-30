@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>org.drools.game</groupId>
-            <artifactId>drools-game-engine-rules</artifactId>
+            <artifactId>drools-game-engine-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

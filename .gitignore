@@ -20,3 +20,4 @@ hs_err_pid*
 /drools-game-engine-rules/target/
 /drools-game-engine-services/target/
 /drools-game-engine-escape-room-kjar/target/
+/drools-game-engine-escape-room-model/target/

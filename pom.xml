@@ -10,6 +10,7 @@
         <module>drools-game-engine-services</module>
         <module>drools-game-engine-escape-room-kjar</module>
         <module>drools-game-engine-core</module>
+        <module>drools-game-engine-escape-room-model</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
