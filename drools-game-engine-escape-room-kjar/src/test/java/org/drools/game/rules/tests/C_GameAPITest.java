@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.drools.game.core.api.GameMessage;
 import org.drools.game.core.api.GameSession;
 import org.drools.game.core.CommandExecutor;
+import org.drools.game.core.GameConfigurationImpl;
 import org.drools.game.model.impl.base.PlayerImpl;
 import org.drools.game.model.house.Door;
 import org.drools.game.model.house.House;
@@ -24,6 +25,7 @@ import org.drools.game.model.items.MagicStone;
 import org.drools.game.model.items.PickableItem;
 import org.drools.game.model.items.ShineInTheDarkItem;
 import org.drools.game.core.GameSessionImpl;
+import org.drools.game.core.api.GameConfiguration;
 import org.drools.game.model.api.Player;
 import org.drools.game.rules.cmds.ExploreDoorsCommand;
 import org.drools.game.rules.cmds.ExploreRoomCommand;
@@ -92,7 +94,10 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( player, initFacts );
+        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
+                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
+        
+        game.bootstrap( player, gameConfiguration );
 
         List<GameMessage> messages = game.getAllMessages();
         assertEquals( 5, messages.size() );
@@ -129,7 +134,10 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( player, initFacts );
+        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
+                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
+        
+        game.bootstrap( player, gameConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
@@ -180,7 +188,10 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( player, initFacts );
+        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
+                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
+        
+        game.bootstrap( player, gameConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
@@ -248,7 +259,10 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( player, initFacts );
+        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
+                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
+        
+        game.bootstrap( player, gameConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
@@ -320,7 +334,10 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        game.bootstrap( player, initFacts );
+        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
+                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
+        
+        game.bootstrap( player, gameConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
         assertEquals( "Room A", roomIn.getName() );

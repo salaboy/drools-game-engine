@@ -16,23 +16,12 @@
 
 package org.drools.game.core.api;
 
+import java.io.PrintStream;
 import java.util.List;
-import org.drools.game.model.api.Player;
 
-public interface GameSession {
-
-    void bootstrap( Player player, GameConfiguration config );
-
-    void join( Player player );
-
-    void destroy();
-
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages();
-
-    List<Command> getSuggestions();
-
-    Player getPlayer();
-
+public interface GameConfiguration {
+    List getInitialData();
+    String getGamePackage();
+    boolean isDebugEnabled();
+    PrintStream getLogStream();
 }

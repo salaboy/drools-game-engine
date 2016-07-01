@@ -24,6 +24,7 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import org.drools.game.core.GameConfigurationImpl;
 import org.drools.game.core.api.GameSession;
 import org.drools.game.services.endpoint.api.GameService;
 import org.drools.game.services.infos.GameSessionInfo;
@@ -41,8 +42,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public String newGameSession( String playerId ) {
         GameSession gameSession = sessions.get();
-        List initialFacts = new ArrayList(); // Get the initial facts from store
-        gameSession.bootstrap( new PlayerImpl( playerId ), initialFacts );
+        List initialData = new ArrayList(); // Get the initial facts from store
+        gameSession.bootstrap( new PlayerImpl( playerId ), new GameConfigurationImpl(initialData, "") );
         String id = UUID.randomUUID().toString().substring( 0, 6 );
         games.put( id, gameSession );
         return id;

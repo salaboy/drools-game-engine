@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import org.drools.compiler.kproject.ReleaseIdImpl;
+import org.drools.game.core.api.GameConfiguration;
 import org.drools.game.core.api.GameMessage;
 import org.drools.game.model.api.Player;
 import org.kie.api.KieBase;
-import org.kie.api.cdi.KBase;
+import org.kie.api.KieServices;
 import org.kie.api.event.rule.AfterMatchFiredEvent;
 import org.kie.api.event.rule.AgendaEventListener;
 import org.kie.api.event.rule.AgendaGroupPoppedEvent;
@@ -29,6 +31,7 @@ import org.kie.api.event.rule.ObjectUpdatedEvent;
 import org.kie.api.event.rule.RuleFlowGroupActivatedEvent;
 import org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent;
 import org.kie.api.event.rule.RuleRuntimeEventListener;
+import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.LiveQuery;
 
@@ -44,10 +47,6 @@ import org.kie.api.runtime.rule.ViewChangedEventListener;
 public class GameSessionImpl implements GameSession {
 
     @Inject
-    @KBase
-    private KieBase kBase;
-
-    @Inject
     private CommandExecutor executor;
 
     private KieSession currentSession = null;
@@ -58,37 +57,10 @@ public class GameSessionImpl implements GameSession {
 
     private Player currentPlayer;
 
+    private GameConfiguration currentConfig;
+
     public GameSessionImpl() {
         context = new ContextImpl();
-    }
-
-    public void bootstrap( Player player, List initialFacts, boolean debugEnabled, PrintStream out ) {
-        if ( currentSession != null ) {
-            throw new IllegalStateException( "Error: There is another game session in progress, destroy the current session first!" );
-        }
-        if ( player == null ) {
-            throw new IllegalStateException( "Error: We need a player to bootstrap a new game session" );
-        }
-        this.currentPlayer = player;
-        //Setting globals first
-        currentSession = kBase.newKieSession();
-        if ( debugEnabled ) {
-            setupListeners();
-        }
-        if ( out != null ) {
-            setupMessageNotifications( out );
-        }
-
-        currentSession.insert( player );
-        //insert all the initial facts
-        for ( Object o : initialFacts ) {
-            currentSession.insert( o );
-        }
-        // firing all the rules for the initial state
-        currentSession.fireAllRules();
-
-        context.getData().put( "session", currentSession );
-        context.getData().put( "messageService", new GameMessageServiceImpl());
     }
 
     @Override
@@ -97,8 +69,54 @@ public class GameSessionImpl implements GameSession {
     }
 
     @Override
-    public void bootstrap( Player player, List initialFacts ) {
-        bootstrap( player, initialFacts, false, System.out );
+    public void bootstrap( Player player, GameConfiguration config ) {
+        if ( currentSession != null ) {
+            throw new IllegalStateException( "Error: There is another game session in progress, destroy the current session first!" );
+        }
+        if ( currentConfig != null ) {
+            throw new IllegalStateException( "Error: There is another game configuration being used." );
+        }
+        
+        if ( player == null ) {
+            throw new IllegalStateException( "Error: We need a player to bootstrap a new game session" );
+        }
+        this.currentPlayer = player;
+        String[] releaseIdPlusKbase = config.getGamePackage().split( ":" );
+        KieServices ks = KieServices.Factory.get();
+        KieBase kBase = null;
+        if ( releaseIdPlusKbase.length == 1 ) {
+            KieContainer kContainer = ks.getKieClasspathContainer();
+            kBase = kContainer.getKieBase();
+        } else {
+            KieContainer kContainer = ks.newKieContainer( new ReleaseIdImpl( releaseIdPlusKbase[0], releaseIdPlusKbase[1], releaseIdPlusKbase[2] ) );
+            kBase = kContainer.getKieBase( releaseIdPlusKbase[3] );
+        }
+        currentSession = kBase.newKieSession();
+        if ( config.isDebugEnabled() ) {
+            setupListeners();
+        }
+        if ( config.getLogStream() != null ) {
+            setupMessageNotifications( config.getLogStream() );
+        }
+
+        currentSession.insert( player );
+        //insert all the initial facts
+        if ( config.getInitialData() != null ) {
+            for ( Object o : config.getInitialData() ) {
+                currentSession.insert( o );
+            }
+        }
+        context.getData().put( "session", currentSession );
+        context.getData().put( "messageService", new GameMessageServiceImpl() );
+        // firing all the rules for the initial state
+        currentSession.fireAllRules();
+        
+    }
+
+    @Override
+    public void join( Player player ) {
+        currentSession.insert( player );
+        currentSession.fireAllRules();
     }
 
     @Override
