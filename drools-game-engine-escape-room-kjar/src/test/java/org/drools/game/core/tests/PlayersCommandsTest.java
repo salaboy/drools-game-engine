@@ -13,7 +13,7 @@ import org.drools.game.core.ContextImpl;
 import org.drools.game.core.tests.cmds.ExploreCommand;
 import org.drools.game.core.tests.cmds.OpenDoorCommand;
 import org.drools.game.core.tests.cmds.PickItemCommand;
-import org.drools.game.model.impl.base.PlayerImpl;
+import org.drools.game.model.impl.base.BasePlayerImpl;
 import org.drools.game.model.house.Door;
 import org.drools.game.model.house.House;
 import org.drools.game.model.house.Room;
@@ -26,7 +26,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-
 /**
  *
  * @author salaboy
@@ -35,7 +34,7 @@ public class PlayersCommandsTest {
 
     @Test
     public void hello() {
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
 
         House house = new House( "my mansion" );
 
@@ -79,7 +78,7 @@ public class PlayersCommandsTest {
         context.getData().put( "room", roomA );
         context.getData().put( "messages", messages );
 
-        List<Item> items = executor.execute( new ExploreCommand(), context );
+        List<Item> items = executor.execute( new ExploreCommand( player ), context );
         assertEquals( 1, items.size() );
         Item item = items.get( 0 );
         assertTrue( item instanceof Chest );
@@ -90,11 +89,11 @@ public class PlayersCommandsTest {
         assertTrue( item instanceof Key );
         Key key = ( Key ) item;
 
-        executor.execute( new PickItemCommand( key ), context );
+        executor.execute( new PickItemCommand( player, key ), context );
 
         assertTrue( messages.contains( "Item picked!" ) );
 
-        executor.execute( new OpenDoorCommand(), context );
+        executor.execute( new OpenDoorCommand( player ), context );
 
         assertTrue( messages.contains( "Door Opened!" ) );
 

@@ -16,22 +16,20 @@
 
 package org.drools.game.rules.cmds;
 
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.model.api.ItemContainer;
+import org.drools.game.model.api.Player;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
-public class OpenContainerCommand implements Command<Void> {
+public class OpenContainerCommand extends BaseCommand<Void> {
 
     private ItemContainer container;
 
-    public OpenContainerCommand() {
-    }
-
-    public OpenContainerCommand( ItemContainer container ) {
-
+    public OpenContainerCommand( Player player, ItemContainer container ) {
+        super( player );
         this.container = container;
     }
 
@@ -39,10 +37,11 @@ public class OpenContainerCommand implements Command<Void> {
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
+
         FactHandle containerFH = session.getFactHandle( container );
         container.setOpen( true );
         session.update( containerFH, container );
-        session.insert( messageService.newGameMessage( "Container Opened: " + container.getName() ) );
+        session.insert( messageService.newGameMessage( getPlayer().getName(), "Container Opened: " + container.getName() ) );
         return null;
     }
 

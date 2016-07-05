@@ -21,6 +21,11 @@
         </dependency>
         <dependency>
             <groupId>org.drools.game</groupId>
+            <artifactId>drools-game-engine-core-kjar</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools.game</groupId>
             <artifactId>drools-game-engine-model</artifactId>
             <version>${project.version}</version>
         </dependency>

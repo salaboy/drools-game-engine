@@ -16,21 +16,20 @@
 
 package org.drools.game.rules.cmds;
 
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
+import org.drools.game.model.api.Player;
 import org.drools.game.model.items.LightSwitch;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
-public class TurnOnTheLightsCommand implements Command<Void> {
+public class TurnOnTheLightsCommand extends BaseCommand<Void> {
 
     private LightSwitch lightSwitch;
 
-    public TurnOnTheLightsCommand() {
-    }
-
-    public TurnOnTheLightsCommand( LightSwitch lightSwitch ) {
+    public TurnOnTheLightsCommand( Player player, LightSwitch lightSwitch ) {
+        super( player );
         this.lightSwitch = lightSwitch;
     }
 
@@ -41,7 +40,7 @@ public class TurnOnTheLightsCommand implements Command<Void> {
         FactHandle lightSwitchFH = session.getFactHandle( lightSwitch );
         lightSwitch.setOn( true );
         session.update( lightSwitchFH, lightSwitch );
-        session.insert( messageService.newGameMessage( "Lights Turned On" ) );
+        session.insert( messageService.newGameMessage( getPlayer().getName(), "Lights Turned On" ) );
         return null;
     }
 

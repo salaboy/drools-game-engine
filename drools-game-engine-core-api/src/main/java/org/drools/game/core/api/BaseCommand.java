@@ -16,28 +16,24 @@
 
 package org.drools.game.core.api;
 
-import java.util.List;
 import org.drools.game.model.api.Player;
 
-/*
- * Defines a Multi player capable Game Session
- */
-public interface GameSession {
+public abstract class BaseCommand<T> implements Command<T> {
 
-    void bootstrap( GameConfiguration config );
+    private Player player;
 
-    void join( Player player, PlayerConfiguration playerConfig );
+    public BaseCommand( Player player ) {
+        this.player = player;
+    }
 
-    void drop( Player p );
+    @Override
+    public Player getPlayer() {
+        return player;
+    }
 
-    void destroy();
+    public void setPlayer( Player player ) {
+        this.player = player;
+    }
 
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages( String playerName );
-
-    List<Command> getSuggestions( Player p );
-
-    List<String> getPlayers();
-
+    
 }

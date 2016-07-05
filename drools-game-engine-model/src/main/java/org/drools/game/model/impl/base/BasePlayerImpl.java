@@ -5,25 +5,28 @@
  */
 package org.drools.game.model.impl.base;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import org.drools.game.model.api.Inventory;
+import org.drools.game.model.api.Item;
 import org.drools.game.model.api.Player;
 
 /**
  *
  * @author salaboy
  */
-public class PlayerImpl implements Player {
+public class BasePlayerImpl implements Player {
 
     private String id;
 
     private String name;
 
-    private Inventory inventory = new InventoryImpl();
+    private Inventory inventory;
 
-    public PlayerImpl( String name ) {
-        this.name = name;
+    public BasePlayerImpl( String name ) {
         this.id = UUID.randomUUID().toString();
+        this.name = name;
+        this.inventory = new BaseInventoryImpl( this, new ArrayList<Item>() );
     }
 
     @Override
@@ -48,6 +51,11 @@ public class PlayerImpl implements Player {
     @Override
     public void setInventory( Inventory inventory ) {
         this.inventory = inventory;
+    }
+
+    @Override
+    public String toString() {
+        return "BasePlayerImpl{" + "id=" + id + ", name=" + name + ", inventory=" + inventory + '}';
     }
 
 }

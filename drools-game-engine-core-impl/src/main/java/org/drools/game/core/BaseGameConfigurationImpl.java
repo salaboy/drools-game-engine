@@ -14,42 +14,44 @@
  * limitations under the License.
  */
 
-package org.drools.game.model.impl.base;
+package org.drools.game.core;
 
-import java.util.ArrayList;
+import java.io.PrintStream;
 import java.util.List;
-import org.drools.game.model.api.Inventory;
-import org.drools.game.model.api.Item;
+import org.drools.game.core.api.GameConfiguration;
 
-public class InventoryImpl implements Inventory {
+public class BaseGameConfigurationImpl implements GameConfiguration {
 
-    private List<Item> items = new ArrayList<Item>();
+    private List initialData;
+    private String gamePackage;
 
-    public InventoryImpl() {
+    public BaseGameConfigurationImpl() {
     }
 
-    public InventoryImpl( List<Item> items ) {
-        this.items = items;
-    }
-
-    @Override
-    public List<Item> getItems() {
-        return items;
+    public BaseGameConfigurationImpl( List initialData, String gamePackage ) {
+        this.initialData = initialData;
+        this.gamePackage = gamePackage;
     }
 
     @Override
-    public String getName() {
-        return "Players Inventory";
+    public List getInitialData() {
+        return initialData;
     }
 
     @Override
-    public boolean isOpen() {
-        return true;
+    public String getGamePackage() {
+        return gamePackage;
     }
 
     @Override
-    public void setOpen( boolean open ) {
-        // the player's inventory is always open by default to browse
+    public boolean isDebugEnabled() {
+        return false;
     }
+
+    @Override
+    public PrintStream getLogStream() {
+        return System.out;
+    }
+
 
 }

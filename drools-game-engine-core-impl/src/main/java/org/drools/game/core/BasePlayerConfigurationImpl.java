@@ -16,38 +16,34 @@
 
 package org.drools.game.core;
 
-import org.drools.game.core.api.GameMessage;
-import java.util.UUID;
+import java.io.PrintStream;
+import java.util.List;
+import org.drools.game.core.api.PlayerConfiguration;
 
-public class GameMessageImpl implements GameMessage {
+public class BasePlayerConfigurationImpl implements PlayerConfiguration {
 
-    private String id;
-    private String text;
-    private long timestamp;
+    private List initialData;
 
-    public GameMessageImpl( String text ) {
-        this.id = UUID.randomUUID().toString();
-        this.text = text;
-        this.timestamp = System.currentTimeMillis();
+    public BasePlayerConfigurationImpl() {
+    }
+
+    public BasePlayerConfigurationImpl( List initialData ) {
+        this.initialData = initialData;
     }
 
     @Override
-    public String getText() {
-        return text;
-    }
-
-    public void setText( String text ) {
-        this.text = text;
+    public List getInitialData() {
+        return initialData;
     }
 
     @Override
-    public String getId() {
-        return id;
+    public boolean isDebugEnabled() {
+        return false;
     }
 
     @Override
-    public long getTimestamp() {
-        return timestamp;
+    public PrintStream getLogStream() {
+        return System.out;
     }
 
 }

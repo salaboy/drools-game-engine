@@ -14,30 +14,10 @@
  * limitations under the License.
  */
 
-package org.drools.game.core.api;
+package org.drools.game.model.impl.base;
 
-import java.util.List;
-import org.drools.game.model.api.Player;
+import org.drools.game.model.api.World;
 
-/*
- * Defines a Multi player capable Game Session
- */
-public interface GameSession {
-
-    void bootstrap( GameConfiguration config );
-
-    void join( Player player, PlayerConfiguration playerConfig );
-
-    void drop( Player p );
-
-    void destroy();
-
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages( String playerName );
-
-    List<Command> getSuggestions( Player p );
-
-    List<String> getPlayers();
+public class BaseWorld implements World{
 
 }

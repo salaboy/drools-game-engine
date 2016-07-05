@@ -21,8 +21,23 @@
             <version>6.4.0.Final</version>
         </dependency>
         <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-ci</artifactId>
+            <version>6.4.0.Final</version>
+        </dependency>
+        <dependency>
             <groupId>org.drools.game</groupId>
             <artifactId>drools-game-engine-escape-room-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools.game</groupId>
+            <artifactId>drools-game-engine-core-kjar</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.drools.game</groupId>
+            <artifactId>drools-game-engine-model</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

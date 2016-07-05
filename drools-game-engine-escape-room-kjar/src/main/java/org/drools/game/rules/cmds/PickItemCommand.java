@@ -16,7 +16,7 @@
 
 package org.drools.game.rules.cmds;
 
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.model.api.ItemContainer;
@@ -25,17 +25,13 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.drools.game.model.items.PickableItem;
 
-public class PickItemCommand implements Command<Void> {
+public class PickItemCommand extends BaseCommand<Void> {
 
-    private Player player;
     private PickableItem pickableItem;
     private ItemContainer container;
 
-    public PickItemCommand() {
-    }
-
     public PickItemCommand( Player player, ItemContainer container, PickableItem item ) {
-        this.player = player;
+        super( player );
         this.pickableItem = item;
         this.container = container;
     }
@@ -44,18 +40,14 @@ public class PickItemCommand implements Command<Void> {
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
-        FactHandle playerFH = session.getFactHandle( player );
-        player.getInventory().getItems().add( pickableItem.getPickable() );
+        FactHandle playerFH = session.getFactHandle( getPlayer() );
+        getPlayer().getInventory().getItems().add( pickableItem.getPickable() );
         FactHandle containerFH = session.getFactHandle( container );
         container.getItems().remove( pickableItem.getPickable() );
-        session.update( playerFH, player );
+        session.update( playerFH, getPlayer() );
         session.update( containerFH, container );
-        session.insert( messageService.newGameMessage( "Item Picked! " + pickableItem ) );
+        session.insert( messageService.newGameMessage( getPlayer().getName(), "Item Picked! " + pickableItem ) );
         return null;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     public PickableItem getPickableItem() {
@@ -64,10 +56,6 @@ public class PickItemCommand implements Command<Void> {
 
     public ItemContainer getContainer() {
         return container;
-    }
-
-    public void setPlayer( Player player ) {
-        this.player = player;
     }
 
     public void setPickableItem( PickableItem pickableItem ) {
@@ -80,7 +68,7 @@ public class PickItemCommand implements Command<Void> {
 
     @Override
     public String toString() {
-        return "PickItemCommand{" + "player=" + player + ", item=" + pickableItem + ", container=" + container + '}';
+        return "PickItemCommand{" + "player=" + getPlayer() + ", item=" + pickableItem + ", container=" + container + '}';
     }
 
 }

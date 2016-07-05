@@ -6,7 +6,7 @@
 package org.drools.game.rules.cmds;
 
 import java.util.Iterator;
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.model.api.Player;
@@ -19,15 +19,10 @@ import org.kie.api.runtime.rule.QueryResultsRow;
  *
  * @author salaboy
  */
-public class WhereAmICommand implements Command<Room> {
-
-    private Player player;
-
-    public WhereAmICommand() {
-    }
+public class WhereAmICommand extends BaseCommand<Room> {
 
     public WhereAmICommand( Player player ) {
-        this.player = player;
+        super( player );
     }
 
     @Override
@@ -35,7 +30,7 @@ public class WhereAmICommand implements Command<Room> {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
 
-        QueryResults queryResults = session.getQueryResults( "WhereAmI", player.getName() );
+        QueryResults queryResults = session.getQueryResults( "WhereAmI", getPlayer().getName() );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         Room room = null;
         while ( iterator.hasNext() ) {
@@ -43,22 +38,14 @@ public class WhereAmICommand implements Command<Room> {
             break;
         }
         if ( room != null ) {
-            session.insert( messageService.newGameMessage( "You are in " + room.getName() ) );
+            session.insert( messageService.newGameMessage( getPlayer().getName(), "You are in " + room.getName() ) );
         }
         return room;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer( Player player ) {
-        this.player = player;
-    }
-
     @Override
     public String toString() {
-        return "WhereAmICommand{" + "player=" + player + '}';
+        return "WhereAmICommand{" + "player=" + getPlayer() + '}';
     }
 
 }

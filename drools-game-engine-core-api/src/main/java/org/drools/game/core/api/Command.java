@@ -8,12 +8,16 @@ package org.drools.game.core.api;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
+import org.drools.game.model.api.Player;
 
 /**
  *
  * @author salaboy
  */
-@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+@JsonTypeInfo( use = CLASS, include = WRAPPER_OBJECT )
 public interface Command<T> {
-    public T execute(Context ctx);
+
+    T execute( Context ctx );
+
+    Player getPlayer();
 }

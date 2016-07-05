@@ -7,7 +7,7 @@ package org.drools.game.tests;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.drools.game.model.impl.base.PlayerImpl;
+import org.drools.game.model.impl.base.BasePlayerImpl;
 import org.drools.game.model.house.Door;
 import org.drools.game.model.house.House;
 import org.drools.game.model.house.Room;
@@ -28,7 +28,7 @@ public class HouseConformanceTest {
 
     @Test
     public void helloHouse() {
-        Player player = new PlayerImpl("salaboy");
+        Player player = new BasePlayerImpl("salaboy");
 
         House house = new House("My Test Mansion!");
 

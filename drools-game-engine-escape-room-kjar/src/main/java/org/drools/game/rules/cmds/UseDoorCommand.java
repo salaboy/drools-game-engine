@@ -17,7 +17,7 @@
 package org.drools.game.rules.cmds;
 
 import java.util.Iterator;
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.model.api.Player;
@@ -28,17 +28,13 @@ import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
 
-public class UseDoorCommand implements Command<Void> {
+public class UseDoorCommand extends BaseCommand<Void> {
 
-    private Player player;
     private Door door;
     private Room roomIn;
 
-    public UseDoorCommand() {
-    }
-
     public UseDoorCommand( Player player, Room room, Door door ) {
-        this.player = player;
+        super( player );
         this.door = door;
         this.roomIn = room;
     }
@@ -48,7 +44,7 @@ public class UseDoorCommand implements Command<Void> {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
         FactHandle roomInFH = session.getFactHandle( roomIn );
-        roomIn.getPeopleInTheRoom().remove( player.getName() );
+        roomIn.getPeopleInTheRoom().remove( getPlayer().getName() );
         session.update( roomInFH, roomIn );
         QueryResults queryResults = session.getQueryResults( "getRoomByName", door.getLeadsTo() );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
@@ -59,21 +55,13 @@ public class UseDoorCommand implements Command<Void> {
         }
         if ( roomTo != null ) {
             FactHandle roomToFH = session.getFactHandle( roomTo );
-            roomTo.getPeopleInTheRoom().add( player.getName() );
+            roomTo.getPeopleInTheRoom().add( getPlayer().getName() );
             session.update( roomToFH, roomTo );
-            session.insert( messageService.newGameMessage( "Player moved from  " + roomIn.getName() + " to " + roomTo.getName() ) );
+            session.insert( messageService.newGameMessage( getPlayer().getName(), "Player moved from  " + roomIn.getName() + " to " + roomTo.getName() ) );
         } else {
-            session.insert( messageService.newGameMessage( "ERROR: Door cannot be used because the room:   " + door.getLeadsTo() + " was not found. " ) );
+            session.insert( messageService.newGameMessage( getPlayer().getName(), "ERROR: Door cannot be used because the room:   " + door.getLeadsTo() + " was not found. " ) );
         }
         return null;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer( Player player ) {
-        this.player = player;
     }
 
     public Door getDoor() {
@@ -94,7 +82,7 @@ public class UseDoorCommand implements Command<Void> {
 
     @Override
     public String toString() {
-        return "UseDoorCommand{" + "player=" + player + ", door=" + door + ", roomIn=" + roomIn + '}';
+        return "UseDoorCommand{" + "player=" + getPlayer() + ", door=" + door + ", roomIn=" + roomIn + '}';
     }
 
 }

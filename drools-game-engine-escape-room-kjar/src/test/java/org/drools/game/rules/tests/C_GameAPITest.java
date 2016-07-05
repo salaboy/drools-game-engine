@@ -9,24 +9,29 @@ import javax.inject.Inject;
 import org.drools.game.core.api.GameMessage;
 import org.drools.game.core.api.GameSession;
 import org.drools.game.core.CommandExecutor;
-import org.drools.game.core.GameConfigurationImpl;
-import org.drools.game.model.impl.base.PlayerImpl;
+import org.drools.game.core.BaseGameConfigurationImpl;
+import org.drools.game.core.BasePlayerConfigurationImpl;
+import org.drools.game.core.GameMessageServiceImpl;
+import org.drools.game.model.impl.base.BasePlayerImpl;
 import org.drools.game.model.house.Door;
 import org.drools.game.model.house.House;
 import org.drools.game.model.house.Outside;
 import org.drools.game.model.house.Room;
 import org.drools.game.model.items.Chest;
 import org.drools.game.model.api.Item;
-import org.drools.game.model.api.ItemContainer;
 import org.drools.game.model.items.Key;
 import org.drools.game.model.items.LightBulb;
 import org.drools.game.model.items.LightSwitch;
 import org.drools.game.model.items.MagicStone;
-import org.drools.game.model.items.PickableItem;
-import org.drools.game.model.items.ShineInTheDarkItem;
 import org.drools.game.core.GameSessionImpl;
 import org.drools.game.core.api.GameConfiguration;
+import org.drools.game.core.api.GameMessageService;
+import org.drools.game.core.api.PlayerConfiguration;
+
+import org.drools.game.model.api.ItemContainer;
 import org.drools.game.model.api.Player;
+import org.drools.game.model.items.PickableItem;
+import org.drools.game.model.items.ShineInTheDarkItem;
 import org.drools.game.rules.cmds.ExploreDoorsCommand;
 import org.drools.game.rules.cmds.ExploreRoomCommand;
 import org.drools.game.rules.cmds.PickItemCommand;
@@ -60,6 +65,8 @@ public class C_GameAPITest {
         JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
                 .addClass( GameSessionImpl.class )
                 .addClass( CommandExecutor.class )
+                .addClass( GameMessageService.class )
+                .addClass( GameMessageServiceImpl.class )
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
 //        System.out.println( jar.toString( true ) );
         return jar;
@@ -78,7 +85,7 @@ public class C_GameAPITest {
      */
     @Test
     public void bootstrapGameTest() {
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
 
@@ -94,12 +101,17 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
-                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
-        
-        game.bootstrap( player, gameConfiguration );
+        GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts, "" );
 
-        List<GameMessage> messages = game.getAllMessages();
+        game.bootstrap( gameConfiguration );
+
+        PlayerConfiguration playerConfiguration = new BasePlayerConfigurationImpl( null );
+
+        game.join( player, playerConfiguration );
+
+        List<GameMessage> messages = game.getAllMessages( player.getName() );
+        messages.addAll( game.getAllMessages( "system" ) );
+
         assertEquals( 5, messages.size() );
 
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
@@ -111,6 +123,8 @@ public class C_GameAPITest {
                         "Wake up! You are trapped in Room A! You need to escape!",
                         "There is light in the room!" ) );
 
+        game.drop( player );
+        
         game.destroy();
     }
 
@@ -119,7 +133,7 @@ public class C_GameAPITest {
      */
     @Test
     public void exploreRoomTest() {
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
         List initFacts = new ArrayList();
@@ -134,14 +148,18 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
-                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
-        
-        game.bootstrap( player, gameConfiguration );
+        GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts,
+                "" );
+
+        game.bootstrap( gameConfiguration );
+
+        PlayerConfiguration playerConfiguration = new BasePlayerConfigurationImpl( null );
+
+        game.join( player, playerConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
-        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
+        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( player, roomIn ) );
 
         assertEquals( 3, itemsInRoom.size() );
 
@@ -149,7 +167,8 @@ public class C_GameAPITest {
         assertTrue( itemsInRoom.get( 1 ) instanceof LightBulb );
         assertTrue( itemsInRoom.get( 2 ) instanceof Chest );
 
-        List<GameMessage> messages = game.getAllMessages();
+        List<GameMessage> messages = game.getAllMessages( player.getName() );
+        messages.addAll( game.getAllMessages( "system" ) );
         assertEquals( 7, messages.size() );
 
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
@@ -163,6 +182,7 @@ public class C_GameAPITest {
                         "You are in Room A",
                         "3 Items available" ) );
 
+        game.drop( player );
         game.destroy();
     }
 
@@ -172,7 +192,7 @@ public class C_GameAPITest {
      */
     @Test
     public void turnOffTheLightsTest() {
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
 
@@ -187,15 +207,20 @@ public class C_GameAPITest {
                 initFacts.add( d );
             }
         }
+
         // Bootstrap the Game with the constructed house for this player
-        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
-                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
-        
-        game.bootstrap( player, gameConfiguration );
+        GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts,
+                "" );
+
+        game.bootstrap( gameConfiguration );
+
+        PlayerConfiguration playerConfiguration = new BasePlayerConfigurationImpl( null );
+
+        game.join( player, playerConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
-        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
+        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( player, roomIn ) );
 
         assertEquals( 3, itemsInRoom.size() );
 
@@ -205,20 +230,21 @@ public class C_GameAPITest {
 
         LightSwitch lightSwitch = ( LightSwitch ) itemsInRoom.get( 0 );
 
-        game.execute( new TurnOffTheLightsCommand( lightSwitch ) );
+        game.execute( new TurnOffTheLightsCommand( player, lightSwitch ) );
 
-        itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
+        itemsInRoom = game.execute( new ExploreRoomCommand( player, roomIn ) );
 
         assertEquals( 1, itemsInRoom.size() );
         assertTrue( itemsInRoom.get( 0 ) instanceof ShineInTheDarkItem );
         assertTrue( itemsInRoom.get( 0 ) instanceof MagicStone );
 
-        game.execute( new TurnOnTheLightsCommand( lightSwitch ) );
+        game.execute( new TurnOnTheLightsCommand( player, lightSwitch ) );
 
-        itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
+        itemsInRoom = game.execute( new ExploreRoomCommand( player, roomIn ) );
         assertEquals( 3, itemsInRoom.size() );
 
-        List<GameMessage> messages = game.getAllMessages();
+        List<GameMessage> messages = game.getAllMessages( player.getName() );
+        messages.addAll( game.getAllMessages( "system" ) );
         assertEquals( 12, messages.size() );
 
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
@@ -235,6 +261,7 @@ public class C_GameAPITest {
                         "1 Items available",
                         "Lights Turned On" ) );
 
+        game.drop( player );
         game.destroy();
     }
 
@@ -244,7 +271,7 @@ public class C_GameAPITest {
      */
     @Test
     public void exploreContainerAndOpenDoorTest() {
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
         List initFacts = new ArrayList();
@@ -259,10 +286,14 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
-                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
-        
-        game.bootstrap( player, gameConfiguration );
+        GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts,
+                "" );
+
+        game.bootstrap( gameConfiguration );
+
+        PlayerConfiguration playerConfiguration = new BasePlayerConfigurationImpl( null );
+
+        game.join( player, playerConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
 
@@ -271,7 +302,7 @@ public class C_GameAPITest {
         assertTrue( doors.get( 0 ).isLocked() );
         assertTrue( !doors.get( 0 ).isOpen() );
 
-        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
+        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( player, roomIn ) );
 
         assertEquals( 3, itemsInRoom.size() );
 
@@ -291,8 +322,9 @@ public class C_GameAPITest {
 
         assertEquals( 1, player.getInventory().getItems().size() );
 
-        List<GameMessage> messages = game.getAllMessages();
-        assertEquals( 11, messages.size() );
+        List<GameMessage> messages = game.getAllMessages( player.getName() );
+        messages.addAll( game.getAllMessages( "system" ) );
+        assertEquals( 12, messages.size() );
 
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
 
@@ -310,7 +342,7 @@ public class C_GameAPITest {
 
         assertTrue( !doors.get( 0 ).isLocked() );
         assertTrue( doors.get( 0 ).isOpen() );
-
+        game.drop( player );
         game.destroy();
     }
 
@@ -319,7 +351,7 @@ public class C_GameAPITest {
      */
     @Test
     public void useOpenedDoorReachGoalTest() {
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
 
         House house = createHouse( "My Escape The Room House", player );
         List initFacts = new ArrayList();
@@ -334,19 +366,23 @@ public class C_GameAPITest {
             }
         }
         // Bootstrap the Game with the constructed house for this player
-        GameConfiguration gameConfiguration = new GameConfigurationImpl(initFacts,
-                    "org.drools.game:drools-game-engine-escape-room-kjar:1.0-SNAPSHOT:fullKBase" );
-        
-        game.bootstrap( player, gameConfiguration );
+        GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts,
+                "" );
+
+        game.bootstrap( gameConfiguration );
+
+        PlayerConfiguration playerConfiguration = new BasePlayerConfigurationImpl( null );
+
+        game.join( player, playerConfiguration );
 
         Room roomIn = game.execute( new WhereAmICommand( player ) );
         assertEquals( "Room A", roomIn.getName() );
-        List<Door> doors = game.execute( new ExploreDoorsCommand( roomIn ) );
+        List<Door> doors = game.execute( new ExploreDoorsCommand( player, roomIn ) );
         assertEquals( 1, doors.size() );
         assertTrue( doors.get( 0 ).isLocked() );
         assertTrue( !doors.get( 0 ).isOpen() );
 
-        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( roomIn ) );
+        List<Item> itemsInRoom = game.execute( new ExploreRoomCommand( player, roomIn ) );
 
         assertEquals( 3, itemsInRoom.size() );
 
@@ -376,7 +412,8 @@ public class C_GameAPITest {
 
         assertEquals( "Outside", roomIn.getName() );
 
-        List<GameMessage> messages = game.getAllMessages();
+        List<GameMessage> messages = game.getAllMessages( player.getName() );
+        messages.addAll( game.getAllMessages( "system" ) );
         assertEquals( 18, messages.size() );
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
 
@@ -395,7 +432,7 @@ public class C_GameAPITest {
                         "Player moved from  Room A to Outside",
                         "1 Door(s) unlocked and open",
                         "Item Picked! PickableItem{pickable=Key{name=Door A}}" ) );
-
+        game.drop( player );
         game.destroy();
     }
 

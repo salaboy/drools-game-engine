@@ -19,23 +19,23 @@ package org.drools.game.rules.cmds;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.model.house.Room;
 import org.drools.game.model.api.ItemContainer;
+import org.drools.game.model.api.Player;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.QueryResults;
 import org.kie.api.runtime.rule.QueryResultsRow;
 
-public class ExploreContainersCommand implements Command<List<ItemContainer>> {
+public class ExploreContainersCommand extends BaseCommand<List<ItemContainer>> {
 
     private Room room;
 
-    public ExploreContainersCommand() {
-    }
 
-    public ExploreContainersCommand( Room room ) {
+    public ExploreContainersCommand(Player player, Room room ) {
+        super(player);
         this.room = room;
     }
 
@@ -51,7 +51,7 @@ public class ExploreContainersCommand implements Command<List<ItemContainer>> {
             ItemContainer itemContainer = ( ItemContainer ) iterator.next().get( "$ic" );
             itemContainers.add( itemContainer );
         }
-        session.insert( messageService.newGameMessage( itemContainers.size() + " Item Containers available" ) );
+        session.insert( messageService.newGameMessage( getPlayer().getName(), itemContainers.size() + " Item Containers available" ) );
         return itemContainers;
     }
 

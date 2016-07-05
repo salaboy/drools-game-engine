@@ -22,8 +22,13 @@ import org.drools.game.core.api.GameMessageService;
 public class GameMessageServiceImpl implements GameMessageService {
 
     @Override
+    public GameMessage newGameMessage( String playerName, String text ) {
+        return new BaseGameMessageImpl( playerName, text );
+    }
+
+    @Override
     public GameMessage newGameMessage( String text ) {
-        return new GameMessageImpl( text );
+        return new BaseGameMessageImpl( "system", text );
     }
 
 }

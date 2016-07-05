@@ -6,7 +6,7 @@
 package org.drools.game.core.tests.cmds;
 
 import java.util.List;
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.house.Door;
 import org.drools.game.model.house.Room;
@@ -18,10 +18,10 @@ import org.drools.game.model.items.Key;
  *
  * @author salaboy
  */
-public class OpenDoorCommand implements Command<Void> {
+public class OpenDoorCommand extends BaseCommand<Void> {
 
-    public OpenDoorCommand() {
-
+    public OpenDoorCommand( Player player ) {
+        super( player );
     }
 
     @Override
