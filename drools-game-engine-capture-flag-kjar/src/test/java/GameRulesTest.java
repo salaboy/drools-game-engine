@@ -23,7 +23,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.KieBase;
@@ -79,7 +78,6 @@ public class GameRulesTest {
     * when it hits the chasm. If the player has the Flag, the flag needs to return to the chest. 
      */
     @Test
-    @Ignore
     public void playerHitTheChasmTest() {
         KieSession kSession = kBase.newKieSession();
         assertNotNull( kSession );
@@ -209,7 +207,6 @@ public class GameRulesTest {
    
      */
     @Test
-    @Ignore
     public void gameTeamAssignmentTest() {
         KieSession kSession = kBase.newKieSession();
         assertNotNull( kSession );
