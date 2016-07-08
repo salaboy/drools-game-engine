@@ -1,5 +1,8 @@
 package org.drools.game.capture.flag;
 
+declare Velociraptor
+    target: Player @key
+end
 
 declare UnassignedPlayer
     player: Player @key
