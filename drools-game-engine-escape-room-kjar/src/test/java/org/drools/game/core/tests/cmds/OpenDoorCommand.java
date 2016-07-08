@@ -8,11 +8,11 @@ package org.drools.game.core.tests.cmds;
 import java.util.List;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
-import org.drools.game.model.house.Door;
-import org.drools.game.model.house.Room;
+import org.drools.game.escape.room.model.house.Door;
+import org.drools.game.escape.room.model.house.Room;
 import org.drools.game.model.api.Item;
 import org.drools.game.model.api.Player;
-import org.drools.game.model.items.Key;
+import org.drools.game.escape.room.model.items.Key;
 
 /**
  *

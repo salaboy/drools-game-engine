@@ -1,7 +1,7 @@
 package org.drools.game.rules.tests;
 
 import java.util.ArrayList;
-import org.drools.game.model.house.House;
+import org.drools.game.escape.room.model.house.House;
 import org.hamcrest.Matchers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;

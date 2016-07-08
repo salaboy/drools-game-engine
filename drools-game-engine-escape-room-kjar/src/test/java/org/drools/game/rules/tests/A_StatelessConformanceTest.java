@@ -2,11 +2,11 @@ package org.drools.game.rules.tests;
 
 import java.util.ArrayList;
 import javax.inject.Inject;
-import org.drools.game.model.house.Door;
-import org.drools.game.model.house.House;
-import org.drools.game.model.house.Room;
+import org.drools.game.escape.room.model.house.Door;
+import org.drools.game.escape.room.model.house.House;
+import org.drools.game.escape.room.model.house.Room;
 import org.drools.game.model.api.Item;
-import org.drools.game.model.items.Key;
+import org.drools.game.escape.room.model.items.Key;
 import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;

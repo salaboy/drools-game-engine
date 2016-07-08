@@ -2,12 +2,12 @@ package org.drools.game;
 
 import org.drools.game.model.api.*;
 import org.drools.game.model.impl.base.*;
-import org.drools.game.model.house.*;
-import org.drools.game.model.items.*;
+import org.drools.game.escape.room.model.house.*;
+import org.drools.game.escape.room.model.items.*;
 import org.drools.game.core.api.*;
 import org.drools.game.core.*;
 import org.drools.game.rules.*;
-import org.drools.game.rules.cmds.*;
+import org.drools.game.escape.room.cmds.*;
 import java.util.List;
 
 

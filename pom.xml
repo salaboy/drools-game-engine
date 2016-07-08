@@ -15,7 +15,8 @@
         <module>drools-game-engine-escape-room-model</module>
         
         <module>drools-game-engine-services</module>
-        
+        <module>drools-game-engine-capture-flag-kjar</module>
+        <module>drools-game-engine-capture-flag-model</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
