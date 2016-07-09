@@ -1,7 +1,7 @@
 package org.drools.game.rules.tests;
 
 import java.util.ArrayList;
-import org.drools.game.model.house.House;
+import org.drools.game.escape.room.model.house.House;
 import org.hamcrest.Matchers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -26,7 +26,7 @@ public class E_NoCDIRulesTest {
         System.out.println( "Bootstrapping the Rule Engine ..." );
         // Bootstrapping a Rule Engine Session
         KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer();
+        KieContainer kContainer = ks.newKieClasspathContainer();
         KieBase kBase = kContainer.getKieBase( "confKBase" );
 
         KieSession kSession = kBase.newKieSession();

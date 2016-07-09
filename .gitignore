@@ -24,3 +24,7 @@ hs_err_pid*
 /drools-game-engine-core-impl/nbproject/
 /drools-game-engine-core-impl/target/
 /drools-game-engine-core-api/target/
+/drools-game-engine-core-kjar/target/
+/drools-game-engine-capture-flag-model/target/
+/drools-game-engine-capture-flag-kjar/target/
+/drools-game-engine-capture-flag-kjar/nbproject/

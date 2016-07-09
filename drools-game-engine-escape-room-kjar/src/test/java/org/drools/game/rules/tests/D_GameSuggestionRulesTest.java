@@ -13,27 +13,27 @@ import org.drools.game.core.api.Command;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.ContextImpl;
 import org.drools.game.core.GameMessageServiceImpl;
-import org.drools.game.model.impl.base.PlayerImpl;
-import org.drools.game.model.house.Door;
-import org.drools.game.model.house.House;
-import org.drools.game.model.house.Outside;
-import org.drools.game.model.house.Room;
-import org.drools.game.model.items.Broom;
-import org.drools.game.model.items.Chest;
+import org.drools.game.model.impl.base.BasePlayerImpl;
+import org.drools.game.escape.room.model.house.Door;
+import org.drools.game.escape.room.model.house.House;
+import org.drools.game.escape.room.model.house.Outside;
+import org.drools.game.escape.room.model.house.Room;
+import org.drools.game.escape.room.model.items.Broom;
+import org.drools.game.escape.room.model.items.Chest;
 import org.drools.game.model.api.Item;
 import org.drools.game.model.api.ItemContainer;
 import org.drools.game.model.api.Player;
-import org.drools.game.model.items.Key;
-import org.drools.game.model.items.LightBulb;
-import org.drools.game.model.items.LightSwitch;
-import org.drools.game.model.items.MagicStone;
-import org.drools.game.rules.cmds.ExploreContainersCommand;
-import org.drools.game.rules.cmds.OpenContainerCommand;
-import org.drools.game.rules.cmds.PickItemCommand;
-import org.drools.game.rules.cmds.TurnOffTheLightsCommand;
-import org.drools.game.rules.cmds.TurnOnTheLightsCommand;
-import org.drools.game.rules.cmds.UseDoorCommand;
-import org.drools.game.rules.cmds.WhereAmICommand;
+import org.drools.game.escape.room.model.items.Key;
+import org.drools.game.escape.room.model.items.LightBulb;
+import org.drools.game.escape.room.model.items.LightSwitch;
+import org.drools.game.escape.room.model.items.MagicStone;
+import org.drools.game.escape.room.cmds.ExploreContainersCommand;
+import org.drools.game.escape.room.cmds.OpenContainerCommand;
+import org.drools.game.escape.room.cmds.PickItemCommand;
+import org.drools.game.escape.room.cmds.TurnOffTheLightsCommand;
+import org.drools.game.escape.room.cmds.TurnOnTheLightsCommand;
+import org.drools.game.escape.room.cmds.UseDoorCommand;
+import org.drools.game.escape.room.cmds.WhereAmICommand;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -76,7 +76,7 @@ public class D_GameSuggestionRulesTest {
     }
 
     @Inject
-    @KBase( name = "suggestionsKBase" )
+    @KBase( name = "fullKBase" )
     private KieBase kieBase;
 
     /*
@@ -86,13 +86,15 @@ public class D_GameSuggestionRulesTest {
     @Test
     public void engineSuggestionsSimpleTest() {
         KieSession kSession = kieBase.newKieSession();
-
-        FactHandle playerFH = kSession.insert( new PlayerImpl( "salaboy" ) );
+        kSession.setGlobal( "messageService", new GameMessageServiceImpl() );
+        
+        Player player = new BasePlayerImpl( "salaboy" );
+        FactHandle playerFH = kSession.insert( player );
 
         kSession.fireAllRules();
 
         // Test suggestions with just the Player (no house, no room)
-        QueryResults queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        QueryResults queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         List<Command> cmds = new ArrayList<Command>();
         while ( iterator.hasNext() ) {
@@ -112,7 +114,7 @@ public class D_GameSuggestionRulesTest {
         kSession.fireAllRules();
 
         // The suggestions should be gone, if the player is not there anymore.
-        queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         iterator = queryResults.iterator();
         cmds = new ArrayList<Command>();
         while ( iterator.hasNext() ) {
@@ -135,9 +137,11 @@ public class D_GameSuggestionRulesTest {
     @Test
     public void lightsOnOffSuggestionsTest() {
         KieSession kSession = kieBase.newKieSession();
+        kSession.setGlobal( "messageService", new GameMessageServiceImpl() );
+        
         configureListeners( kSession );
         // Create house & Bootstrap
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
         House house = new House( "Maniac Mansion" );
         Room roomA = new Room( "Room A" );
         Door doorA = new Door( "Door A" );
@@ -173,7 +177,7 @@ public class D_GameSuggestionRulesTest {
         kSession.fireAllRules();
 
         // Get All suggestions
-        QueryResults queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        QueryResults queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         List<Command> cmds = new ArrayList<Command>();
 
@@ -187,7 +191,7 @@ public class D_GameSuggestionRulesTest {
         *  - Pick Item (Broom)
         *  - TurnOff the lights
          */
-        Assert.assertEquals( 5, cmds.size() );
+        assertEquals( 5, cmds.size() );
 
         TurnOffTheLightsCommand turnOffTheLightsCmd = null;
         PickItemCommand pickItemCmd = null;
@@ -213,7 +217,7 @@ public class D_GameSuggestionRulesTest {
         kSession.fireAllRules();
 
         // Get all suggestions again after turning off the lights
-        queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         iterator = queryResults.iterator();
         cmds = new ArrayList<Command>();
 
@@ -258,9 +262,10 @@ public class D_GameSuggestionRulesTest {
     @Test
     public void useDoorSuggestionsTest() {
         KieSession kSession = kieBase.newKieSession();
+        kSession.setGlobal( "messageService", new GameMessageServiceImpl() );
         //Create House and Bootstrap
         configureListeners( kSession );
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
 
         kSession.insert( player );
 
@@ -281,7 +286,7 @@ public class D_GameSuggestionRulesTest {
         kSession.fireAllRules();
 
         // Get all suggestions
-        QueryResults queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        QueryResults queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         List<Command> cmds = new ArrayList<Command>();
 
@@ -326,7 +331,7 @@ public class D_GameSuggestionRulesTest {
         kSession.fireAllRules();
 
         // Get all the suggestions again
-        queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         iterator = queryResults.iterator();
         cmds = new ArrayList<Command>();
 
@@ -358,7 +363,7 @@ public class D_GameSuggestionRulesTest {
         kSession.fireAllRules();
 
         // Get all the suggestions after picking up the key
-        queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         iterator = queryResults.iterator();
         cmds = new ArrayList<Command>();
 
@@ -390,7 +395,7 @@ public class D_GameSuggestionRulesTest {
         kSession.fireAllRules();
 
         // Get all suggestions now, being outside
-        queryResults = kSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+        queryResults = kSession.getQueryResults( "getAllSuggestions", player );
         iterator = queryResults.iterator();
         cmds = new ArrayList<Command>();
 

@@ -22,8 +22,10 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import org.drools.game.model.api.Player;
 import org.drools.game.services.infos.GameSessionInfo;
 
 @Path( "game" )
@@ -38,4 +40,8 @@ public interface GameService {
     @Consumes( value = APPLICATION_JSON )
     @Produces( value = APPLICATION_JSON )
     List<GameSessionInfo> getAllGameSessions();
+
+    @POST
+    @Path( "{sessionId}" )
+    void joinGameSession( @PathParam( "sessionId" ) String sessionId, Player p );
 }

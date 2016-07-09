@@ -20,6 +20,8 @@ public interface GameMessage {
 
     String getId();
 
+    String getPlayerName();
+    
     String getText();
 
     long getTimestamp();

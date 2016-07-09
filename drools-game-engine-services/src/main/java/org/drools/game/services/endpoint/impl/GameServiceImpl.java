@@ -24,12 +24,12 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import org.drools.game.core.GameConfigurationImpl;
+import org.drools.game.core.BaseGameConfigurationImpl;
+import org.drools.game.core.BasePlayerConfigurationImpl;
 import org.drools.game.core.api.GameSession;
+import org.drools.game.model.api.Player;
 import org.drools.game.services.endpoint.api.GameService;
 import org.drools.game.services.infos.GameSessionInfo;
-
-import org.drools.game.model.impl.base.PlayerImpl;
 
 @ApplicationScoped
 public class GameServiceImpl implements GameService {
@@ -43,17 +43,24 @@ public class GameServiceImpl implements GameService {
     public String newGameSession( String playerId ) {
         GameSession gameSession = sessions.get();
         List initialData = new ArrayList(); // Get the initial facts from store
-        gameSession.bootstrap( new PlayerImpl( playerId ), new GameConfigurationImpl(initialData, "") );
+        gameSession.bootstrap( new BaseGameConfigurationImpl( initialData, "" ) );
         String id = UUID.randomUUID().toString().substring( 0, 6 );
         games.put( id, gameSession );
         return id;
     }
 
     @Override
+    public void joinGameSession( String sessionId, Player p ) {
+        GameSession gameSession = games.get( sessionId );
+        List initialData = new ArrayList(); // Get the initial facts from store
+        gameSession.join( p, new BasePlayerConfigurationImpl( initialData ) );
+    }
+
+    @Override
     public List<GameSessionInfo> getAllGameSessions() {
         List<GameSessionInfo> infos = new ArrayList<>();
         for ( String id : games.keySet() ) {
-            infos.add( new GameSessionInfo( id, games.get( id ).getPlayer().getName() ) );
+            infos.add( new GameSessionInfo( id, games.get( id ).getPlayers() ) );
         }
         return infos;
     }

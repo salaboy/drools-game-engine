@@ -18,5 +18,7 @@ package org.drools.game.core.api;
 
 public interface GameMessageService {
 
+    GameMessage newGameMessage( String playerName, String text );
+
     GameMessage newGameMessage( String text );
 }

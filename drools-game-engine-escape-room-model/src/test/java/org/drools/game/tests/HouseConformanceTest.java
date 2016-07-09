@@ -7,15 +7,15 @@ package org.drools.game.tests;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.drools.game.model.impl.base.PlayerImpl;
-import org.drools.game.model.house.Door;
-import org.drools.game.model.house.House;
-import org.drools.game.model.house.Room;
-import org.drools.game.model.items.Chest;
+import org.drools.game.model.impl.base.BasePlayerImpl;
+import org.drools.game.escape.room.model.house.Door;
+import org.drools.game.escape.room.model.house.House;
+import org.drools.game.escape.room.model.house.Room;
+import org.drools.game.escape.room.model.items.Chest;
 import org.drools.game.model.api.Item;
 import org.drools.game.model.api.Player;
-import org.drools.game.model.items.Key;
-import org.drools.game.model.items.MagicStone;
+import org.drools.game.escape.room.model.items.Key;
+import org.drools.game.escape.room.model.items.MagicStone;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class HouseConformanceTest {
 
     @Test
     public void helloHouse() {
-        Player player = new PlayerImpl("salaboy");
+        Player player = new BasePlayerImpl("salaboy");
 
         House house = new House("My Test Mansion!");
 

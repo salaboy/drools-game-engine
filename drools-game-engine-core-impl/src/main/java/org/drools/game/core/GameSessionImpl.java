@@ -9,30 +9,24 @@ import org.drools.game.core.api.Command;
 import org.drools.game.core.api.GameSession;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import org.drools.compiler.kproject.ReleaseIdImpl;
 import org.drools.game.core.api.GameConfiguration;
 import org.drools.game.core.api.GameMessage;
+import org.drools.game.core.api.GameMessageService;
+import org.drools.game.core.api.PlayerConfiguration;
 import org.drools.game.model.api.Player;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
-import org.kie.api.event.rule.AfterMatchFiredEvent;
-import org.kie.api.event.rule.AgendaEventListener;
-import org.kie.api.event.rule.AgendaGroupPoppedEvent;
-import org.kie.api.event.rule.AgendaGroupPushedEvent;
-import org.kie.api.event.rule.BeforeMatchFiredEvent;
-import org.kie.api.event.rule.MatchCancelledEvent;
-import org.kie.api.event.rule.MatchCreatedEvent;
-import org.kie.api.event.rule.ObjectDeletedEvent;
-import org.kie.api.event.rule.ObjectInsertedEvent;
-import org.kie.api.event.rule.ObjectUpdatedEvent;
-import org.kie.api.event.rule.RuleFlowGroupActivatedEvent;
-import org.kie.api.event.rule.RuleFlowGroupDeactivatedEvent;
-import org.kie.api.event.rule.RuleRuntimeEventListener;
+import org.kie.api.event.rule.DefaultAgendaEventListener;
+import org.kie.api.event.rule.DefaultRuleRuntimeEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 import org.kie.api.runtime.rule.LiveQuery;
 
 import org.kie.api.runtime.rule.QueryResults;
@@ -49,79 +43,101 @@ public class GameSessionImpl implements GameSession {
     @Inject
     private CommandExecutor executor;
 
-    private KieSession currentSession = null;
+    private KieSession currentGameSession = null;
+
+    private ContextImpl currentGameContext = null;
+
+    private GameConfiguration currentConfig = null;
 
     private LiveQuery gameMessageNotifications = null;
 
-    private final ContextImpl context;
+    @Inject
+    private GameMessageService messageService;
 
-    private Player currentPlayer;
-
-    private GameConfiguration currentConfig;
+    private Map<String, FactHandle> currentPlayers = null;
 
     public GameSessionImpl() {
-        context = new ContextImpl();
+
     }
 
     @Override
-    public Player getPlayer() {
-        return currentPlayer;
-    }
-
-    @Override
-    public void bootstrap( Player player, GameConfiguration config ) {
-        if ( currentSession != null ) {
-            throw new IllegalStateException( "Error: There is another game session in progress, destroy the current session first!" );
+    public void bootstrap( GameConfiguration config ) {
+        if ( currentGameSession != null ) {
+            throw new IllegalStateException( "0001 - Error: There is another game session in progress, destroy the current session first!" );
         }
+
         if ( currentConfig != null ) {
-            throw new IllegalStateException( "Error: There is another game configuration being used." );
+            throw new IllegalStateException( "0002 - Error: There is another game configuration being used." );
         }
-        
-        if ( player == null ) {
-            throw new IllegalStateException( "Error: We need a player to bootstrap a new game session" );
+        if ( currentGameContext != null ) {
+            throw new IllegalStateException( "0003 - Error: There is another game context defined, please make sure you destroy "
+                    + "the previous game session before bootstraping a new one." );
         }
-        this.currentPlayer = player;
-        String[] releaseIdPlusKbase = config.getGamePackage().split( ":" );
+        currentGameContext = new ContextImpl();
+        currentPlayers = new HashMap<String, FactHandle>();
+        currentConfig = config;
+        // Bootstrapping the Game Session
+        String[] gameKbaseGAVK = config.getGamePackage().split( ":" );
         KieServices ks = KieServices.Factory.get();
-        KieBase kBase = null;
-        if ( releaseIdPlusKbase.length == 1 ) {
+        KieBase gameKbase = null;
+        if ( gameKbaseGAVK.length == 1 ) {
             KieContainer kContainer = ks.getKieClasspathContainer();
-            kBase = kContainer.getKieBase();
+            gameKbase = kContainer.getKieBase();
         } else {
-            KieContainer kContainer = ks.newKieContainer( new ReleaseIdImpl( releaseIdPlusKbase[0], releaseIdPlusKbase[1], releaseIdPlusKbase[2] ) );
-            kBase = kContainer.getKieBase( releaseIdPlusKbase[3] );
-        }
-        currentSession = kBase.newKieSession();
-        if ( config.isDebugEnabled() ) {
-            setupListeners();
-        }
-        if ( config.getLogStream() != null ) {
-            setupMessageNotifications( config.getLogStream() );
-        }
-
-        currentSession.insert( player );
-        //insert all the initial facts
-        if ( config.getInitialData() != null ) {
-            for ( Object o : config.getInitialData() ) {
-                currentSession.insert( o );
+            KieContainer kContainer = ks.newKieContainer( new ReleaseIdImpl( gameKbaseGAVK[0], gameKbaseGAVK[1], gameKbaseGAVK[2] ) );
+            if ( gameKbaseGAVK.length == 3 ) {
+                gameKbase = kContainer.getKieBase();
+            } else if ( gameKbaseGAVK.length == 4 ) {
+                gameKbase = kContainer.getKieBase( gameKbaseGAVK[3] );
             }
         }
-        context.getData().put( "session", currentSession );
-        context.getData().put( "messageService", new GameMessageServiceImpl() );
-        // firing all the rules for the initial state
-        currentSession.fireAllRules();
-        
+        if ( gameKbase != null ) {
+            currentGameSession = gameKbase.newKieSession();
+            messageService = new GameMessageServiceImpl();
+            currentGameSession.setGlobal( "messageService", messageService );
+
+            if ( config.isDebugEnabled() ) {
+                setupGameListeners();
+            }
+
+            //insert all the initial facts
+            if ( config.getInitialData() != null ) {
+                for ( Object o : config.getInitialData() ) {
+                    currentGameSession.insert( o );
+                }
+            }
+
+            currentGameContext.getData().put( "session", currentGameSession );
+            currentGameContext.getData().put( "messageService", messageService );
+            // firing all the rules for the initial state
+            currentGameSession.fireAllRules();
+
+        } else {
+            throw new IllegalStateException( "0004 - We coudn't build the Knolwedge Base for your game :( " );
+        }
+
     }
 
     @Override
-    public void join( Player player ) {
-        currentSession.insert( player );
-        currentSession.fireAllRules();
+    public void join( Player player, PlayerConfiguration playerConfig ) {
+        if ( currentGameSession == null ) {
+            throw new IllegalStateException( "0007 - There is no game session active, you cannot join here " );
+        }
+        if ( playerConfig.getLogStream() != null ) {
+            setupPlayerMessageNotifications( player, playerConfig.getLogStream() );
+        }
+        FactHandle playerFH = currentGameSession.insert( player );
+        currentPlayers.put( player.getName(), playerFH );
+        currentGameSession.fireAllRules();
     }
 
     @Override
-    public List<Command> getSuggestions() {
-        QueryResults queryResults = currentSession.getQueryResults( "getAllSuggestions", ( Object ) null );
+    public List<Command> getSuggestions( Player p ) {
+
+        if ( p == null ) {
+            throw new IllegalStateException( "0006 - Error: getting all suggestions, the player is null." );
+        }
+        QueryResults queryResults = currentGameSession.getQueryResults( "getAllSuggestions", p );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         List<Command> cmds = new ArrayList<Command>();
         while ( iterator.hasNext() ) {
@@ -133,18 +149,31 @@ public class GameSessionImpl implements GameSession {
 
     @Override
     public <T> T execute( Command<T> cmd ) {
-        T results = executor.execute( cmd, context );
-        currentSession.fireAllRules();
+        if(executor == null){
+            throw new IllegalStateException(" 0008 - Error: Make sure that the game session is properly bootstraped before executing any cmd.");
+        }
+        if(currentGameSession == null){
+            throw new IllegalStateException(" 0009 - Error: There is no session for the current game, please make sure that you properly bootstraped the game");
+        }
+        T results = executor.execute( cmd, currentGameContext );
+        currentGameSession.fireAllRules();
         return results;
     }
 
-    private void setupMessageNotifications( PrintStream out ) {
-        gameMessageNotifications = currentSession.openLiveQuery( "getAllMessages", new Object[]{ "" }, new ViewChangedEventListener() {
+    private void setupGameListeners() {
+        currentGameSession.addEventListener( new DefaultAgendaEventListener() );
+        currentGameSession.addEventListener( new DefaultRuleRuntimeEventListener() );
+    }
+
+    private void setupPlayerMessageNotifications( Player p, PrintStream out ) {
+        Object[] params = new Object[1];
+        params[0] = p.getName();
+        gameMessageNotifications = currentGameSession.openLiveQuery( "getAllPlayerMessages", params, new ViewChangedEventListener() {
 
             @Override
             public void rowInserted( Row row ) {
                 GameMessage msg = ( GameMessage ) row.get( "$m" );
-                out.println( "> Notification: (" + System.currentTimeMillis() + ")" + msg.getText() );
+                out.println( "LOG: > Player Notification: (" + System.currentTimeMillis() + ")" + msg.getText() );
             }
 
             @Override
@@ -160,8 +189,9 @@ public class GameSessionImpl implements GameSession {
     }
 
     @Override
-    public List<GameMessage> getAllMessages() {
-        QueryResults queryResults = currentSession.getQueryResults( "getAllMessages", ( Object ) null );
+    public List<GameMessage> getAllMessages( String playerName ) {
+
+        QueryResults queryResults = currentGameSession.getQueryResults( "getAllPlayerMessages", playerName );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         List<GameMessage> messages = new ArrayList<GameMessage>();
         while ( iterator.hasNext() ) {
@@ -171,85 +201,32 @@ public class GameSessionImpl implements GameSession {
         return messages;
     }
 
-    private void setupListeners() {
-        currentSession.addEventListener( new AgendaEventListener() {
-            @Override
-            public void matchCreated( MatchCreatedEvent mce ) {
+    @Override
+    public void destroy() {
+        if ( currentGameSession == null ) {
+            throw new IllegalStateException( "0008 - Error: There is no game session to destroy!" );
+        }
+        gameMessageNotifications.close();
+        currentGameSession.dispose();
+        currentGameSession = null;
+        currentGameContext = null;
+        currentConfig = null;
+        currentPlayers.clear();
+        currentPlayers = null;
+        executor = null;
+        messageService = null;
 
-            }
-
-            @Override
-            public void matchCancelled( MatchCancelledEvent mce ) {
-
-            }
-
-            @Override
-            public void beforeMatchFired( BeforeMatchFiredEvent bmfe ) {
-
-            }
-
-            @Override
-            public void afterMatchFired( AfterMatchFiredEvent amfe ) {
-
-            }
-
-            @Override
-            public void agendaGroupPopped( AgendaGroupPoppedEvent agpe ) {
-
-            }
-
-            @Override
-            public void agendaGroupPushed( AgendaGroupPushedEvent agpe ) {
-
-            }
-
-            @Override
-            public void beforeRuleFlowGroupActivated( RuleFlowGroupActivatedEvent rfgae ) {
-
-            }
-
-            @Override
-            public void afterRuleFlowGroupActivated( RuleFlowGroupActivatedEvent rfgae ) {
-
-            }
-
-            @Override
-            public void beforeRuleFlowGroupDeactivated( RuleFlowGroupDeactivatedEvent rfgde ) {
-
-            }
-
-            @Override
-            public void afterRuleFlowGroupDeactivated( RuleFlowGroupDeactivatedEvent rfgde ) {
-
-            }
-        } );
-
-        currentSession.addEventListener( new RuleRuntimeEventListener() {
-            @Override
-            public void objectInserted( ObjectInsertedEvent oie ) {
-
-            }
-
-            @Override
-            public void objectUpdated( ObjectUpdatedEvent oue ) {
-
-            }
-
-            @Override
-            public void objectDeleted( ObjectDeletedEvent ode ) {
-
-            }
-        } );
     }
 
     @Override
-    public void destroy() {
-        if ( currentSession == null ) {
-            throw new IllegalStateException( "Error: There is no game session to destroy!" );
-        }
-        gameMessageNotifications.close();
-        currentSession.dispose();
-        currentSession = null;
+    public List<String> getPlayers() {
+        return new ArrayList<String>( currentPlayers.keySet() );
+    }
+
+    @Override
+    public void drop( Player p ) {
+        FactHandle playerFH = currentPlayers.remove( p.getName() );
+        currentGameSession.delete( playerFH );
     }
 
 }

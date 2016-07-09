@@ -1,0 +1,110 @@
+package org.drools.game;
+
+import org.drools.game.model.api.*;
+import org.drools.game.model.impl.base.*;
+import org.drools.game.escape.room.model.house.*;
+import org.drools.game.escape.room.model.items.*;
+import org.drools.game.core.api.*;
+import org.drools.game.core.*;
+import org.drools.game.rules.*;
+import org.drools.game.escape.room.cmds.*;
+import java.util.List;
+
+
+global GameMessageService messageService;
+
+query "getAllSuggestions" (Player p)
+    $c: Command(player == p)
+end
+
+rule "Suggest: WhereAmICmd when there is a player"
+    when
+        $p: Player()
+    then
+        insertLogical( new WhereAmICommand( $p ) );
+end
+
+rule "Suggest: Use Door when there is an open door in the room"
+    when
+        $p: Player()
+        $d: Door( open == true )
+        $r: Room( doors contains $d, peopleInTheRoom contains $p.getName())
+    then
+        insertLogical( new UseDoorCommand( $p, $r, $d ) );
+end
+
+rule "Suggest: Turn On The Lights when there is a lightswitch off"
+    when
+        $p: Player()
+        $ls: LightSwitch( on == false )
+        $r: Room( peopleInTheRoom contains $p.getName(), items contains $ls )
+        not( Light() )
+    then
+        insertLogical( new TurnOnTheLightsCommand($p, $ls) );
+end
+
+rule "Suggest: Turn Off The Lights when there is a lightswitch on"
+    when
+        $p: Player()
+        $ls: LightSwitch( on == true )
+        $r: Room( peopleInTheRoom contains $p.getName(), items contains $ls )
+        Light()
+    then
+        insertLogical( new TurnOffTheLightsCommand($p, $ls) );
+end
+
+rule "Suggest: PickItemCmd when there is a PickableItem around in a container"
+    when
+        $p: Player( )
+        $pi: PickableItem()
+        $ic: ItemContainer( open == true, items contains $pi.getPickable() )
+        $r: Room( peopleInTheRoom contains $p.getName(), items contains $ic )
+        
+    then
+        insertLogical( new PickItemCommand( $p, $ic, $pi ) );
+end
+
+rule "Suggest: PickItemCmd when there is a PickableItem around"
+    when
+        $p: Player( )
+        $pi: PickableItem()
+        $r: Room( peopleInTheRoom contains $p.getName(), items contains $pi.getPickable() )
+    then
+        insertLogical( new PickItemCommand( $p, $r, $pi ) );
+end
+
+
+rule "Suggest: ExploreRoomCmd when there is a Player in the room"
+    when
+        $p: Player()
+        $r: Room( peopleInTheRoom contains $p.getName() )
+    then
+        insertLogical( new ExploreRoomCommand( $p, $r ) );
+end
+
+rule "Suggest: ExploreDoorsCmd when there is a player in the room"
+    when
+        $p: Player()
+        $r: Room(peopleInTheRoom contains $p.getName())
+    then
+        insertLogical( new ExploreDoorsCommand( $p, $r ) );
+end
+
+rule "Suggest: ExploreContainerCmd when there is at least one container in the room"
+    when
+        $p: Player()
+        $ic: ItemContainer(  ) 
+        $r: Room( peopleInTheRoom contains $p.getName(), items contains $ic )
+    then
+        insertLogical( new ExploreContainersCommand( $p, $r ) );
+end
+
+rule "Suggest: OpenContainerCmd when there is a closed container around"
+    when
+        $p: Player()
+        $ic: ItemContainer( open == false  ) 
+        $r: Room( peopleInTheRoom contains $p.getName(), items contains $ic )
+    then
+        insertLogical( new OpenContainerCommand( $p, $ic ) );
+end
+

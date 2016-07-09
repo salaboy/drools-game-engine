@@ -1,6 +1,0 @@
-package org.drools.game;
-
-declare Light
-end
-
-global List errors;

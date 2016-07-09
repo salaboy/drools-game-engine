@@ -19,16 +19,18 @@ package org.drools.game.services.infos;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.CLASS;
+import java.util.List;
 
-@JsonTypeInfo(use = CLASS, include = WRAPPER_OBJECT)
+@JsonTypeInfo( use = CLASS, include = WRAPPER_OBJECT )
 public class GameSessionInfo {
+
     private String id;
-    private String playerId;
+    private List<String> playerId;
 
     public GameSessionInfo() {
     }
 
-    public GameSessionInfo( String id, String playerId ) {
+    public GameSessionInfo( String id, List<String> playerId ) {
         this.id = id;
         this.playerId = playerId;
     }
@@ -41,12 +43,12 @@ public class GameSessionInfo {
         this.id = id;
     }
 
-    public String getPlayerId() {
+    public List<String> getPlayers() {
         return playerId;
     }
 
-    public void setPlayerId( String playerId ) {
+    public void setPlayers( List<String> playerId ) {
         this.playerId = playerId;
     }
-    
+
 }

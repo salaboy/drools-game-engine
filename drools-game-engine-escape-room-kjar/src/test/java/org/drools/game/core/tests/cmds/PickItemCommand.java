@@ -6,9 +6,9 @@
 package org.drools.game.core.tests.cmds;
 
 import java.util.List;
-import org.drools.game.core.api.Command;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
-import org.drools.game.model.house.Room;
+import org.drools.game.escape.room.model.house.Room;
 import org.drools.game.model.api.Item;
 import org.drools.game.model.api.ItemContainer;
 import org.drools.game.model.api.Player;
@@ -17,11 +17,12 @@ import org.drools.game.model.api.Player;
  *
  * @author salaboy
  */
-public class PickItemCommand implements Command<Void> {
+public class PickItemCommand extends BaseCommand<Void> {
 
     private final Item item;
 
-    public PickItemCommand( Item item ) {
+    public PickItemCommand( Player player, Item item ) {
+        super( player );
         this.item = item;
     }
 

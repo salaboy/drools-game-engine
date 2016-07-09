@@ -8,21 +8,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.drools.game.core.api.GameMessage;
-import org.drools.game.core.GameMessageImpl;
-import org.drools.game.model.impl.base.PlayerImpl;
-import org.drools.game.model.house.Door;
-import org.drools.game.model.house.House;
-import org.drools.game.model.house.Outside;
-import org.drools.game.model.house.Room;
-import org.drools.game.model.items.Chest;
+import org.drools.game.core.GameMessageServiceImpl;
+import org.drools.game.core.api.GameMessageService;
+import org.drools.game.escape.room.model.house.Door;
+import org.drools.game.escape.room.model.house.House;
+import org.drools.game.escape.room.model.house.Outside;
+import org.drools.game.escape.room.model.house.Room;
+import org.drools.game.escape.room.model.items.Chest;
 import org.drools.game.model.api.Item;
 import org.drools.game.model.api.ItemContainer;
-import org.drools.game.model.items.Key;
-import org.drools.game.model.items.LightBulb;
-import org.drools.game.model.items.LightSwitch;
-import org.drools.game.model.items.MagicStone;
-import org.drools.game.model.items.ShineInTheDarkItem;
+import org.drools.game.escape.room.model.items.Key;
+import org.drools.game.escape.room.model.items.LightBulb;
+import org.drools.game.escape.room.model.items.LightSwitch;
+import org.drools.game.escape.room.model.items.MagicStone;
+import org.drools.game.escape.room.model.items.ShineInTheDarkItem;
 import org.drools.game.model.api.Player;
+import org.drools.game.model.impl.base.BasePlayerImpl;
 import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -45,8 +46,10 @@ import org.kie.api.runtime.rule.QueryResultsRow;
 /**
  *
  * @author salaboy
- * This test interacts with the Rule Engine to test different behaviors of the game rules.
- * We need to avoid our users to interact directly, because as you can see it can get complex
+ * This test interacts with the Rule Engine to test different behaviors of the
+ * game rules.
+ * We need to avoid our users to interact directly, because as you can see it
+ * can get complex
  */
 @RunWith( Arquillian.class )
 public class B_GameRulesTest {
@@ -55,6 +58,8 @@ public class B_GameRulesTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
+                .addClass( GameMessageService.class )
+                .addClass( GameMessageServiceImpl.class )
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
 //        System.out.println( jar.toString( true ) );
         return jar;
@@ -76,8 +81,8 @@ public class B_GameRulesTest {
     public void gameRulesForANewHouseTest() {
         KieSession kSession = kBase.newKieSession();
 
-        Player player = new PlayerImpl( "salaboy" );
-
+        Player player = new BasePlayerImpl( "salaboy" );
+        kSession.setGlobal( "messageService", new GameMessageServiceImpl() );
         kSession.insert( player );
 
         House house = createHouse( "My Escape The Room House", player );
@@ -98,9 +103,16 @@ public class B_GameRulesTest {
 
         assertEquals( 5, fired );
 
-        QueryResults queryResults = kSession.getQueryResults( "getAllMessages", ( Object ) null );
+        QueryResults queryResults = kSession.getQueryResults( "getAllPlayerMessages", player.getName() );
         Iterator<QueryResultsRow> iterator = queryResults.iterator();
         List<GameMessage> messages = new ArrayList<GameMessage>();
+        while ( iterator.hasNext() ) {
+            GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
+            messages.add( msg );
+        }
+        
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", "system" );
+        iterator = queryResults.iterator();
         while ( iterator.hasNext() ) {
             GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
             messages.add( msg );
@@ -108,16 +120,14 @@ public class B_GameRulesTest {
 
         assertEquals( 5, messages.size() );
 
-        Set<String> messageTexts = messages.stream().map( m -> m.getText()).collect( Collectors.toSet());
-        
-        assertThat( messageTexts, 
-                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",  
-                                             "There is a room(Room A) in the house",
-                                             "There is a room(Outside) in the house",
-                                             "Wake up! You are trapped in Room A! You need to escape!", 
-                                             "There is light in the room!"));
-        
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
 
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!" ) );
 
         kSession.dispose();
 
@@ -129,8 +139,9 @@ public class B_GameRulesTest {
     @Test
     public void exploreTheRoomToFindItemsTest() {
         KieSession kSession = kBase.newKieSession();
-
-        Player player = new PlayerImpl( "salaboy" );
+        GameMessageServiceImpl messageService = new GameMessageServiceImpl();
+        kSession.setGlobal( "messageService", messageService );
+        Player player = new BasePlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -161,7 +172,7 @@ public class B_GameRulesTest {
 
         assertNotNull( roomIn );
 
-        kSession.insert( new GameMessageImpl( "You are in " + roomIn.getName() ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "You are in " + roomIn.getName() ) );
         fired = kSession.fireAllRules();
 
         assertEquals( 0, fired );
@@ -185,7 +196,7 @@ public class B_GameRulesTest {
             items.add( item );
         }
 
-        kSession.insert( new GameMessageImpl( items.size() + " Items available" ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), items.size() + " Items available" ) );
         // We changed the state of the world, so we need to fire all the rules
         fired = kSession.fireAllRules();
         //No rule was fired, because i just inserted a new GameMessage that is only evaluated by a query,
@@ -198,28 +209,33 @@ public class B_GameRulesTest {
         assertTrue( items.get( 1 ) instanceof LightBulb );
         assertTrue( items.get( 2 ) instanceof Chest );
 
-        queryResults = kSession.getQueryResults( "getAllMessages", ( Object ) null );
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", player.getName() );
         iterator = queryResults.iterator();
         List<GameMessage> messages = new ArrayList<GameMessage>();
         while ( iterator.hasNext() ) {
             GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
             messages.add( msg );
         }
-
+        
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", "system" );
+        iterator = queryResults.iterator();
+        while ( iterator.hasNext() ) {
+            GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
+            messages.add( msg );
+        }
+        
         assertEquals( 7, messages.size() );
-        
-        Set<String> messageTexts = messages.stream().map( m -> m.getText()).collect( Collectors.toSet());
-        
-        assertThat( messageTexts, 
-                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",  
-                                             "There is a room(Room A) in the house",
-                                             "There is a room(Outside) in the house",
-                                             "Wake up! You are trapped in Room A! You need to escape!", 
-                                             "There is light in the room!",
-                                             "You are in Room A",
-                                             "3 Items available"));
 
-       
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
+
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available" ) );
 
         kSession.destroy();
     }
@@ -227,13 +243,15 @@ public class B_GameRulesTest {
     /*
      * This test shows what happens when we turn of the lights of the room.
      * Now after the lights are off, we can see objects that Shine In the Dark (implements ShineInTheDarkItem interface)
-    */
+     */
     @Test
     public void turnOffTheLightsTest() {
         // Bootstrap the game
         KieSession kSession = kBase.newKieSession();
+        GameMessageServiceImpl messageService = new GameMessageServiceImpl();
+        kSession.setGlobal( "messageService", messageService );
 
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -264,7 +282,7 @@ public class B_GameRulesTest {
 
         assertNotNull( roomIn );
 
-        kSession.insert( new GameMessageImpl( "You are in " + roomIn.getName() ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "You are in " + roomIn.getName() ) );
         fired = kSession.fireAllRules();
         assertEquals( 0, fired );
 
@@ -296,7 +314,7 @@ public class B_GameRulesTest {
         // There are 0 shine in the dark items
         assertEquals( 0, counter );
 
-        kSession.insert( new GameMessageImpl( items.size() + " Items available" ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), items.size() + " Items available" ) );
         // We changed the state of the world, so we need to fire all the rules
         fired = kSession.fireAllRules();
         //No rule was fired, because i just inserted a new GameMessage that is only evaluated by a query,
@@ -315,7 +333,7 @@ public class B_GameRulesTest {
         FactHandle lightSwitchFH = kSession.getFactHandle( lightSwitch );
         lightSwitch.setOn( false );
         kSession.update( lightSwitchFH, lightSwitch );
-        kSession.insert( new GameMessageImpl( "Lights Turned Off" ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "Lights Turned Off" ) );
         kSession.fireAllRules();
 
         // First try to get all the items that are visible 
@@ -348,8 +366,8 @@ public class B_GameRulesTest {
         assertEquals( 1, items.size() );
         assertTrue( items.get( 0 ) instanceof ShineInTheDarkItem );
         assertTrue( items.get( 0 ) instanceof MagicStone );
-        
-        queryResults = kSession.getQueryResults( "getAllMessages", ( Object ) null );
+
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", player.getName() );
         iterator = queryResults.iterator();
         List<GameMessage> messages = new ArrayList<GameMessage>();
         while ( iterator.hasNext() ) {
@@ -357,20 +375,26 @@ public class B_GameRulesTest {
             messages.add( msg );
         }
 
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", "system" );
+        iterator = queryResults.iterator();
+        while ( iterator.hasNext() ) {
+            GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
+            messages.add( msg );
+        }
+        
         assertEquals( 8, messages.size() );
-        
-        Set<String> messageTexts = messages.stream().map( m -> m.getText()).collect( Collectors.toSet());
-        
-        assertThat( messageTexts, 
-                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",  
-                                             "There is a room(Room A) in the house",
-                                             "There is a room(Outside) in the house",
-                                             "Wake up! You are trapped in Room A! You need to escape!", 
-                                             "There is light in the room!",
-                                             "You are in Room A",
-                                             "3 Items available", 
-                                             "Lights Turned Off"));
-        
+
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
+
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available",
+                        "Lights Turned Off" ) );
 
         kSession.dispose();
     }
@@ -378,13 +402,15 @@ public class B_GameRulesTest {
     /*
      * This test shows how when the user picks a key from the Chest, the door labeled with 
      *  the same name as the key automatically unlocks, based on the rule that define that behavior
-    */
+     */
     @Test
     public void exploreContainerAndOpenDoorTest() {
         // Bootstrap Game
         KieSession kSession = kBase.newKieSession();
+        GameMessageServiceImpl messageService = new GameMessageServiceImpl();
+        kSession.setGlobal( "messageService", messageService );
 
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -415,7 +441,7 @@ public class B_GameRulesTest {
 
         assertNotNull( roomIn );
 
-        kSession.insert( new GameMessageImpl( "You are in " + roomIn.getName() ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "You are in " + roomIn.getName() ) );
         fired = kSession.fireAllRules();
         assertEquals( 0, fired );
 
@@ -453,7 +479,7 @@ public class B_GameRulesTest {
         // There are 0 shine in the dark items
         assertEquals( 0, counter );
 
-        kSession.insert( new GameMessageImpl( items.size() + " Items available" ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), items.size() + " Items available" ) );
         // We changed the state of the world, so we need to fire all the rules
         fired = kSession.fireAllRules();
         //No rule was fired, because i just inserted a new GameMessage that is only evaluated by a query,
@@ -485,54 +511,61 @@ public class B_GameRulesTest {
         container.getItems().remove( key );
         kSession.update( playerFH, player );
         kSession.update( containerFH, container );
-        kSession.insert( new GameMessageImpl( "Item Picked! " + key ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "Item Picked! " + key ) );
         fired = kSession.fireAllRules();
-        
-        assertEquals( 3, fired );
+
+        assertEquals( 4, fired );
 
         assertEquals( 1, player.getInventory().getItems().size() );
 
-        queryResults = kSession.getQueryResults( "getAllMessages", ( Object ) null );
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", player.getName() );
         iterator = queryResults.iterator();
         List<GameMessage> messages = new ArrayList<GameMessage>();
         while ( iterator.hasNext() ) {
             GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
             messages.add( msg );
         }
+
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", "system" );
+        iterator = queryResults.iterator();
+        while ( iterator.hasNext() ) {
+            GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
+            messages.add( msg );
+        }
         
-        
-        assertEquals( 11, messages.size() );
-        
-        Set<String> messageTexts = messages.stream().map( m -> m.getText()).collect( Collectors.toSet());
-        
-        assertThat( messageTexts, 
-                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",  
-                                             "There is a room(Room A) in the house",
-                                             "There is a room(Outside) in the house",
-                                             "Wake up! You are trapped in Room A! You need to escape!", 
-                                             "There is light in the room!",
-                                             "You are in Room A",
-                                             "3 Items available", 
-                                             "Item Picked! Key{name=Door A}",
-                                             "There is a new item in our inventory!Key{name=Door A}",
-                                             "Door 'Door A' Unlocked and Opened!"));
-        
+        assertEquals( 12, messages.size() );
+
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
+
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available",
+                        "Item Picked! Key{name=Door A}",
+                        "There is a new item in our inventory!Key{name=Door A}",
+                        "Door 'Door A' Unlocked and Opened!" ) );
 
         assertTrue( !doors.get( 0 ).isLocked() );
         assertTrue( doors.get( 0 ).isOpen() );
 
         kSession.dispose();
     }
-    
+
     /*
      * This test Open the door and uses it to walk Outside and accomplish the game goal! 
-    */
+     */
     @Test
     public void useOpenedDoorReachGoalTest() {
         // Bootstrap Game
         KieSession kSession = kBase.newKieSession();
+        GameMessageServiceImpl messageService = new GameMessageServiceImpl();
+        kSession.setGlobal( "messageService", messageService );
 
-        Player player = new PlayerImpl( "salaboy" );
+        Player player = new BasePlayerImpl( "salaboy" );
         kSession.insert( player );
         House house = createHouse( "My Escape The Room House", player );
 
@@ -563,7 +596,7 @@ public class B_GameRulesTest {
 
         assertNotNull( roomIn );
 
-        kSession.insert( new GameMessageImpl( "You are in " + roomIn.getName() ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "You are in " + roomIn.getName() ) );
         fired = kSession.fireAllRules();
         assertEquals( 0, fired );
 
@@ -601,7 +634,7 @@ public class B_GameRulesTest {
         // There are 0 shine in the dark items
         assertEquals( 0, counter );
 
-        kSession.insert( new GameMessageImpl( items.size() + " Items available" ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), items.size() + " Items available" ) );
         // We changed the state of the world, so we need to fire all the rules
         fired = kSession.fireAllRules();
         //No rule was fired, because i just inserted a new GameMessage that is only evaluated by a query,
@@ -633,13 +666,13 @@ public class B_GameRulesTest {
         container.getItems().remove( key );
         kSession.update( playerFH, player );
         kSession.update( containerFH, container );
-        kSession.insert( new GameMessageImpl( "Item Picked! " + key ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "Item Picked! " + key ) );
         fired = kSession.fireAllRules();
-        
-        assertEquals( 3, fired );
+
+        assertEquals( 4, fired );
 
         assertEquals( 1, player.getInventory().getItems().size() );
-        
+
         assertTrue( !doors.get( 0 ).isLocked() );
         assertTrue( doors.get( 0 ).isOpen() );
 
@@ -658,12 +691,12 @@ public class B_GameRulesTest {
             FactHandle roomToFH = kSession.getFactHandle( roomTo );
             roomTo.getPeopleInTheRoom().add( player.getName() );
             kSession.update( roomToFH, roomTo );
-            kSession.insert( new GameMessageImpl( "Player moved from  " + roomIn.getName() + " to " + roomTo.getName() ) );
+            kSession.insert( messageService.newGameMessage( player.getName(), "Player moved from  " + roomIn.getName() + " to " + roomTo.getName() ) );
         } else {
-            kSession.insert( new GameMessageImpl( "ERROR: Door cannot be used because the room:   " + doors.get( 0 ).getLeadsTo() + " was not found. " ) );
+            kSession.insert( messageService.newGameMessage( player.getName(), "ERROR: Door cannot be used because the room:   " + doors.get( 0 ).getLeadsTo() + " was not found. " ) );
         }
-        
-         // Where Am I? Again
+
+        // Where Am I? Again
         queryResults = kSession.getQueryResults( "WhereAmI", player.getName() );
         iterator = queryResults.iterator();
         roomIn = null;
@@ -674,42 +707,47 @@ public class B_GameRulesTest {
 
         assertNotNull( roomIn );
 
-        kSession.insert( new GameMessageImpl( "You are in " + roomIn.getName() ) );
+        kSession.insert( messageService.newGameMessage( player.getName(), "You are in " + roomIn.getName() ) );
         fired = kSession.fireAllRules();
         assertEquals( 4, fired );
 
         assertEquals( "Outside", roomIn.getName() );
-        
-        queryResults = kSession.getQueryResults( "getAllMessages", ( Object ) null );
+
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", player.getName() );
         iterator = queryResults.iterator();
         List<GameMessage> messages = new ArrayList<GameMessage>();
         while ( iterator.hasNext() ) {
             GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
             messages.add( msg );
         }
-        
+
+        queryResults = kSession.getQueryResults( "getAllPlayerMessages", "system" );
+        iterator = queryResults.iterator();
+        while ( iterator.hasNext() ) {
+            GameMessage msg = ( GameMessage ) iterator.next().get( "$m" );
+            messages.add( msg );
+        }
+
         assertEquals( 17, messages.size() );
-        Set<String> messageTexts = messages.stream().map( m -> m.getText()).collect( Collectors.toSet());
-        
-        assertThat( messageTexts, 
-                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",  
-                                             "There is a room(Room A) in the house",
-                                             "There is a room(Outside) in the house",
-                                             "Wake up! You are trapped in Room A! You need to escape!", 
-                                             "There is light in the room!",
-                                             "You are in Room A",
-                                             "3 Items available", 
-                                             "Item Picked! Key{name=Door A}",
-                                             "There is a new item in our inventory!Key{name=Door A}",
-                                             "Door 'Door A' Unlocked and Opened!", 
-                                             "Congrats! You manage to escape the Room!",
-                                             "You are in Outside",
-                                             "Player moved from  Room A to Outside"));
+        Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
+
+        assertThat( messageTexts,
+                Matchers.containsInAnyOrder( "There is a house(My Escape The Room House) in the world",
+                        "There is a room(Room A) in the house",
+                        "There is a room(Outside) in the house",
+                        "Wake up! You are trapped in Room A! You need to escape!",
+                        "There is light in the room!",
+                        "You are in Room A",
+                        "3 Items available",
+                        "Item Picked! Key{name=Door A}",
+                        "There is a new item in our inventory!Key{name=Door A}",
+                        "Door 'Door A' Unlocked and Opened!",
+                        "Congrats! You manage to escape the Room!",
+                        "You are in Outside",
+                        "Player moved from  Room A to Outside" ) );
 
         kSession.destroy();
     }
-
-
 
     /* House With:
         * Room A:

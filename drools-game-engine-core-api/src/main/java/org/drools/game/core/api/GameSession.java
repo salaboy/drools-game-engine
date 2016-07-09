@@ -19,20 +19,25 @@ package org.drools.game.core.api;
 import java.util.List;
 import org.drools.game.model.api.Player;
 
+/*
+ * Defines a Multi player capable Game Session
+ */
 public interface GameSession {
 
-    void bootstrap( Player player, GameConfiguration config );
+    void bootstrap( GameConfiguration config );
 
-    void join( Player player );
+    void join( Player player, PlayerConfiguration playerConfig );
+
+    void drop( Player p );
 
     void destroy();
 
     <T> T execute( Command<T> cmd );
 
-    List<GameMessage> getAllMessages();
+    List<GameMessage> getAllMessages( String playerName );
 
-    List<Command> getSuggestions();
+    List<Command> getSuggestions( Player p );
 
-    Player getPlayer();
+    List<String> getPlayers();
 
 }

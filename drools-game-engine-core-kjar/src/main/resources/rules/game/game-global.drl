@@ -1,0 +1,10 @@
+package org.drools.game;
+import java.util.List;
+import org.drools.game.core.api.*;
+import org.drools.game.model.api.*;
+
+global GameMessageService messageService;
+
+query "getAllPlayerMessages" ( String $playerName )
+    $m: GameMessage( playerName ==  $playerName )
+end

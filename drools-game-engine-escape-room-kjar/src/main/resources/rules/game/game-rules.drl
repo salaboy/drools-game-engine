@@ -2,14 +2,17 @@ package org.drools.game;
 
 import org.drools.game.model.api.*;
 import org.drools.game.model.impl.base.*;
-import org.drools.game.model.house.*;
-import org.drools.game.model.items.*;
+import org.drools.game.escape.room.model.house.*;
+import org.drools.game.escape.room.model.items.*;
 import org.drools.game.core.api.*;
 import org.drools.game.core.*;
 import org.drools.game.rules.*;
 import java.util.List;
 
+
 global List errors;
+
+global GameMessageService messageService;
 
 query "getRoomByName" (String $name)
     $r: Room(name == $name)
@@ -38,10 +41,6 @@ query "getAllContainers"
     not(Room (this == $ic))
 end
 
-query "getAllMessages"
-    $m: GameMessage()
-end
-
 query "WhereAmI"
     $p: Player()
     $r: Room( peopleInTheRoom contains $p.getName() )
@@ -51,7 +50,7 @@ rule "There is a house in the world"
     when
         $h: House()
     then
-        insert( new GameMessageImpl( "There is a house(" + $h.getName() + ") in the world"  ) );
+        insert( messageService.newGameMessage(  "There is a house(" + $h.getName() + ") in the world"  ) );
 end
 
 rule "There is a room in the house"
@@ -60,7 +59,7 @@ rule "There is a room in the house"
         $h: House( rooms contains $r )
         
     then
-        insert( new GameMessageImpl( "There is a room(" + $r.getName() + ") in the house" ) );
+        insert(  messageService.newGameMessage(  "There is a room(" + $r.getName() + ") in the house" ) );
 end
 
 rule "The player is in a room inside the house, wake up!"
@@ -69,7 +68,7 @@ rule "The player is in a room inside the house, wake up!"
         $r: Room( name != "Outside", peopleInTheRoom contains $p.getName() )
         $h: House( rooms contains $r )
     then
-        insert( new GameMessageImpl( "Wake up! You are trapped in " + $r.getName() + "! You need to escape!" ) );
+        insert(  messageService.newGameMessage( $p.getName(), "Wake up! You are trapped in " + $r.getName() + "! You need to escape!" ) );
 end
 
 
@@ -78,19 +77,20 @@ rule "There is a new item in the player's inventory"
         $p: Player()
         $i: Item() from $p.getInventory().getItems()
     then
-        insert( new GameMessageImpl( "There is a new item in our inventory!" + $i ) );
+        insert(  messageService.newGameMessage( $p.getName(), "There is a new item in our inventory!" + $i ) );
 end
 
 
 rule "Light in the room when there is lightbulb and switch on"
     when
+        $p: Player()
         $lb: LightBulb(connected == true, broken == false)
         $ls: LightSwitch(on == true)
-        $r:  Room(items contains $lb, items contains $ls)
+        $r:  Room(items contains $lb, items contains $ls, peopleInTheRoom contains $p.getName())
         
     then
         insertLogical( new Light() );
-        insert( new GameMessageImpl( "There is light in the room!" ) );
+        insert(  messageService.newGameMessage( $p.getName(),  "There is light in the room!" ) );
 end
 
 
@@ -98,14 +98,14 @@ rule "If we have a key for a (locked and closed) door in our room then open the 
     when
         $p: Player( )
         $d: Door( $doorName: name, open == false, locked == true ) 
-        $r: Room( peopleInTheRoom contains $p.getName(), doors contains $d )
+        $r: Room( peopleInTheRoom contains $p.getName(), doors contains $d, peopleInTheRoom contains $p.getName() )
         Key( name == $doorName ) from $p.getInventory().getItems()
     then
         modify( $d ){
             setLocked( false ),
             setOpen( true )
         };
-        insert( new GameMessageImpl( "Door '" + $doorName + "' Unlocked and Opened!" ) );
+        insert(  messageService.newGameMessage( $p.getName(),  "Door '" + $doorName + "' Unlocked and Opened!" ) );
 end
 
 rule "Items can be picked when you see them (lights off -> shine in the dark)"
@@ -141,5 +141,5 @@ rule "Out Goal is to go outside"
         $p: Player()
         $o: Outside( peopleInTheRoom contains $p.getName())
     then
-        insert( new GameMessageImpl( "Congrats! You manage to escape the Room!" ) );
+        insert(  messageService.newGameMessage( $p.getName(), "Congrats! You manage to escape the Room!" ) );
 end
