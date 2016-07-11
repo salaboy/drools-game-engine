@@ -13,6 +13,11 @@ public class NamedLocation extends Location {
 
     private String name;
 
+    public NamedLocation( String name ) {
+        super( 0, 0, 0 );
+        this.name = name;
+    }
+
     public NamedLocation( int x, int y, int z, String name ) {
         super( x, y, z );
         this.name = name;
@@ -30,7 +35,5 @@ public class NamedLocation extends Location {
     public String toString() {
         return "NamedLocation{" + "name=" + name + '}';
     }
-    
-    
 
 }

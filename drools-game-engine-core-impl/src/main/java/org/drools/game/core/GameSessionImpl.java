@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import javax.inject.Inject;
 import org.drools.compiler.kproject.ReleaseIdImpl;
+import org.drools.game.core.api.GameCallbackService;
 import org.drools.game.core.api.GameConfiguration;
 import org.drools.game.core.api.GameMessage;
 import org.drools.game.core.api.GameMessageService;
@@ -53,6 +55,9 @@ public class GameSessionImpl implements GameSession {
 
     @Inject
     private GameMessageService messageService;
+    
+    @Inject 
+    private GameCallbackService callbackService;
 
     private Map<String, FactHandle> currentPlayers = null;
 
@@ -95,6 +100,7 @@ public class GameSessionImpl implements GameSession {
             currentGameSession = gameKbase.newKieSession();
             messageService = new GameMessageServiceImpl();
             currentGameSession.setGlobal( "messageService", messageService );
+            currentGameSession.setGlobal( "callback",  callbackService);
 
             if ( config.isDebugEnabled() ) {
                 setupGameListeners();
@@ -227,6 +233,10 @@ public class GameSessionImpl implements GameSession {
     public void drop( Player p ) {
         FactHandle playerFH = currentPlayers.remove( p.getName() );
         currentGameSession.delete( playerFH );
+    }
+    
+    public Queue<Command> getCallbacks(){
+        return callbackService.getCallbacks();
     }
 
 }

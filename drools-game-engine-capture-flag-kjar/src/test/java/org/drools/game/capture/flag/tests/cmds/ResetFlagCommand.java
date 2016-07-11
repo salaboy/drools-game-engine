@@ -14,33 +14,37 @@
  * limitations under the License.
  */
 
-package org.drools.game.core.api;
+package org.drools.game.capture.flag.tests.cmds;
 
-import java.util.List;
-import java.util.Queue;
+import org.drools.game.capture.flag.model.Chest;
+import org.drools.game.core.api.BaseCommand;
+import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-/*
- * Defines a Multi player capable Game Session
- */
-public interface GameSession {
+public class ResetFlagCommand extends BaseCommand<Void> {
 
-    void bootstrap( GameConfiguration config );
+    private Chest chest;
 
-    void join( Player player, PlayerConfiguration playerConfig );
+    public ResetFlagCommand( Player player, Chest chest ) {
+        super( player );
+        this.chest = chest;
+    }
+    
+    
+    
+    @Override
+    public Void execute( Context ctx ) {
+        
+        return null;
+    }
 
-    void drop( Player p );
+    public Chest getChest() {
+        return chest;
+    }
 
-    void destroy();
+    public void setChest( Chest chest ) {
+        this.chest = chest;
+    }
 
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages( String playerName );
-
-    List<Command> getSuggestions( Player p );
-
-    List<String> getPlayers();
-
-    Queue<Command> getCallbacks();
-
+    
 }

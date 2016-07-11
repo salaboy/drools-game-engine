@@ -10,8 +10,6 @@ import org.drools.game.rules.*;
 import java.util.List;
 
 
-global List errors;
-
 global GameMessageService messageService;
 
 query "getRoomByName" (String $name)
