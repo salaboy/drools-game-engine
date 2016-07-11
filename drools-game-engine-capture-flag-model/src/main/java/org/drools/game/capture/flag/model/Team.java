@@ -55,4 +55,9 @@ public class Team {
         this.playersInTeam.add( playerName );
     }
 
+    @Override
+    public String toString() {
+        return "Team{" + "name=" + name + ", points=" + points + ", playersInTeam=" + playersInTeam + '}';
+    }
+
 }

@@ -2,6 +2,6 @@
     
     <kbase name="globalKBase" includes="coreGameKBase" packages="rules.game.global" default="false"></kbase>
     
-    <kbase name="gameKBase" includes="globalKBase" packages="rules.game" default="false"></kbase>
+    <kbase name="gameKBase" includes="globalKBase" packages="rules.game" default="true"></kbase>
 
 </kmodule>
