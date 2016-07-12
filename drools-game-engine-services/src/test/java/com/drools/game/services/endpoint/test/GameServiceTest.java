@@ -1,8 +1,11 @@
 package com.drools.game.services.endpoint.test;
 
+import java.util.List;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -26,17 +29,19 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
 public class GameServiceTest {
 
 	private Client client;
+	private WebTarget target;
+	private static String PATH = "game";
 
 	@Before
 	public void setup() throws Exception {
 		client = ClientBuilder.newClient();
+		target = client.target("http://localhost:8080/api").path("game");
 	}
 
 	@After
 	public void tearDown() throws Exception {
 		client.close();
 	}
-
 
 	@Deployment
 	public static Archive createDeployment() {
@@ -49,9 +54,16 @@ public class GameServiceTest {
 
 	@Test
 	public void checkService() {
-		WebTarget target = client.target("http://localhost:8080/api/game");
 		Response response = target.request(MediaType.APPLICATION_JSON).get();
 		Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void noGameSessionsStarted() {
+		Response response = target.request(MediaType.APPLICATION_JSON).get();
+		List<GameSessionInfo> resssionsInfo = response.readEntity(new GenericType<List<GameSessionInfo>>() {
+		});
+		Assert.assertEquals(resssionsInfo.size(), 0);
 	}
 
 }
