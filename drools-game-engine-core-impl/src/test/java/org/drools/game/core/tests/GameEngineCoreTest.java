@@ -12,9 +12,11 @@ import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.BaseGameConfigurationImpl;
 import org.drools.game.core.BasePlayerConfigurationImpl;
 import org.drools.game.core.CommandExecutor;
+import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameMessageServiceImpl;
 import org.drools.game.core.GameSessionImpl;
 import org.drools.game.core.api.Context;
+import org.drools.game.core.api.GameCallbackService;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.core.api.GameSession;
 import org.drools.game.model.api.Player;
@@ -43,6 +45,8 @@ public class GameEngineCoreTest {
                 .addClass( CommandExecutor.class )
                 .addClass( GameMessageService.class )
                 .addClass( GameMessageServiceImpl.class )
+                .addClass( GameCallbackService.class )
+                .addClass( GameCallbackServiceImpl.class )
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
 //        System.out.println( jar.toString( true ) );
         return jar;

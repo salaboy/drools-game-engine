@@ -14,33 +14,25 @@
  * limitations under the License.
  */
 
-package org.drools.game.core.api;
+package org.drools.game.core;
 
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Queue;
-import org.drools.game.model.api.Player;
+import org.drools.game.core.api.Command;
+import org.drools.game.core.api.GameCallbackService;
 
-/*
- * Defines a Multi player capable Game Session
- */
-public interface GameSession {
+public class GameCallbackServiceImpl implements GameCallbackService {
 
-    void bootstrap( GameConfiguration config );
+    private Queue<Command> callbacksQueue = new LinkedList<Command>();
 
-    void join( Player player, PlayerConfiguration playerConfig );
+    @Override
+    public void addCallback( Command cmd ) {
+        callbacksQueue.add( cmd );
+    }
 
-    void drop( Player p );
-
-    void destroy();
-
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages( String playerName );
-
-    List<Command> getSuggestions( Player p );
-
-    List<String> getPlayers();
-
-    Queue<Command> getCallbacks();
+    @Override
+    public Queue<Command> getCallbacks() {
+        return callbacksQueue;
+    }
 
 }

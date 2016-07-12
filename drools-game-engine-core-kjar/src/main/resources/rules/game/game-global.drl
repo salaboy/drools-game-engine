@@ -4,6 +4,7 @@ import org.drools.game.core.api.*;
 import org.drools.game.model.api.*;
 
 global GameMessageService messageService;
+global GameCallbackService callback;
 
 query "getAllPlayerMessages" ( String $playerName )
     $m: GameMessage( playerName ==  $playerName )

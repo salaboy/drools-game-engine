@@ -16,31 +16,24 @@
 
 package org.drools.game.core.api;
 
-import java.util.List;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;
-import org.drools.game.model.api.Player;
 
-/*
- * Defines a Multi player capable Game Session
- */
-public interface GameSession {
+public interface GameCallbackService {
 
-    void bootstrap( GameConfiguration config );
-
-    void join( Player player, PlayerConfiguration playerConfig );
-
-    void drop( Player p );
-
-    void destroy();
-
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages( String playerName );
-
-    List<Command> getSuggestions( Player p );
-
-    List<String> getPlayers();
+    void addCallback( Command cmd );
 
     Queue<Command> getCallbacks();
+    
+    
+
+    static Command newCallback( String cmdName, Object... args ) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Class<?> forName = Class.forName( cmdName );
+        
+        Constructor<?>[] constructors = forName.getDeclaredConstructors();
+
+        return ( Command ) constructors[0].newInstance( args );
+    }
 
 }

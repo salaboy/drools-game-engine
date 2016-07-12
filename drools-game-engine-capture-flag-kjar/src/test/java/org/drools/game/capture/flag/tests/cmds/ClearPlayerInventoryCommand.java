@@ -14,33 +14,21 @@
  * limitations under the License.
  */
 
-package org.drools.game.core.api;
+package org.drools.game.capture.flag.tests.cmds;
 
-import java.util.List;
-import java.util.Queue;
+import org.drools.game.core.api.BaseCommand;
+import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-/*
- * Defines a Multi player capable Game Session
- */
-public interface GameSession {
+public class ClearPlayerInventoryCommand extends BaseCommand<Void> {
 
-    void bootstrap( GameConfiguration config );
+    public ClearPlayerInventoryCommand( Player player ) {
+        super( player );
+    }
 
-    void join( Player player, PlayerConfiguration playerConfig );
-
-    void drop( Player p );
-
-    void destroy();
-
-    <T> T execute( Command<T> cmd );
-
-    List<GameMessage> getAllMessages( String playerName );
-
-    List<Command> getSuggestions( Player p );
-
-    List<String> getPlayers();
-
-    Queue<Command> getCallbacks();
+    @Override
+    public Void execute( Context ctx ) {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
