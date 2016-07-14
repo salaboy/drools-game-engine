@@ -1,7 +1,4 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <!--
     <kbase name="globalKBase" includes="coreGameKBase" packages="rules.game.global" default="false"></kbase>
-    -->
     <kbase name="gameKBase" includes="coreGameKBase" packages="rules.game" default="true"></kbase>
-
 </kmodule>

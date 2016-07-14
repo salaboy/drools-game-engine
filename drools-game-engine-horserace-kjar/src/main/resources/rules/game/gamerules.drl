@@ -6,13 +6,6 @@ import org.drools.game.horserace.model.*;
 global GameMessageService messageService;
 global GameCallbackService callback;
 
-rule "printstring"
-    when
-        str : String()
-    then
-        System.out.println(str);
-end
-
 rule "Greeter"
     when
         $player : Player()
