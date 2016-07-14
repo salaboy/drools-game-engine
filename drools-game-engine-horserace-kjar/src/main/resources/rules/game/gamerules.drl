@@ -1,0 +1,83 @@
+package org.drools.game.horserace;
+import org.drools.game.core.api.*;
+import org.drools.game.model.api.*;
+import org.drools.game.horserace.model.*;
+
+global GameMessageService messageService;
+global GameCallbackService callback;
+
+rule "printstring"
+    when
+        str : String()
+    then
+        System.out.println(str);
+end
+
+rule "Greeter"
+    when
+        $player : Player()
+    then
+        insert(  messageService.newGameMessage(  "Welcome, " + $player.getName() + ". Venture forth to the stables and mount a mighty steed!" ) );
+end
+
+rule "Give the player a team"
+    when
+        $player : Player()
+        not( Team( name == $player.name) ) 
+    then
+        Team team = new Team($player.getName());
+        team.addPlayer($player.getName());
+        insert(team);
+end
+
+rule "first checkpoint"
+        when
+            $player : Player()
+            $team : Team(name == $player.name && points == 0)
+            $room : Room(id == "CheckPointOne" && playersInRoom contains $player.getName())
+        then
+            modify($team) { setPoints($team.getPoints() + 1) }
+            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has entered checkpoint one and now has " + $team.getPoints() + " points!" ) );
+end
+
+rule "second checkpoint"
+        when
+            $player : Player()
+            $team : Team(name == $player.name && points == 1)
+            $room : Room(id == "CheckPointTwo" && playersInRoom contains $player.getName())
+        then
+            modify($team) { setPoints($team.getPoints() + 1) }
+            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has entered checkpoint two and now has " + $team.getPoints() + " points!" ) );
+end
+
+rule "third checkpoint"
+        when
+            $player : Player()
+            $team : Team(name == $player.name && points == 2)
+            $room : Room(id == "CheckPointThree" && playersInRoom contains $player.getName())
+        then
+            modify($team) { setPoints($team.getPoints() + 1) }
+            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has entered checkpoint three and now has " + $team.getPoints() + " points!" ) );
+end
+
+rule "fourth checkpoint"
+        when
+            $player : Player()
+            $team : Team(name == $player.name && points == 3)
+            $room : Room(id == "CheckPointFour" && playersInRoom contains $player.getName())
+        then
+            modify($team) { setPoints($team.getPoints() + 1) }
+            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has entered checkpoint four and now has " + $team.getPoints() + " points!" ) );
+end
+
+
+
+rule "win the race"
+        when
+            $player : Player()
+            $team : Team(name == $player.name && points == 4)
+            $room : Room(id == "StartFinish" && playersInRoom contains $player.getName())
+        then
+            modify($team) { setPoints(0) }
+            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has crossed the finish line! Way to go! Now resetting the race for another attempt. " ) );
+end
