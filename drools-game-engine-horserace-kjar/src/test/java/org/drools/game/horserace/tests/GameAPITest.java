@@ -99,11 +99,12 @@ public class GameAPITest {
         game.execute( new EnterCheckpointCommand( player, checkpointtwo ) );
         game.execute( new EnterCheckpointCommand( player, checkpointthree ) );
         game.execute( new EnterCheckpointCommand( player, checkpointfour ) );
+        game.execute( new EnterCheckpointCommand( player, startfinish ) );
 
         List<GameMessage> messages = game.getAllMessages( player.getName() );
         messages.addAll( game.getAllMessages( "system" ) );
         
-        assertEquals( 12, messages.size() );
+        assertEquals( 15, messages.size() );
 
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
         
@@ -113,7 +114,7 @@ public class GameAPITest {
         }
 
         //TODO: I could not get this working. I verified that the output is all correct manually. No idea what is going on.
-        /*assertThat( messageTexts,
+        assertThat( messageTexts,
                 Matchers.containsInAnyOrder(
                         "Contestant Morton Abenthy Halputz has crossed a checkpoint!",
                         "Contestant Morton Abenthy Halputz has crossed the finish line! Way to go! Now resetting the race for another attempt. ",
@@ -124,7 +125,7 @@ public class GameAPITest {
                         "You entered the checkpoint: CheckPointThree",
                         "You entered the checkpoint: CheckPointFour",
                         "Welcome, Morton Abenthy Halputz. Venture forth to the stables and mount a mighty steed!"
-                        ) );*/
+                        ) );
 
         Queue<Command> callbacks = game.getCallbacks();
         //assertEquals( 8, callbacks.size() );
