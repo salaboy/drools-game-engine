@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameMessageServiceImpl;
 import org.drools.game.core.api.GameMessageService;
-import org.drools.game.horserace.model.Room;
+import org.drools.game.horserace.model.Checkpoint;
 import org.drools.game.model.api.Player;
 import org.drools.game.model.impl.base.BasePlayerImpl;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -60,20 +60,22 @@ public class GameRulesTest {
         Player player = new BasePlayerImpl("Morton Abenthy Halputz");
         FactHandle playerFH = kSession.insert(player);
         
-        Room startfinish = new Room(-9, 89, 189, -2, 95, 184, "StartFinish");
+        Checkpoint startfinish = new Checkpoint("StartFinish", null);
         FactHandle startfinishFH = kSession.insert(startfinish);
         
-        Room checkpointone = new Room(32, 89, 184, 37, 100, 190, "CheckPointOne");
+        Checkpoint checkpointone = new Checkpoint("CheckPointOne", startfinish);
         FactHandle checkpointoneFH = kSession.insert(checkpointone);
 
-        Room checkpointtwo = new Room(32, 89, 159, 38, 100, 154, "CheckPointTwo");
+        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", checkpointone);
         FactHandle checkpointtwoFH = kSession.insert(checkpointtwo);
 
-        Room checkpointthree = new Room(-21, 89, 159, -26, 100, 153, "CheckPointThree");
+        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", checkpointtwo);
         FactHandle checkpointthreeFH = kSession.insert(checkpointthree);
 
-        Room checkpointfour = new Room(-21, 89, 184, -27, 100, 189, "CheckPointFour");
+        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", checkpointthree);
         FactHandle checkpointfourFH = kSession.insert(checkpointfour);
+        
+        startfinish.setRequired(checkpointfour);
         
         int fired = kSession.fireAllRules();
         assertEquals( 2, fired );
@@ -81,42 +83,32 @@ public class GameRulesTest {
         startfinish.addPlayer( player.getName() );
         kSession.update( startfinishFH, startfinish );
         fired = kSession.fireAllRules();
-        assertEquals( 0, fired );
+        assertEquals( 1, fired );
         
-        startfinish.removePlayer( player.getName() );
-        kSession.update( startfinishFH, startfinish );
         checkpointone.addPlayer( player.getName() );
         kSession.update( checkpointoneFH, checkpointone );
         fired = kSession.fireAllRules();
         assertEquals( 1, fired );
         
-        checkpointone.removePlayer( player.getName() );
-        kSession.update( checkpointoneFH, checkpointone );
         checkpointtwo.addPlayer( player.getName() );
         kSession.update( checkpointtwoFH, checkpointtwo );
         fired = kSession.fireAllRules();
         assertEquals( 1, fired );
         
-        checkpointtwo.removePlayer( player.getName() );
-        kSession.update( checkpointtwoFH, checkpointtwo );
         checkpointthree.addPlayer( player.getName() );
         kSession.update( checkpointthreeFH, checkpointthree );
         fired = kSession.fireAllRules();
         assertEquals( 1, fired );
 
-        checkpointthree.removePlayer( player.getName() );
-        kSession.update( checkpointthreeFH, checkpointthree );
         checkpointfour.addPlayer( player.getName() );
         kSession.update( checkpointfourFH, checkpointfour );
         fired = kSession.fireAllRules();
         assertEquals( 1, fired );
         
-        checkpointfour.removePlayer( player.getName() );
-        kSession.update( checkpointfourFH, checkpointfour );
         startfinish.addPlayer( player.getName() );
         kSession.update( startfinishFH, startfinish );
         fired = kSession.fireAllRules();
-        assertEquals( 1, fired );
+        assertEquals( 2, fired );
 
         kSession.dispose();
     }
