@@ -28,7 +28,7 @@ rule "general checkpoint"
             $checkpoint : Checkpoint(required.playersCrossedCheckpoint contains $player.getName())
         then
             modify($checkpoint) { addPlayer($player.getName()) }
-            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + ", mount your horse, get ready to race! Three... Two... One... aaaand... GO!" ) );
+            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has crossed a checkpoint!" ) );
 end
 
 rule "win the race"
