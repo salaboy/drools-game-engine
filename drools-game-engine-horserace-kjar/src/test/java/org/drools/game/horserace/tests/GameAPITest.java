@@ -77,13 +77,13 @@ public class GameAPITest {
         
         Checkpoint startfinish = new Checkpoint("StartFinish", 0, true);
         initFacts.add( startfinish );
-        Checkpoint checkpointone = new Checkpoint("CheckPointOne", 1, false);
+        Checkpoint checkpointone = new Checkpoint("CheckPointOne", 1);
         initFacts.add( checkpointone );
-        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", 2, false);
+        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", 2);
         initFacts.add( checkpointtwo );
-        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", 3, false);
+        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", 3);
         initFacts.add( checkpointthree );
-        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", 4, false);
+        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", 4);
         initFacts.add( checkpointfour );
         // Bootstrap the Game with the constructed house for this player
         GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts, "" );

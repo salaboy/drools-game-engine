@@ -28,18 +28,18 @@ public class EnterCheckpointCommand extends BaseCommand<Void> {
 
     private Checkpoint checkpoint;
 
-    public EnterCheckpointCommand( Player player, Checkpoint scoreZone ) {
+    public EnterCheckpointCommand( Player player, Checkpoint checkpoint ) {
         super( player );
-        this.checkpoint = scoreZone;
+        this.checkpoint = checkpoint;
     }
 
     @Override
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
-        FactHandle scoreZoneFH = session.getFactHandle(checkpoint );
+        FactHandle checkpointFH = session.getFactHandle(checkpoint );
         checkpoint.addPlayer( getPlayer().getName() );
-        session.update(scoreZoneFH, checkpoint );
+        session.update(checkpointFH, checkpoint );
         session.insert(messageService.newGameMessage(getPlayer().getName(), "You entered the checkpoint: " + checkpoint.getId() ) );
         return null;
     }

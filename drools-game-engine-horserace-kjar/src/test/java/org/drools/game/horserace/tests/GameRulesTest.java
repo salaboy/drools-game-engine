@@ -63,16 +63,16 @@ public class GameRulesTest {
         Checkpoint startfinish = new Checkpoint("StartFinish", 0, true);
         FactHandle startfinishFH = kSession.insert(startfinish);
         
-        Checkpoint checkpointone = new Checkpoint("CheckPointOne", 1, false);
+        Checkpoint checkpointone = new Checkpoint("CheckPointOne", 1);
         FactHandle checkpointoneFH = kSession.insert(checkpointone);
 
-        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", 2, false);
+        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", 2);
         FactHandle checkpointtwoFH = kSession.insert(checkpointtwo);
 
-        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", 3, false);
+        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", 3);
         FactHandle checkpointthreeFH = kSession.insert(checkpointthree);
 
-        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", 4, false);
+        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", 4);
         FactHandle checkpointfourFH = kSession.insert(checkpointfour);
         
         int fired = kSession.fireAllRules();

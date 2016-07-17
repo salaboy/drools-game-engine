@@ -22,6 +22,13 @@ public class Checkpoint {
     private Checkpoint() {
         
     }
+    
+    public Checkpoint( String id , int order) {
+        this();
+        this.id = id;
+        this.order = order;
+        this.isStartFinish = false;
+    }
 
     public Checkpoint( String id , int order, boolean isStartFinish) {
         this();
@@ -72,12 +79,22 @@ public class Checkpoint {
     {
         this.isStartFinish = isStartFinish;
     }
-    
-    
+    /*
+    private String id;
+    private int order;
+    private boolean isStartFinish;
+    private List<String> players = new ArrayList<>();*/
 
     @Override
     public String toString() {
-        return "Room{" + "id=" + id + "}";
+        StringBuilder playerString = new StringBuilder();
+        playerString.append("[");
+        for(String str : players)
+        {
+            playerString.append(str + ", ");
+        }
+        playerString.append("]");
+        return "Checkpoint{" + "id=" + id + "; order=" + order + "; isStartFinish=" + isStartFinish + "; players = " + playerString + "}";
     }
     
     
