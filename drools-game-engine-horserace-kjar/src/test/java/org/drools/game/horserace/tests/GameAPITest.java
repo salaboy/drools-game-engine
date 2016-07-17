@@ -22,6 +22,7 @@ import org.drools.game.core.api.GameConfiguration;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.core.api.PlayerConfiguration;
 import org.drools.game.horserace.cmds.EnterCheckpointCommand;
+import org.drools.game.horserace.cmds.LeaveCheckpointCommand;
 import org.drools.game.horserace.model.Checkpoint;
 
 import org.drools.game.model.api.Player;
@@ -74,17 +75,16 @@ public class GameAPITest {
 
         List initFacts = new ArrayList();
         
-        Checkpoint startfinish = new Checkpoint("StartFinish", null);
+        Checkpoint startfinish = new Checkpoint("StartFinish", 0, true);
         initFacts.add( startfinish );
-        Checkpoint checkpointone = new Checkpoint("CheckPointOne", startfinish);
+        Checkpoint checkpointone = new Checkpoint("CheckPointOne", 1, false);
         initFacts.add( checkpointone );
-        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", checkpointone);
+        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", 2, false);
         initFacts.add( checkpointtwo );
-        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", checkpointtwo);
+        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", 3, false);
         initFacts.add( checkpointthree );
-        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", checkpointthree);
+        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", 4, false);
         initFacts.add( checkpointfour );
-        startfinish.setRequired(checkpointfour);
         // Bootstrap the Game with the constructed house for this player
         GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts, "" );
 
@@ -95,16 +95,22 @@ public class GameAPITest {
         game.join( player, playerConfiguration );
 
         game.execute( new EnterCheckpointCommand( player, startfinish ) );
+        game.execute( new LeaveCheckpointCommand(player, startfinish) );
         game.execute( new EnterCheckpointCommand( player, checkpointone ) );
+        game.execute( new LeaveCheckpointCommand(player, checkpointone) );
         game.execute( new EnterCheckpointCommand( player, checkpointtwo ) );
+        game.execute( new LeaveCheckpointCommand(player, checkpointtwo) );
         game.execute( new EnterCheckpointCommand( player, checkpointthree ) );
+        game.execute( new LeaveCheckpointCommand(player, checkpointthree) );
         game.execute( new EnterCheckpointCommand( player, checkpointfour ) );
+        game.execute( new LeaveCheckpointCommand(player, checkpointfour) );
         game.execute( new EnterCheckpointCommand( player, startfinish ) );
+        game.execute( new LeaveCheckpointCommand(player, startfinish) );
 
         List<GameMessage> messages = game.getAllMessages( player.getName() );
         messages.addAll( game.getAllMessages( "system" ) );
         
-        assertEquals( 15, messages.size() );
+        assertEquals( 25, messages.size() );
 
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
         
@@ -116,19 +122,28 @@ public class GameAPITest {
         //TODO: I could not get this working. I verified that the output is all correct manually. No idea what is going on.
         assertThat( messageTexts,
                 Matchers.containsInAnyOrder(
-                        "Contestant Morton Abenthy Halputz has crossed a checkpoint!",
-                        "Contestant Morton Abenthy Halputz has crossed the finish line! Way to go! Now resetting the race for another attempt. ",
-                        "Contestant Morton Abenthy Halputz, mount your horse, get ready to race! Three... Two... One... aaaand... GO!",
-                        "You entered the checkpoint: StartFinish",
+                        "Welcome, Morton Abenthy Halputz. Venture forth to the stables and mount a mighty steed!",
                         "You entered the checkpoint: CheckPointOne",
                         "You entered the checkpoint: CheckPointTwo",
                         "You entered the checkpoint: CheckPointThree",
                         "You entered the checkpoint: CheckPointFour",
-                        "Welcome, Morton Abenthy Halputz. Venture forth to the stables and mount a mighty steed!"
+                        "You entered the checkpoint: StartFinish",
+                        "Contestant Morton Abenthy Halputz has crossed checkpoint 1",
+                        "Contestant Morton Abenthy Halputz has crossed checkpoint 4",
+                        "Contestant Morton Abenthy Halputz has crossed checkpoint 2",
+                        "Contestant Morton Abenthy Halputz has crossed checkpoint 3",
+                        "Contestant Morton Abenthy Halputz has crossed a the finish line!",
+
+                        "You left the checkpoint: StartFinish",
+                        "You left the checkpoint: CheckPointOne",
+                        "You left the checkpoint: CheckPointTwo",
+                        "You left the checkpoint: CheckPointThree",
+                        "You left the checkpoint: CheckPointFour",
+                        "Contestant Morton Abenthy Halputz has crossed a checkpoint!"
                         ) );
 
         Queue<Command> callbacks = game.getCallbacks();
-        //assertEquals( 8, callbacks.size() );
+        //assertEquals( 12, callbacks.size() );
         // TODO assert each callback in order with callbacks poll. Assert Type and Arguments of each callback
         game.drop( player );
 

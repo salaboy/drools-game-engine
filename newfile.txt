@@ -1,0 +1,643 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Drools :: Game Engine (Parent)
+[INFO] Drools :: Game Engine Model
+[INFO] Drools :: Game Engine Core KJAR
+[INFO] Drools :: Game Engine Core API
+[INFO] Drools :: Game Engine Core Impl
+[INFO] Drools :: Game Engine Escape The Room Model
+[INFO] Drools :: Game Engine Escape The Room Pack (KJAR)
+[INFO] Drools :: Game Engine Services
+[INFO] Drools :: Game Engine Capture The Flag Model
+[INFO] Drools :: Game Engine Capture The Flag Pack (KJAR)
+[INFO] Drools :: Game Engine Horse Race Model
+[INFO] Drools :: Game Engine Horse Race Pack (KJAR)
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine (Parent) 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine\1.0-SNAPSHOT\drools-game-engine-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Model 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-model ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-model\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-model ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 9 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-model\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-model\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-model ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-model ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-model ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-model\target\drools-game-engine-model-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-model ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-model\target\drools-game-engine-model-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-model\1.0-SNAPSHOT\drools-game-engine-model-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-model\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-model\1.0-SNAPSHOT\drools-game-engine-model-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Core KJAR 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-core-kjar ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-kjar\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-core-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 3 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-core-kjar ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-core-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-kjar\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-core-kjar ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-core-kjar ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-core-kjar ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-kjar\target\drools-game-engine-core-kjar-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-core-kjar ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-kjar\target\drools-game-engine-core-kjar-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-core-kjar\1.0-SNAPSHOT\drools-game-engine-core-kjar-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-kjar\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-core-kjar\1.0-SNAPSHOT\drools-game-engine-core-kjar-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Core API 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-core-api ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-api\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-core-api ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-core-api ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 9 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-api\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-core-api ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-api\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-core-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-core-api ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-core-api ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-api\target\drools-game-engine-core-api-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-core-api ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-api\target\drools-game-engine-core-api-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-core-api\1.0-SNAPSHOT\drools-game-engine-core-api-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-api\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-core-api\1.0-SNAPSHOT\drools-game-engine-core-api-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Core Impl 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-core-impl ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-core-impl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-core-impl ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 8 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-core-impl ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-core-impl ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-core-impl ---
+[INFO] Surefire report directory: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.drools.game.core.tests.GameEngineCoreTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.038 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-core-impl ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\target\drools-game-engine-core-impl-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-core-impl ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\target\drools-game-engine-core-impl-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-core-impl\1.0-SNAPSHOT\drools-game-engine-core-impl-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-core-impl\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-core-impl\1.0-SNAPSHOT\drools-game-engine-core-impl-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Escape The Room Model 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-escape-room-model ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-escape-room-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-escape-room-model ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 13 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-escape-room-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-escape-room-model ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-escape-room-model ---
+[INFO] Surefire report directory: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.drools.game.tests.HouseConformanceTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.14 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-escape-room-model ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\target\drools-game-engine-escape-room-model-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-escape-room-model ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\target\drools-game-engine-escape-room-model-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-escape-room-model\1.0-SNAPSHOT\drools-game-engine-escape-room-model-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-model\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-escape-room-model\1.0-SNAPSHOT\drools-game-engine-escape-room-model-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Escape The Room Pack (KJAR) 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-escape-room-kjar ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-escape-room-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 6 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-escape-room-kjar ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 9 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-escape-room-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-escape-room-kjar ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 9 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\target\test-classes
+[WARNING] /C:/Users/Samuel/Desktop/droolsgameengine/drools-game-engine/drools-game-engine-escape-room-kjar/src/test/java/org/drools/game/core/tests/cmds/OpenDoorCommand.java: Some input files use unchecked or unsafe operations.
+[WARNING] /C:/Users/Samuel/Desktop/droolsgameengine/drools-game-engine/drools-game-engine-escape-room-kjar/src/test/java/org/drools/game/core/tests/cmds/OpenDoorCommand.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-escape-room-kjar ---
+[INFO] Surefire report directory: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.drools.game.core.tests.PlayersCommandsTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.127 sec
+Running org.drools.game.rules.tests.A_StatelessConformanceTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.428 sec
+Running org.drools.game.rules.tests.B_GameRulesTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.704 sec
+Running org.drools.game.rules.tests.C_GameAPITest
+LOG: > Player Notification: (1468779700438)Wake up! You are trapped in Room A! You need to escape!
+LOG: > Player Notification: (1468779700561)There is light in the room!
+LOG: > Player Notification: (1468779700653)You are in Room A
+LOG: > Player Notification: (1468779700704)1 Door(s) unlocked and open
+LOG: > Player Notification: (1468779700745)3 Items available
+LOG: > Player Notification: (1468779700746)Item Picked! PickableItem{pickable=Key{name=Door A}}
+LOG: > Player Notification: (1468779700746)Wake up! You are trapped in Room A! You need to escape!
+LOG: > Player Notification: (1468779700747)There is a new item in our inventory!Key{name=Door A}
+LOG: > Player Notification: (1468779700747)There is light in the room!
+LOG: > Player Notification: (1468779700789)Door 'Door A' Unlocked and Opened!
+LOG: > Player Notification: (1468779700834)Player moved from  Room A to Outside
+LOG: > Player Notification: (1468779700836)Congrats! You manage to escape the Room!
+LOG: > Player Notification: (1468779700881)You are in Outside
+LOG: > Player Notification: (1468779700890)Wake up! You are trapped in Room A! You need to escape!
+LOG: > Player Notification: (1468779700891)There is light in the room!
+LOG: > Player Notification: (1468779700895)You are in Room A
+LOG: > Player Notification: (1468779700896)3 Items available
+LOG: > Player Notification: (1468779700904)Wake up! You are trapped in Room A! You need to escape!
+LOG: > Player Notification: (1468779700905)There is light in the room!
+LOG: > Player Notification: (1468779700918)Wake up! You are trapped in Room A! You need to escape!
+LOG: > Player Notification: (1468779700918)There is light in the room!
+LOG: > Player Notification: (1468779700920)You are in Room A
+LOG: > Player Notification: (1468779700921)3 Items available
+LOG: > Player Notification: (1468779700921)Lights Turned Off
+LOG: > Player Notification: (1468779700925)1 Items available
+LOG: > Player Notification: (1468779700926)Lights Turned On
+LOG: > Player Notification: (1468779700926)There is light in the room!
+LOG: > Player Notification: (1468779700928)3 Items available
+LOG: > Player Notification: (1468779700936)Wake up! You are trapped in Room A! You need to escape!
+LOG: > Player Notification: (1468779700937)There is light in the room!
+LOG: > Player Notification: (1468779700938)You are in Room A
+LOG: > Player Notification: (1468779700939)3 Items available
+LOG: > Player Notification: (1468779700940)Item Picked! PickableItem{pickable=Key{name=Door A}}
+LOG: > Player Notification: (1468779700941)Wake up! You are trapped in Room A! You need to escape!
+LOG: > Player Notification: (1468779700941)There is a new item in our inventory!Key{name=Door A}
+LOG: > Player Notification: (1468779700941)There is light in the room!
+LOG: > Player Notification: (1468779700942)Door 'Door A' Unlocked and Opened!
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.671 sec
+Running org.drools.game.rules.tests.D_GameSuggestionRulesTest
+695442b0-415e-4653-a26d-0df5d71e868d.jar:
+/META-INF/
+/META-INF/beans.xml
+>>> Rule Fired: Light in the room when there is lightbulb and switch on
+>>> Rule Fired: Items can be picked when you see them (lights on -> day light)
+>>> Rule Fired: Suggest: WhereAmICmd when there is a player
+>>> Rule Fired: Suggest: Turn Off The Lights when there is a lightswitch on
+>>> Rule Fired: Suggest: PickItemCmd when there is a PickableItem around
+>>> Rule Fired: Suggest: ExploreRoomCmd when there is a Player in the room
+>>> Rule Fired: Suggest: ExploreDoorsCmd when there is a player in the room
+>>> Rule Fired: Items can be picked when you see them (lights off -> shine in the dark)
+>>> Rule Fired: Suggest: Turn On The Lights when there is a lightswitch off
+>>> Rule Fired: Suggest: PickItemCmd when there is a PickableItem around
+>>> Rule Fired: There is a house in the world
+>>> Rule Fired: There is a room in the house
+>>> Rule Fired: There is a room in the house
+>>> Rule Fired: The player is in a room inside the house, wake up!
+>>> Rule Fired: Light in the room when there is lightbulb and switch on
+>>> Rule Fired: Suggest: WhereAmICmd when there is a player
+>>> Rule Fired: Suggest: Turn Off The Lights when there is a lightswitch on
+>>> Rule Fired: Suggest: ExploreRoomCmd when there is a Player in the room
+>>> Rule Fired: Suggest: ExploreDoorsCmd when there is a player in the room
+>>> Rule Fired: Suggest: ExploreContainerCmd when there is at least one container in the room
+>>> Rule Fired: Suggest: OpenContainerCmd when there is a closed container around
+>>> Rule Fired: When we open a container we can pick the items inside
+>>> Rule Fired: Suggest: PickItemCmd when there is a PickableItem around in a container
+>>> Rule Fired: Suggest: ExploreContainerCmd when there is at least one container in the room
+>>> Rule Fired: The player is in a room inside the house, wake up!
+>>> Rule Fired: There is a new item in the player's inventory
+>>> Rule Fired: Light in the room when there is lightbulb and switch on
+>>> Rule Fired: If we have a key for a (locked and closed) door in our room then open the door
+>>> Rule Fired: Suggest: WhereAmICmd when there is a player
+>>> Rule Fired: Suggest: Use Door when there is an open door in the room
+>>> Rule Fired: Suggest: Turn Off The Lights when there is a lightswitch on
+>>> Rule Fired: Suggest: ExploreRoomCmd when there is a Player in the room
+>>> Rule Fired: Suggest: ExploreDoorsCmd when there is a player in the room
+>>> Rule Fired: Suggest: ExploreContainerCmd when there is at least one container in the room
+>>> Rule Fired: There is a room in the house
+>>> Rule Fired: There is a room in the house
+>>> Rule Fired: Items can be picked when you see them (lights off -> shine in the dark)
+>>> Rule Fired: Out Goal is to go outside
+>>> Rule Fired: Suggest: ExploreRoomCmd when there is a Player in the room
+>>> Rule Fired: Suggest: ExploreDoorsCmd when there is a player in the room
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.757 sec
+Running org.drools.game.rules.tests.E_NoCDIRulesTest
+Bootstrapping the Rule Engine ...
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.036 sec
+
+Results :
+
+Tests run: 19, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-escape-room-kjar ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\target\drools-game-engine-escape-room-kjar-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-escape-room-kjar ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\target\drools-game-engine-escape-room-kjar-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-escape-room-kjar\1.0-SNAPSHOT\drools-game-engine-escape-room-kjar-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-escape-room-kjar\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-escape-room-kjar\1.0-SNAPSHOT\drools-game-engine-escape-room-kjar-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Services 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-services ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-services ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.3:compile (default-compile) @ drools-game-engine-services ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 4 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-services ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.3:testCompile (default-testCompile) @ drools-game-engine-services ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\target\test-classes
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-services ---
+[INFO] Surefire report directory: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.drools.game.services.endpoint.test.GameServiceTest
+11:22:09,012 INFO  [org.jboss.msc] (main) JBoss MSC version 1.2.6.Final
+11:22:09,157 INFO  [org.jboss.as] (MSC service thread 1-6) WFLYSRV0049: WildFly Core 2.0.10.Final "Kenny" starting
+2016-07-17 11:22:10,114 INFO  [org.jboss.as.naming] (ServerService Thread Pool -- 18) WFLYNAM0001: Activating Naming Subsystem
+2016-07-17 11:22:10,119 WARN  [org.jboss.as.txn] (ServerService Thread Pool -- 21) WFLYTX0013: Node identifier property is set to the default value. Please make sure it is unique.
+2016-07-17 11:22:10,127 INFO  [org.wildfly.extension.io] (ServerService Thread Pool -- 16) WFLYIO001: Worker 'default' has auto-configured to 16 core threads with 128 task threads based on your 8 available processors
+2016-07-17 11:22:10,137 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-5) WFLYUT0003: Undertow 1.3.15.Final starting
+2016-07-17 11:22:10,137 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 22) WFLYUT0003: Undertow 1.3.15.Final starting
+2016-07-17 11:22:10,142 INFO  [org.jboss.as.security] (ServerService Thread Pool -- 20) WFLYSEC0002: Activating Security Subsystem
+2016-07-17 11:22:10,146 INFO  [org.jboss.as.security] (MSC service thread 1-5) WFLYSEC0001: Current PicketBox version=4.9.4.Final
+2016-07-17 11:22:10,152 INFO  [org.jboss.as.naming] (MSC service thread 1-7) WFLYNAM0003: Starting Naming Service
+2016-07-17 11:22:10,209 INFO  [org.xnio] (MSC service thread 1-4) XNIO version 3.3.4.Final
+2016-07-17 11:22:10,226 INFO  [org.xnio.nio] (MSC service thread 1-4) XNIO NIO Implementation Version 3.3.4.Final
+2016-07-17 11:22:10,399 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-4) WFLYUT0012: Started server default-server.
+2016-07-17 11:22:10,589 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Core 2.0.10.Final "Kenny" started in 1630ms - Started 83 of 95 services (18 services are lazy, passive or on-demand)
+2016-07-17 11:22:10,640 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-6) WFLYUT0006: Undertow HTTP listener default listening on 0.0.0.0:8080
+2016-07-17 11:22:11,138 INFO  [org.wildfly.swarm.runtime.deployer] (main) deploying 946b2faf-ff94-44a3-afd4-7d3890c3effe.war
+2016-07-17 11:22:11,157 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-7) WFLYSRV0027: Starting deployment of "946b2faf-ff94-44a3-afd4-7d3890c3effe.war" (runtime-name: "946b2faf-ff94-44a3-afd4-7d3890c3effe.war")
+2016-07-17 11:22:11,983 WARN  [org.jboss.as.dependency.private] (MSC service thread 1-7) WFLYSRV0018: Deployment "deployment.946b2faf-ff94-44a3-afd4-7d3890c3effe.war" is using a private module ("org.jboss.jts:main") which may be changed or removed in future versions without notice.
+2016-07-17 11:22:12,044 INFO  [org.jboss.weld.deployer] (MSC service thread 1-3) WFLYWELD0003: Processing weld deployment 946b2faf-ff94-44a3-afd4-7d3890c3effe.war
+2016-07-17 11:22:12,383 INFO  [org.hibernate.validator.internal.util.Version] (MSC service thread 1-3) HV000001: Hibernate Validator 5.2.3.Final
+2016-07-17 11:22:12,565 INFO  [org.jboss.weld.deployer] (MSC service thread 1-2) WFLYWELD0006: Starting Services for CDI deployment: 946b2faf-ff94-44a3-afd4-7d3890c3effe.war
+2016-07-17 11:22:12,607 INFO  [org.jboss.weld.Version] (MSC service thread 1-2) WELD-000900: 2.3.2 (Final)
+2016-07-17 11:22:12,633 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) WFLYUT0018: Host default-host starting
+2016-07-17 11:22:12,641 INFO  [org.jboss.weld.deployer] (MSC service thread 1-4) WFLYWELD0009: Starting weld service for deployment 946b2faf-ff94-44a3-afd4-7d3890c3effe.war
+2016-07-17 11:22:12,998 INFO  [org.wildfly.swarm.arquillian.daemon.server.Server] (MSC service thread 1-8) Arquillian Daemon server started on 127.0.0.1:12345
+2016-07-17 11:22:13,746 INFO  [org.jboss.resteasy.resteasy_jaxrs.i18n] (ServerService Thread Pool -- 7) RESTEASY002225: Deploying javax.ws.rs.core.Application: class org.wildfly.swarm.generated.WildFlySwarmDefaultJAXRSApplication
+2016-07-17 11:22:13,771 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 7) WFLYUT0021: Registered web context: /api
+2016-07-17 11:22:13,792 INFO  [org.jboss.as.server] (main) WFLYSRV0010: Deployed "946b2faf-ff94-44a3-afd4-7d3890c3effe.war" (runtime-name : "946b2faf-ff94-44a3-afd4-7d3890c3effe.war")
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 26.215 sec
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-services ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\target\drools-game-engine-services-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- wildfly-swarm-plugin:1.0.0.CR1:package (default) @ drools-game-engine-services ---
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-services ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\target\drools-game-engine-services-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-services\1.0-SNAPSHOT\drools-game-engine-services-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-services\1.0-SNAPSHOT\drools-game-engine-services-1.0-SNAPSHOT.pom
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-services\target\drools-game-engine-services-1.0-SNAPSHOT-swarm.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-services\1.0-SNAPSHOT\drools-game-engine-services-1.0-SNAPSHOT-swarm.jar
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Capture The Flag Model 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-capture-flag-model ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-model\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-capture-flag-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-model\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-capture-flag-model ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 7 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-model\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-capture-flag-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-model\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-capture-flag-model ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-capture-flag-model ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-capture-flag-model ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-model\target\drools-game-engine-capture-flag-model-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-capture-flag-model ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-model\target\drools-game-engine-capture-flag-model-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-capture-flag-model\1.0-SNAPSHOT\drools-game-engine-capture-flag-model-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-model\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-capture-flag-model\1.0-SNAPSHOT\drools-game-engine-capture-flag-model-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Capture The Flag Pack (KJAR) 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 3 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 9 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\target\test-classes
+[WARNING] /C:/Users/Samuel/Desktop/droolsgameengine/drools-game-engine/drools-game-engine-capture-flag-kjar/src/test/java/org/drools/game/capture/flag/tests/GameAPITest.java: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\src\test\java\org\drools\game\capture\flag\tests\GameAPITest.java uses unchecked or unsafe operations.
+[WARNING] /C:/Users/Samuel/Desktop/droolsgameengine/drools-game-engine/drools-game-engine-capture-flag-kjar/src/test/java/org/drools/game/capture/flag/tests/GameAPITest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Surefire report directory: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.drools.game.capture.flag.tests.GameAPITest
+>>> Look for unassigned players: BasePlayerImpl{id=2328bd1a-3d1e-42af-bb30-300ed51ae80c, name=salaboy, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@67f946c3}
+LOG: > Player Notification: (1468779757794)Picked the Flag
+LOG: > Player Notification: (1468779757795)You Hit the Chasm
+>>> Look for unassigned players: BasePlayerImpl{id=ff9d2fcf-44a5-4cbb-a71b-ae806ff3ae28, name=salaboy, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@4d4c1ba9}
+LOG: > Player Notification: (1468779757901)Picked the Flag
+LOG: > Player Notification: (1468779757987)You entered the Score Zone: blue
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.315 sec
+Running org.drools.game.capture.flag.tests.GameRulesTest
+>>> Look for unassigned players: BasePlayerImpl{id=9483d07a-3881-45e8-8c94-523f2cbccf4f, name=salaboy, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@203765b2}
+>>> Look for unassigned players: BasePlayerImpl{id=b0276e7a-5776-449b-b217-d0f61fcb6c5b, name=salaboy, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@5ab63a04}
+>>> Look for unassigned players: BasePlayerImpl{id=ff9ffbf3-dc66-4e15-84b9-f8a3c9764d18, name=Sam, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@3a3ad8e7}
+>>> Look for unassigned players: BasePlayerImpl{id=51f20fb1-c450-4de5-b785-a9ecce504da4, name=barney, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@3b57f915}
+>>> Look for unassigned players: BasePlayerImpl{id=809aa1d5-6365-4392-94ee-5b0517399f87, name=pikachu, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@17884d}
+>>> Look for unassigned players: BasePlayerImpl{id=5b2d0323-d946-4081-b6e6-71147810ccd9, name=salaboy, inventory=org.drools.game.model.impl.base.BaseInventoryImpl@60a01cb}
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.624 sec
+
+Results :
+
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\target\drools-game-engine-capture-flag-kjar-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-capture-flag-kjar ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\target\drools-game-engine-capture-flag-kjar-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-capture-flag-kjar\1.0-SNAPSHOT\drools-game-engine-capture-flag-kjar-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-capture-flag-kjar\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-capture-flag-kjar\1.0-SNAPSHOT\drools-game-engine-capture-flag-kjar-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Horse Race Model 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-horserace-model ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-model\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-horserace-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-horserace-model ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-model\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-horserace-model ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-model\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-horserace-model ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-horserace-model ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-horserace-model ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-model\target\drools-game-engine-horserace-model-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-horserace-model ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-model\target\drools-game-engine-horserace-model-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-horserace-model\1.0-SNAPSHOT\drools-game-engine-horserace-model-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-model\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-horserace-model\1.0-SNAPSHOT\drools-game-engine-horserace-model-1.0-SNAPSHOT.pom
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Drools :: Game Engine Horse Race Pack (KJAR) 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ drools-game-engine-horserace-kjar ---
+[INFO] Deleting C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ drools-game-engine-horserace-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 4 resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ drools-game-engine-horserace-kjar ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\target\classes
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ drools-game-engine-horserace-kjar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ drools-game-engine-horserace-kjar ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\target\test-classes
+[WARNING] /C:/Users/Samuel/Desktop/droolsgameengine/drools-game-engine/drools-game-engine-horserace-kjar/src/test/java/org/drools/game/horserace/tests/GameAPITest.java: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\src\test\java\org\drools\game\horserace\tests\GameAPITest.java uses unchecked or unsafe operations.
+[WARNING] /C:/Users/Samuel/Desktop/droolsgameengine/drools-game-engine/drools-game-engine-horserace-kjar/src/test/java/org/drools/game/horserace/tests/GameAPITest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.12.4:test (default-test) @ drools-game-engine-horserace-kjar ---
+[INFO] Surefire report directory: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\target\surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.drools.game.horserace.tests.GameAPITest
+LOG: > Player Notification: (1468779770604)You entered the checkpoint: StartFinish
+LOG: > Player Notification: (1468779770714)You left the checkpoint: StartFinish
+LOG: > Player Notification: (1468779770715)You entered the checkpoint: CheckPointOne
+LOG: > Player Notification: (1468779770716)You left the checkpoint: CheckPointOne
+LOG: > Player Notification: (1468779770721)You entered the checkpoint: CheckPointTwo
+LOG: > Player Notification: (1468779770723)You left the checkpoint: CheckPointTwo
+LOG: > Player Notification: (1468779770729)You entered the checkpoint: CheckPointThree
+LOG: > Player Notification: (1468779770730)You left the checkpoint: CheckPointThree
+LOG: > Player Notification: (1468779770732)You entered the checkpoint: CheckPointFour
+LOG: > Player Notification: (1468779770733)You left the checkpoint: CheckPointFour
+LOG: > Player Notification: (1468779770736)You entered the checkpoint: StartFinish
+LOG: > Player Notification: (1468779770740)You left the checkpoint: StartFinish
+You entered the checkpoint: CheckPointOne
+You entered the checkpoint: CheckPointFour
+Contestant Morton Abenthy Halputz has crossed checkpoint 1
+Contestant Morton Abenthy Halputz has crossed checkpoint 4
+You left the checkpoint: CheckPointThree
+Contestant Morton Abenthy Halputz has crossed a the finish line!
+Contestant Morton Abenthy Halputz has crossed checkpoint 2
+You entered the checkpoint: CheckPointThree
+You entered the checkpoint: CheckPointTwo
+Contestant Morton Abenthy Halputz has crossed checkpoint 3
+You left the checkpoint: StartFinish
+You entered the checkpoint: StartFinish
+You left the checkpoint: CheckPointFour
+Welcome, Morton Abenthy Halputz. Venture forth to the stables and mount a mighty steed!
+Contestant Morton Abenthy Halputz has crossed a checkpoint!
+You left the checkpoint: CheckPointOne
+You left the checkpoint: CheckPointTwo
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.646 sec
+Running org.drools.game.horserace.tests.GameRulesTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.573 sec
+
+Results :
+
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ drools-game-engine-horserace-kjar ---
+[INFO] Building jar: C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\target\drools-game-engine-horserace-kjar-1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- maven-install-plugin:2.4:install (default-install) @ drools-game-engine-horserace-kjar ---
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\target\drools-game-engine-horserace-kjar-1.0-SNAPSHOT.jar to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-horserace-kjar\1.0-SNAPSHOT\drools-game-engine-horserace-kjar-1.0-SNAPSHOT.jar
+[INFO] Installing C:\Users\Samuel\Desktop\droolsgameengine\drools-game-engine\drools-game-engine-horserace-kjar\pom.xml to C:\Users\Samuel\.m2\repository\org\drools\game\drools-game-engine-horserace-kjar\1.0-SNAPSHOT\drools-game-engine-horserace-kjar-1.0-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] Drools :: Game Engine (Parent) ..................... SUCCESS [  0.262 s]
+[INFO] Drools :: Game Engine Model ........................ SUCCESS [  1.515 s]
+[INFO] Drools :: Game Engine Core KJAR .................... SUCCESS [  0.091 s]
+[INFO] Drools :: Game Engine Core API ..................... SUCCESS [  0.278 s]
+[INFO] Drools :: Game Engine Core Impl .................... SUCCESS [  3.686 s]
+[INFO] Drools :: Game Engine Escape The Room Model ........ SUCCESS [  0.637 s]
+[INFO] Drools :: Game Engine Escape The Room Pack (KJAR) .. SUCCESS [ 20.742 s]
+[INFO] Drools :: Game Engine Services ..................... SUCCESS [ 41.095 s]
+[INFO] Drools :: Game Engine Capture The Flag Model ....... SUCCESS [  0.234 s]
+[INFO] Drools :: Game Engine Capture The Flag Pack (KJAR) . SUCCESS [ 13.562 s]
+[INFO] Drools :: Game Engine Horse Race Model ............. SUCCESS [  0.144 s]
+[INFO] Drools :: Game Engine Horse Race Pack (KJAR) ....... SUCCESS [ 12.634 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 01:35 min
+[INFO] Finished at: 2016-07-17T11:22:53-07:00
+[INFO] Final Memory: 113M/416M
+[INFO] ------------------------------------------------------------------------

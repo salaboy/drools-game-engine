@@ -15,17 +15,19 @@ import java.util.List;
 public class Checkpoint {
 
     private String id;
-    private Checkpoint required;
-    private List<String> playersCrossedCheckpoint = new ArrayList<>();
+    private int order;
+    private boolean isStartFinish;
+    private List<String> players = new ArrayList<>();
 
     private Checkpoint() {
         
     }
 
-    public Checkpoint( String id , Checkpoint required) {
+    public Checkpoint( String id , int order, boolean isStartFinish) {
         this();
         this.id = id;
-        this.required = required;
+        this.order = order;
+        this.isStartFinish = isStartFinish;
     }
     public String getId() {
         return id;
@@ -35,31 +37,43 @@ public class Checkpoint {
         this.id = id;
     }
     
-    public List<String> getPlayersCrossedCheckpoint() {
-        return playersCrossedCheckpoint;
+    public List<String> getPlayers() {
+        return players;
     }
 
-    public void setPlayersCrossedCheckpoint( List<String> playersCrossedCheckpoint ) {
-        this.playersCrossedCheckpoint = playersCrossedCheckpoint;
+    public void setPlayers( List<String> players ) {
+        this.players = players;
     }
 
     public void addPlayer( String player ) {
-        this.playersCrossedCheckpoint.add( player );
+        this.players.add( player );
     }
 
     public void removePlayer( String player ) {
-        this.playersCrossedCheckpoint.remove( player );
+        this.players.remove( player );
     }
 
-    public Checkpoint getRequired()
+    public int getOrder()
     {
-        return required;
+        return order;
     }
 
-    public void setRequired(Checkpoint required)
+    public void setOrder(int order)
     {
-        this.required = required;
+        this.order = order;
     }
+
+    public boolean isIsStartFinish()
+    {
+        return isStartFinish;
+    }
+
+    public void setIsStartFinish(boolean isStartFinish)
+    {
+        this.isStartFinish = isStartFinish;
+    }
+    
+    
 
     @Override
     public String toString() {

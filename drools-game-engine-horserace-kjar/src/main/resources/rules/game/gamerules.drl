@@ -1,40 +1,55 @@
 package org.drools.game.horserace;
+
 import org.drools.game.core.api.*;
 import org.drools.game.model.api.*;
 import org.drools.game.horserace.model.*;
+import java.util.*;
 
 global GameMessageService messageService;
 global GameCallbackService callback;
 
-rule "Greeter"
+rule "Player Setup"
     when
         $player : Player()
+        not ( PlayerScore(player == $player) )
     then
         insert(  messageService.newGameMessage(  "Welcome, " + $player.getName() + ". Venture forth to the stables and mount a mighty steed!" ) );
-end
-
-rule "start the race"
-        when
-            $player : Player()
-            $checkpoint : Checkpoint(id == "StartFinish" && !(required.playersCrossedCheckpoint contains $player.getName()))
-        then
-            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + ", mount your horse, get ready to race! Three... Two... One... aaaand... GO!" ) );
+        insert(  new PlayerScore($player, 0) );
 end
 
 rule "general checkpoint"
         lock-on-active true
         when
             $player : Player()
-            $checkpoint : Checkpoint(required.playersCrossedCheckpoint contains $player.getName())
+            $playerscore : PlayerScore(player == $player)
+            $checkpoint : Checkpoint(players contains $player.getName())
         then
-            modify($checkpoint) { addPlayer($player.getName()) }
+            insert(new CheckpointHit($player, $checkpoint.getOrder()));
             insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has crossed a checkpoint!" ) );
 end
 
-rule "win the race"
+rule "passess general checkpoint hit"
+    lock-on-active true
         when
-            $player : Player()
-            $checkpoint : Checkpoint(id == "StartFinish" && required.playersCrossedCheckpoint contains $player.getName())
+            $playerscore : PlayerScore()
+            $checkpoints : List(  ) from collect( Checkpoint() )
+            $checkpointhit : CheckpointHit(checkpointNumber == (($playerscore.currentCheckpoint + 1) % $checkpoints.size()))
+            $checkpoint : Checkpoint(order == $checkpointhit.checkpointNumber && !isStartFinish)
         then
-            insert(  messageService.newGameMessage(  "Contestant " + $player.getName() + " has crossed the finish line! Way to go! Now resetting the race for another attempt. " ) );
+            int modTo = $checkpointhit.getCheckpointNumber();
+            modify($playerscore){setCurrentCheckpoint(modTo)};
+            insert(  messageService.newGameMessage(  "Contestant " + $playerscore.getPlayer().getName() + " has crossed checkpoint " + modTo ) );
+end
+
+rule "passess victory checkpoint hit"
+    lock-on-active true
+        when
+            $playerscore : PlayerScore()
+            $checkpoints : List( ) from collect( Checkpoint() )
+            $checkpointhit : CheckpointHit(checkpointNumber == (($playerscore.currentCheckpoint + 1) % $checkpoints.size()))
+            $checkpoint : Checkpoint(order == $checkpointhit.checkpointNumber && isStartFinish)
+        then
+            int modTo = $checkpointhit.getCheckpointNumber();
+            modify($playerscore){setCurrentCheckpoint(modTo)};
+            insert(  messageService.newGameMessage(  "Contestant " + $playerscore.getPlayer().getName() + " has crossed a the finish line!" ) );
 end

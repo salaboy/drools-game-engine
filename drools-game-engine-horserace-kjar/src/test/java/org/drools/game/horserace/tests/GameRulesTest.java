@@ -60,51 +60,59 @@ public class GameRulesTest {
         Player player = new BasePlayerImpl("Morton Abenthy Halputz");
         FactHandle playerFH = kSession.insert(player);
         
-        Checkpoint startfinish = new Checkpoint("StartFinish", null);
+        Checkpoint startfinish = new Checkpoint("StartFinish", 0, true);
         FactHandle startfinishFH = kSession.insert(startfinish);
         
-        Checkpoint checkpointone = new Checkpoint("CheckPointOne", startfinish);
+        Checkpoint checkpointone = new Checkpoint("CheckPointOne", 1, false);
         FactHandle checkpointoneFH = kSession.insert(checkpointone);
 
-        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", checkpointone);
+        Checkpoint checkpointtwo = new Checkpoint("CheckPointTwo", 2, false);
         FactHandle checkpointtwoFH = kSession.insert(checkpointtwo);
 
-        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", checkpointtwo);
+        Checkpoint checkpointthree = new Checkpoint("CheckPointThree", 3, false);
         FactHandle checkpointthreeFH = kSession.insert(checkpointthree);
 
-        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", checkpointthree);
+        Checkpoint checkpointfour = new Checkpoint("CheckPointFour", 4, false);
         FactHandle checkpointfourFH = kSession.insert(checkpointfour);
         
-        startfinish.setRequired(checkpointfour);
-        
         int fired = kSession.fireAllRules();
-        assertEquals( 2, fired );
+        assertEquals( 1, fired );
         
         startfinish.addPlayer( player.getName() );
         kSession.update( startfinishFH, startfinish );
         fired = kSession.fireAllRules();
         assertEquals( 1, fired );
         
+        startfinish.removePlayer(player.getName() );
+        kSession.update( startfinishFH, startfinish );
         checkpointone.addPlayer( player.getName() );
         kSession.update( checkpointoneFH, checkpointone );
         fired = kSession.fireAllRules();
         assertEquals( 1, fired );
         
+        checkpointone.removePlayer(player.getName() );
+        kSession.update( checkpointoneFH, checkpointone );
         checkpointtwo.addPlayer( player.getName() );
         kSession.update( checkpointtwoFH, checkpointtwo );
         fired = kSession.fireAllRules();
-        assertEquals( 1, fired );
+        assertEquals( 2, fired );
         
+        checkpointtwo.removePlayer(player.getName() );
+        kSession.update( checkpointtwoFH, checkpointtwo );
         checkpointthree.addPlayer( player.getName() );
         kSession.update( checkpointthreeFH, checkpointthree );
         fired = kSession.fireAllRules();
-        assertEquals( 1, fired );
+        assertEquals( 2, fired );
 
+        checkpointthree.removePlayer(player.getName() );
+        kSession.update( checkpointthreeFH, checkpointthree );
         checkpointfour.addPlayer( player.getName() );
         kSession.update( checkpointfourFH, checkpointfour );
         fired = kSession.fireAllRules();
-        assertEquals( 1, fired );
+        assertEquals( 2, fired );
         
+        checkpointfour.removePlayer(player.getName() );
+        kSession.update( checkpointfourFH, checkpointfour );
         startfinish.addPlayer( player.getName() );
         kSession.update( startfinishFH, startfinish );
         fired = kSession.fireAllRules();
