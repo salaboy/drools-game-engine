@@ -18,18 +18,27 @@ rule "Give a point when the flag enters the Score Zone"
         $tb: TeamBundle( name == $t.name, $spawn: spawn )
         $tbenemy: TeamBundle( name != $t.name, $sc: score)
         $flag: Flag( name == "Flag" ) from $player.getInventory().getItems()
-        $r: Room( this == $sc, playersInRoom contains $player.getName() )
+        $zone: Zone( this == $sc, playersInZone contains $player.getName() )
         $chest: Chest( name == "Flag Chest" )
     then
         modify($t){
             setPoints( $t.getPoints() + 1 )
         };
+        
+        $player.getInventory().getItems().remove($flag);
+        modify($player){
+            getInventory().getItems().remove($flag)
+        }
+        $zone.getPlayersInZone().remove($player.getName());
+        modify($zone){
+            getPlayersInZone().remove($player.getName())
+        }
         insert( messageService.newGameMessage( "Score! Player: " + $player.getName() 
-                        + " just enter the "+ $sc.getId() +" Score Zone ( Team " +$t.getName() 
+                        + " just enter the "+ $sc.getName() +" Score Zone ( Team " +$t.getName() 
                         + " - score: "+$t.getPoints()+" )"  ) );
         
         callback.addCallback(GameCallbackService.newCallback(CommandRegistry.TELEPORT_CALLBACK,$player, $spawn));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.RESET_FLAG_CALLBACK,$player, $chest));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.RESET_FLAG_CALLBACK,$player, $chest, $flag));
       
         
 end
@@ -40,14 +49,22 @@ rule "Teleport a player who hits the chasm with the flag"
         $player: Player( )
         $t: Team( playersInTeam contains $player.name )
         $tb: TeamBundle( name == $t.name, $spawn: spawn )
-        $r: Room( id == "Chasm", playersInRoom contains $player.name )
-        Flag( name == "Flag" ) from $player.getInventory().getItems()
+        $zone: Zone( name == "Chasm", playersInZone contains $player.name )
+        $flag: Flag( name == "Flag" ) from $player.getInventory().getItems()
         $chest: Chest( name == "Flag Chest" )
     then
         insert(  messageService.newGameMessage(  "Player ("+$player.getName()+") with the Flag in the Chasm! , Respawing in: "+ $tb.getSpawn() ) ); 
-       
+        $player.getInventory().getItems().remove($flag);
+        modify($player){
+            getInventory().getItems().remove($flag)
+        }
+        $zone.getPlayersInZone().remove($player.getName());
+        modify($zone){
+            getPlayersInZone().remove($player.getName())
+        }
+        
         callback.addCallback(GameCallbackService.newCallback(CommandRegistry.TELEPORT_CALLBACK, $player, $spawn));  
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.RESET_FLAG_CALLBACK, $player, $chest));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.RESET_FLAG_CALLBACK, $player, $chest, $flag));
         callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_HEALTH_CALLBACK, $player, 20));
         callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_PARAM_CALLBACK, $player, "SPEED", 600));
         callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_PARAM_CALLBACK, $player, "JUMP_BOOST", 3));
@@ -61,7 +78,7 @@ rule "Teleport a player who hits the chasm"
         $player : Player()
         $t: Team( playersInTeam contains $player.name )
         $tb: TeamBundle( name == $t.name, $spawn: spawn )
-        $r: Room(id == "Chasm", playersInRoom contains $player.getName())
+        $zone: Zone(name == "Chasm", playersInZone contains $player.getName())
         not Flag(name == "Flag") from $player.getInventory().getItems()
     then
         insert(  messageService.newGameMessage(  "Player ("+$player.getName()+") without the Flag in the Chasm! , Respawing in: "+ $tb.getSpawn() ) );
@@ -106,11 +123,11 @@ rule "Create team bundle"
         
         $t: Team()
         $spawn: NamedLocation( name == $t.getName() )
-        $r: Room( id == $t.getName() )
-        not ( TeamBundle( name == $t.name, spawn == $spawn, score == $r ) )
+        $zone: Zone( name == $t.getName() )
+        not ( TeamBundle( name == $t.name, spawn == $spawn, score == $zone ) )
     then
         
         insert( messageService.newGameMessage(  "New Team Resource Created for team: "+ $t.getName() ) );
-        insert( new TeamBundle($t.getName(), $spawn, $r) );
+        insert( new TeamBundle($t.getName(), $spawn, $zone) );
         
 end

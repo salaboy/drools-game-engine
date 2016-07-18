@@ -8,7 +8,7 @@ package org.drools.game.core.tests;
 import java.util.ArrayList;
 import java.util.List;
 import org.drools.game.core.api.Context;
-import org.drools.game.core.CommandExecutor;
+import org.drools.game.core.CommandExecutorImpl;
 import org.drools.game.core.ContextImpl;
 import org.drools.game.core.tests.cmds.ExploreCommand;
 import org.drools.game.core.tests.cmds.OpenDoorCommand;
@@ -71,7 +71,7 @@ public class PlayersCommandsTest {
         Assert.assertTrue( roomA.getPeopleInTheRoom().contains( player.getName() ) );
         Assert.assertTrue( player.getInventory().getItems().isEmpty() );
 
-        CommandExecutor executor = new CommandExecutor();
+        CommandExecutorImpl executor = new CommandExecutorImpl();
         List<String> messages = new ArrayList<String>();
         Context context = new ContextImpl();
         context.getData().put( "player", player );

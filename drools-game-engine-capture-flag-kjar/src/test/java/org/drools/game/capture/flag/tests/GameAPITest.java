@@ -7,18 +7,17 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import org.drools.game.capture.flag.cmds.EnterScoreZoneCommand;
-import org.drools.game.capture.flag.cmds.HitChasmCommand;
+import org.drools.game.capture.flag.cmds.EnterZoneCommand;
 import org.drools.game.capture.flag.cmds.PickFlagCommand;
 import org.drools.game.capture.flag.model.Chest;
 import org.drools.game.capture.flag.model.Flag;
 import org.drools.game.capture.flag.model.Location;
 import org.drools.game.capture.flag.model.NamedLocation;
-import org.drools.game.capture.flag.model.Room;
+import org.drools.game.capture.flag.model.Zone;
 import org.drools.game.capture.flag.model.Team;
 import org.drools.game.core.api.GameMessage;
 import org.drools.game.core.api.GameSession;
-import org.drools.game.core.CommandExecutor;
+import org.drools.game.core.CommandExecutorImpl;
 import org.drools.game.core.BaseGameConfigurationImpl;
 import org.drools.game.core.BasePlayerConfigurationImpl;
 import org.drools.game.core.GameCallbackServiceImpl;
@@ -58,7 +57,7 @@ public class GameAPITest {
 
         JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
                 .addClass( GameSessionImpl.class )
-                .addClass( CommandExecutor.class )
+                .addClass( CommandExecutorImpl.class )
                 .addClass( GameMessageService.class )
                 .addClass( GameMessageServiceImpl.class )
                 .addClass( GameCallbackService.class )
@@ -83,19 +82,19 @@ public class GameAPITest {
         initFacts.add( chest );
         Team redTeam = new Team( "red" );
         initFacts.add( redTeam );
-        Room scoreZoneRed = new Room( 0, 0, 0, 0, 0, 0, "red" );
+        Zone scoreZoneRed = new Zone( "red" );
         initFacts.add( scoreZoneRed );
-        NamedLocation redSpawn = new NamedLocation( 0, 0, 0, "red" );
+        NamedLocation redSpawn = new NamedLocation( "red" );
         initFacts.add( redSpawn );
         Team blueTeam = new Team( "blue" );
         initFacts.add( blueTeam );
-        Room scoreZoneBlue = new Room( 0, 0, 0, 0, 0, 0, "blue" );
+        Zone scoreZoneBlue = new Zone( "blue" );
         initFacts.add( scoreZoneBlue );
-        NamedLocation blueSpawn = new NamedLocation( 0, 0, 0, "blue" );
+        NamedLocation blueSpawn = new NamedLocation( "blue" );
         initFacts.add( blueSpawn );
         Flag flag = new Flag( "Flag", "banner" );
         initFacts.add( flag );
-        Room chasm = new Room( 0, 0, 0, 0, 0, 0, "Chasm" );
+        Zone chasm = new Zone( "Chasm" );
         initFacts.add( chasm );
         // Bootstrap the Game with the constructed house for this player
         GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts, "" );
@@ -108,7 +107,11 @@ public class GameAPITest {
 
         game.execute( new PickFlagCommand( player, flag ) );
 
-        game.execute( new HitChasmCommand( player, chasm ) );
+        game.execute( new EnterZoneCommand( player, chasm ) );
+
+        assertEquals( 0, player.getInventory().getItems().size() );
+
+        assertTrue( chasm.getPlayersInZone().isEmpty() );
 
         List<GameMessage> messages = game.getAllMessages( player.getName() );
         messages.addAll( game.getAllMessages( "system" ) );
@@ -129,7 +132,7 @@ public class GameAPITest {
                 Matchers.containsInAnyOrder( "Player: salaboy assigned to team: " + assignedTeam,
                         "New Team Resource Created for team: red",
                         "New Team Resource Created for team: blue",
-                        "You Hit the Chasm",
+                        "You entered the Zone: Chasm",
                         "Picked the Flag",
                         "Player (salaboy) with the Flag in the Chasm! , Respawing in: NamedLocation{name=" + assignedTeam + "}" ) );
 
@@ -150,19 +153,19 @@ public class GameAPITest {
         initFacts.add( chest );
         Team redTeam = new Team( "red" );
         initFacts.add( redTeam );
-        Room scoreZoneRed = new Room( 0, 0, 0, 0, 0, 0, "red" );
+        Zone scoreZoneRed = new Zone( "red" );
         initFacts.add( scoreZoneRed );
-        NamedLocation redSpawn = new NamedLocation( 0, 0, 0, "red" );
+        NamedLocation redSpawn = new NamedLocation( "red" );
         initFacts.add( redSpawn );
         Team blueTeam = new Team( "blue" );
         initFacts.add( blueTeam );
-        Room scoreZoneBlue = new Room( 0, 0, 0, 0, 0, 0, "blue" );
+        Zone scoreZoneBlue = new Zone( "blue" );
         initFacts.add( scoreZoneBlue );
-        NamedLocation blueSpawn = new NamedLocation( 0, 0, 0, "blue" );
+        NamedLocation blueSpawn = new NamedLocation( "blue" );
         initFacts.add( blueSpawn );
         Flag flag = new Flag( "Flag", "banner" );
         initFacts.add( flag );
-        Room chasm = new Room( 0, 0, 0, 0, 0, 0, "Chasm" );
+        Zone chasm = new Zone( "Chasm" );
         initFacts.add( chasm );
         // Bootstrap the Game with the constructed house for this player
         GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts, "" );
@@ -187,14 +190,18 @@ public class GameAPITest {
         assertTrue( assignedTeam != null && !assignedTeam.isEmpty() );
         assertTrue( enemyTeam != null && !enemyTeam.isEmpty() );
         // Select the enemy score Zone
-        Room selectedScoreZone = null;
+        Zone selectedScoreZone = null;
         if ( assignedTeam.equals( "red" ) ) {
             selectedScoreZone = scoreZoneBlue;
         } else if ( assignedTeam.equals( "blue" ) ) {
             selectedScoreZone = scoreZoneRed;
         }
         Assert.assertNotNull( selectedScoreZone );
-        game.execute( new EnterScoreZoneCommand( player, selectedScoreZone ) );
+        game.execute( new EnterZoneCommand( player, selectedScoreZone ) );
+
+        assertEquals( 0, player.getInventory().getItems().size() );
+        
+        assertTrue( selectedScoreZone.getPlayersInZone().isEmpty() );
 
         List<GameMessage> messages = game.getAllMessages( player.getName() );
         messages.addAll( game.getAllMessages( "system" ) );
@@ -207,9 +214,9 @@ public class GameAPITest {
                 Matchers.containsInAnyOrder( "Player: salaboy assigned to team: " + assignedTeam,
                         "New Team Resource Created for team: red",
                         "New Team Resource Created for team: blue",
-                        "You entered the Score Zone: " + enemyTeam,
+                        "You entered the Zone: " + enemyTeam,
                         "Picked the Flag",
-                        "Score! Player: salaboy just enter the "+enemyTeam+" Score Zone ( Team " + assignedTeam + " - score: 1 )" ) );
+                        "Score! Player: salaboy just enter the " + enemyTeam + " Score Zone ( Team " + assignedTeam + " - score: 1 )" ) );
 
         Queue<Command> callbacks = game.getCallbacks();
         assertEquals( 4, callbacks.size() );

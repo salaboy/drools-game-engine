@@ -16,7 +16,7 @@
 
 package org.drools.game.capture.flag.cmds;
 
-import org.drools.game.capture.flag.model.Room;
+import org.drools.game.capture.flag.model.Zone;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
@@ -24,37 +24,37 @@ import org.drools.game.model.api.Player;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
-public class EnterScoreZoneCommand extends BaseCommand<Void> {
+public class EnterZoneCommand extends BaseCommand<Void> {
 
-    private Room scoreZone;
+    private Zone zone;
 
-    public EnterScoreZoneCommand( Player player, Room scoreZone ) {
+    public EnterZoneCommand( Player player, Zone zone ) {
         super( player );
-        this.scoreZone = scoreZone;
+        this.zone = zone;
     }
 
     @Override
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
-        FactHandle scoreZoneFH = session.getFactHandle( scoreZone );
-        scoreZone.addPlayer( getPlayer().getName() );
-        session.update( scoreZoneFH, scoreZone );
-        session.insert( messageService.newGameMessage( getPlayer().getName(), "You entered the Score Zone: " + scoreZone.getId() ) );
+        FactHandle zoneFH = session.getFactHandle( zone );
+        zone.addPlayer( getPlayer().getName() );
+        session.update( zoneFH, zone );
+        session.insert( messageService.newGameMessage( getPlayer().getName(), "You entered the Zone: " + zone.getName() ) );
         return null;
     }
 
-    public Room getScoreZone() {
-        return scoreZone;
+    public Zone getScoreZone() {
+        return zone;
     }
 
-    public void setScoreZone( Room scoreZone ) {
-        this.scoreZone = scoreZone;
+    public void setScoreZone( Zone scoreZone ) {
+        this.zone = scoreZone;
     }
 
     @Override
     public String toString() {
-        return "EnterScoreZoneCommand{" + "scoreZone=" + scoreZone + '}';
+        return "EnterZoneCommand{" + "zone=" + zone + '}';
     }
 
 }
