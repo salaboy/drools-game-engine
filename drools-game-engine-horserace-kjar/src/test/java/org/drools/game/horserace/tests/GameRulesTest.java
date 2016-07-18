@@ -35,10 +35,10 @@ public class GameRulesTest {
     public static JavaArchive createDeployment() {
 
         JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
-                //.addClass( GameMessageService.class )
-                //.addClass( GameMessageServiceImpl.class )
+                .addClass( GameMessageService.class )
+                .addClass( GameMessageServiceImpl.class )
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
-//        System.out.println( jar.toString( true ) );
+        System.out.println( jar.toString( true ) );
         return jar;
     }
 

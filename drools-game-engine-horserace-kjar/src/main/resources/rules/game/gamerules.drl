@@ -3,6 +3,7 @@ package org.drools.game.horserace;
 import org.drools.game.core.api.*;
 import org.drools.game.model.api.*;
 import org.drools.game.horserace.model.*;
+import org.drools.game.horserace.cmds.*;
 import java.util.*;
 
 global GameMessageService messageService;
@@ -15,6 +16,7 @@ rule "Player Setup"
     then
         insert(  messageService.newGameMessage(  "Welcome, " + $player.getName() + ". Venture forth to the stables and mount a mighty steed!" ) );
         insert(  new PlayerScore($player, 0) );
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.MOCK_COMMAND, $player));
 end
 
 rule "general checkpoint"
