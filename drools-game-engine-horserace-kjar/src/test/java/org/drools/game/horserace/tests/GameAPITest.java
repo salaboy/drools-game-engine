@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import org.drools.game.core.api.GameMessage;
 import org.drools.game.core.api.GameSession;
-import org.drools.game.core.CommandExecutor;
 import org.drools.game.core.BaseGameConfigurationImpl;
 import org.drools.game.core.BasePlayerConfigurationImpl;
+import org.drools.game.core.CommandExecutorImpl;
 import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameMessageServiceImpl;
 import org.drools.game.model.impl.base.BasePlayerImpl;
@@ -53,7 +53,7 @@ public class GameAPITest {
 
         JavaArchive jar = ShrinkWrap.create( JavaArchive.class )
                 .addClass( GameSessionImpl.class )
-                .addClass( CommandExecutor.class )
+                .addClass( CommandExecutorImpl.class )
                 .addClass( GameMessageService.class )
                 .addClass( GameMessageServiceImpl.class )
                 .addClass( GameCallbackService.class )
