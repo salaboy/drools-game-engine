@@ -16,6 +16,7 @@
 
 package org.drools.game.core.api;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
 import org.drools.game.model.api.Player;
@@ -35,12 +36,28 @@ public interface GameSession {
 
     <T> T execute( Command<T> cmd );
 
+    <T> Collection<T> getGameObjects( Class<T> type );
+
     List<GameMessage> getAllMessages( String playerName );
 
     List<Command> getSuggestions( Player p );
 
     List<String> getPlayers();
 
+    Player getPlayerByName( String name );
+
     Queue<Command> getCallbacks();
+
+    CommandExecutor getExecutor();
+
+    void setExecutor( CommandExecutor executor );
+
+    GameMessageService getMessageService();
+
+    void setMessageService( GameMessageService messageService );
+
+    GameCallbackService getCallbackService();
+
+    void setCallbackService( GameCallbackService callbackService );
 
 }

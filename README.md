@@ -1,5 +1,7 @@
 Simple Drools Game Engine for creating Escape The Room (point and click) style games.
 
+CI here: https://travis-ci.org/Salaboy/drools-game-engine/builds
+
 #Scenario
 You wake up in a room, you don't know where you are, you need to: ESCAPE THE ROOM! 
 

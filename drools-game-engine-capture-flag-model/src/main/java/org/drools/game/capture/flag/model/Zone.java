@@ -12,32 +12,28 @@ import java.util.List;
  *
  * @author Samuel
  */
-public class Room {
+public class Zone {
 
-    private String id;
+    private String name;
 
     private Location lowerBound;
     private Location upperBound;
 
     private int dimension;
 
-    private List<WorldItem> items;
+    private List<String> playersInZone = new ArrayList<>();
 
-    private List<String> playersInRoom = new ArrayList<>();
-
-    private Room() {
+    private Zone() {
         this.dimension = 0;
-        items = new ArrayList<>();
-
     }
 
-    public Room( String id ) {
+    public Zone( String name ) {
         this();
-        this.id = id;
+        this.name = name;
     }
 
-    public Room( int x, int y, int z, int fx, int fy, int fz, String id ) {
-        this( id );
+    public Zone( String name, int x, int y, int z, int fx, int fy, int fz ) {
+        this( name );
         lowerBound = new Location( Math.min( x, fx ), Math.min( y, fy ), Math.min( z, fz ) );
         upperBound = new Location( Math.max( x, fx ), Math.max( y, fy ), Math.max( z, fz ) );
     }
@@ -66,46 +62,33 @@ public class Room {
         this.dimension = dimension;
     }
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId( String id ) {
-        this.id = id;
+    public void setName( String name ) {
+        this.name = name;
     }
 
-    public void addItem( WorldItem item ) {
-        if ( this.items == null ) {
-            this.items = new ArrayList<>();
-        }
-        this.items.add( item );
+    public List<String> getPlayersInZone() {
+        return playersInZone;
     }
 
-    public List<WorldItem> getItems() {
-        return items;
-    }
-
-    public List<String> getPlayersInRoom() {
-        return playersInRoom;
-    }
-
-    public void setPlayersInRoom( List<String> playersInRoom ) {
-        this.playersInRoom = playersInRoom;
+    public void setPlayersInZone( List<String> playersInZone ) {
+        this.playersInZone = playersInZone;
     }
 
     public void addPlayer( String player ) {
-        this.playersInRoom.add( player );
+        this.playersInZone.add( player );
     }
 
     public void removePlayer( String player ) {
-        this.playersInRoom.remove( player );
+        this.playersInZone.remove( player );
     }
 
     @Override
     public String toString() {
-        return "Room{" + "id=" + id + ", lowerBound=" + lowerBound + ", upperBound=" + upperBound + ", dimension=" + dimension + ", items=" + items + ", playersInRoom=" + playersInRoom + '}';
+        return "Zone{" + "id=" + name + ", lowerBound=" + lowerBound + ", upperBound=" + upperBound + ", dimension=" + dimension + ", playersInZone=" + playersInZone + '}';
     }
-    
-    
 
 }
