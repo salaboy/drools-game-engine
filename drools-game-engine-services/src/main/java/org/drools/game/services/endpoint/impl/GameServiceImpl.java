@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import org.drools.game.core.BaseGameConfigurationImpl;
@@ -35,6 +36,7 @@ import org.drools.game.services.infos.GameSessionInfo;
 public class GameServiceImpl implements GameService {
 
     @Inject
+    @Any
     private Instance<GameSession> sessions;
 
     private Map<String, GameSession> games = new HashMap<String, GameSession>();
