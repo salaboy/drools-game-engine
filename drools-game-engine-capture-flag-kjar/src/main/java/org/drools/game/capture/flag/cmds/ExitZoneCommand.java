@@ -16,7 +16,7 @@
 
 package org.drools.game.capture.flag.cmds;
 
-import org.drools.game.capture.flag.model.Room;
+import org.drools.game.capture.flag.model.Zone;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
@@ -24,37 +24,37 @@ import org.drools.game.model.api.Player;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
-public class HitChasmCommand extends BaseCommand<Void> {
+public class ExitZoneCommand extends BaseCommand<Void> {
 
-    private Room chasm;
+    private Zone zone;
 
-    public HitChasmCommand( Player player, Room chasm ) {
+    public ExitZoneCommand( Player player, Zone zone ) {
         super( player );
-        this.chasm = chasm;
+        this.zone = zone;
     }
 
     @Override
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
-        FactHandle chasmFH = session.getFactHandle( chasm );
-        chasm.addPlayer( getPlayer().getName() );
-        session.update( chasmFH, chasm );
-        session.insert( messageService.newGameMessage( getPlayer().getName(), "You Hit the Chasm" ) );
+        FactHandle zoneFH = session.getFactHandle( zone );
+        zone.removePlayer( getPlayer().getName() );
+        session.update( zoneFH, zone );
+        session.insert( messageService.newGameMessage( getPlayer().getName(), "You Exited the Zone: " + zone.getName() ) );
         return null;
     }
 
-    public Room getChasm() {
-        return chasm;
+    public Zone getScoreZone() {
+        return zone;
     }
 
-    public void setChasm( Room chasm ) {
-        this.chasm = chasm;
+    public void setScoreZone( Zone scoreZone ) {
+        this.zone = scoreZone;
     }
 
     @Override
     public String toString() {
-        return "HitChasmCommand{" + "chasm=" + chasm + '}';
+        return "ExitZoneCommand{" + "zone=" + zone + '}';
     }
 
 }

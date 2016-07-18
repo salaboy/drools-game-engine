@@ -9,6 +9,7 @@ import org.drools.game.core.api.Command;
 import org.drools.game.core.api.GameSession;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Queue;
 import javax.inject.Inject;
 import org.drools.compiler.kproject.ReleaseIdImpl;
+import org.drools.game.core.api.CommandExecutor;
 import org.drools.game.core.api.GameCallbackService;
 import org.drools.game.core.api.GameConfiguration;
 import org.drools.game.core.api.GameMessage;
@@ -26,6 +28,7 @@ import org.kie.api.KieBase;
 import org.kie.api.KieServices;
 import org.kie.api.event.rule.DefaultAgendaEventListener;
 import org.kie.api.event.rule.DefaultRuleRuntimeEventListener;
+import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
@@ -45,6 +48,12 @@ public class GameSessionImpl implements GameSession {
     @Inject
     private CommandExecutor executor;
 
+    @Inject
+    private GameMessageService messageService;
+
+    @Inject
+    private GameCallbackService callbackService;
+
     private KieSession currentGameSession = null;
 
     private ContextImpl currentGameContext = null;
@@ -52,12 +61,6 @@ public class GameSessionImpl implements GameSession {
     private GameConfiguration currentConfig = null;
 
     private LiveQuery gameMessageNotifications = null;
-
-    @Inject
-    private GameMessageService messageService;
-    
-    @Inject 
-    private GameCallbackService callbackService;
 
     private Map<String, FactHandle> currentPlayers = null;
 
@@ -100,7 +103,7 @@ public class GameSessionImpl implements GameSession {
             currentGameSession = gameKbase.newKieSession();
             messageService = new GameMessageServiceImpl();
             currentGameSession.setGlobal( "messageService", messageService );
-            currentGameSession.setGlobal( "callback",  callbackService);
+            currentGameSession.setGlobal( "callback", callbackService );
 
             if ( config.isDebugEnabled() ) {
                 setupGameListeners();
@@ -155,11 +158,11 @@ public class GameSessionImpl implements GameSession {
 
     @Override
     public <T> T execute( Command<T> cmd ) {
-        if(executor == null){
-            throw new IllegalStateException(" 0008 - Error: Make sure that the game session is properly bootstraped before executing any cmd.");
+        if ( executor == null ) {
+            throw new IllegalStateException( " 0008 - Error: Make sure that the game session is properly bootstraped before executing any cmd." );
         }
-        if(currentGameSession == null){
-            throw new IllegalStateException(" 0009 - Error: There is no session for the current game, please make sure that you properly bootstraped the game");
+        if ( currentGameSession == null ) {
+            throw new IllegalStateException( " 0009 - Error: There is no session for the current game, please make sure that you properly bootstraped the game" );
         }
         T results = executor.execute( cmd, currentGameContext );
         currentGameSession.fireAllRules();
@@ -229,14 +232,58 @@ public class GameSessionImpl implements GameSession {
         return new ArrayList<String>( currentPlayers.keySet() );
     }
 
+    public Player getPlayerByName( String name ) {
+        FactHandle playerFH = currentPlayers.get( name );
+        return ( Player ) currentGameSession.getObject( playerFH );
+    }
+
     @Override
     public void drop( Player p ) {
         FactHandle playerFH = currentPlayers.remove( p.getName() );
         currentGameSession.delete( playerFH );
     }
-    
-    public Queue<Command> getCallbacks(){
+
+    @Override
+    public Queue<Command> getCallbacks() {
         return callbackService.getCallbacks();
     }
+
+    @Override
+    public CommandExecutor getExecutor() {
+        return executor;
+    }
+
+    @Override
+    public void setExecutor( CommandExecutor executor ) {
+        this.executor = executor;
+    }
+
+    @Override
+    public GameMessageService getMessageService() {
+        return messageService;
+    }
+
+    @Override
+    public void setMessageService( GameMessageService messageService ) {
+        this.messageService = messageService;
+    }
+
+    @Override
+    public GameCallbackService getCallbackService() {
+        return callbackService;
+    }
+
+    @Override
+    public void setCallbackService( GameCallbackService callbackService ) {
+        this.callbackService = callbackService;
+    }
+
+    @Override
+    public <T> Collection<T> getGameObjects( Class<T> type ) {
+        Collection<? extends Object> objects = currentGameSession.getObjects(  new ClassObjectFilter(type) );
+        return ( Collection<T> ) objects;
+    }
+    
+    
 
 }

@@ -8,6 +8,6 @@ end
 declare TeamBundle
     name: String @key
     spawn: NamedLocation @key
-    score: Room @key
+    score: Zone @key
 end
 
