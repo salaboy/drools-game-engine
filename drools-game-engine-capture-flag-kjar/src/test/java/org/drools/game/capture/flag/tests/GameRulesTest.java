@@ -7,12 +7,13 @@ package org.drools.game.capture.flag.tests;
  * and open the template in the editor.
  */
 import javax.inject.Inject;
+import org.drools.game.capture.flag.cmds.CommandRegistry;
 import org.drools.game.capture.flag.model.Chest;
 import org.drools.game.capture.flag.model.Flag;
 import org.drools.game.capture.flag.model.Location;
 import org.drools.game.capture.flag.model.NamedLocation;
-import org.drools.game.capture.flag.model.Zone;
 import org.drools.game.capture.flag.model.Team;
+import org.drools.game.capture.flag.model.Zone;
 import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameMessageServiceImpl;
 import org.drools.game.core.api.GameMessageService;
@@ -26,6 +27,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.KieBase;
@@ -49,6 +51,16 @@ public class GameRulesTest {
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
 //        System.out.println( jar.toString( true ) );
         return jar;
+    }
+
+    @BeforeClass
+    public static void setup() {
+        CommandRegistry.set( "TELEPORT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.TeleportPlayerCommand" );
+        CommandRegistry.set( "CLEAR_INVENTORY_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ClearPlayerInventoryCommand" );
+        CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ResetFlagCommand" );
+        CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerHealthCommand" );
+        CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerParamCommand" );
     }
 
     @Inject
@@ -173,7 +185,7 @@ public class GameRulesTest {
         kSession.update( playerFH, salaboy );
         fired = kSession.fireAllRules();
         assertEquals( 0, fired );
-        
+
         String assignedTeam = null;
         String enemyTeam = null;
         if ( blueTeam.getPlayersInTeam().contains( salaboy.getName() ) ) {
@@ -191,14 +203,14 @@ public class GameRulesTest {
         if ( assignedTeam.equals( "red" ) ) {
             selectedScoreZone = scoreZoneBlue;
             selectedZoneFH = blueScoreZoneFH;
-            
+
         } else if ( assignedTeam.equals( "blue" ) ) {
             selectedScoreZone = scoreZoneRed;
             selectedZoneFH = redScoreZoneFH;
         }
         assertNotNull( selectedScoreZone );
         assertNotNull( selectedZoneFH );
-        
+
         // Player moves to the Score Zone and needs to be teleported back
         selectedScoreZone.addPlayer( salaboy.getName() );
         kSession.update( selectedZoneFH, selectedScoreZone );
@@ -209,7 +221,7 @@ public class GameRulesTest {
         assertEquals( 0, salaboy.getInventory().getItems().size() );
 
         assertTrue( scoreZoneRed.getPlayersInZone().isEmpty() );
-        
+
         kSession.dispose();
     }
 
