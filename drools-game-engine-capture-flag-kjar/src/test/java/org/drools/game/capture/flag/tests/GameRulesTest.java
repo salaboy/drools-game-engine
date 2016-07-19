@@ -58,6 +58,7 @@ public class GameRulesTest {
         CommandRegistry.set( "TELEPORT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.TeleportPlayerCommand" );
         CommandRegistry.set( "CLEAR_INVENTORY_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ClearPlayerInventoryCommand" );
         CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyViaChatCommand" );
         CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ResetFlagCommand" );
         CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerHealthCommand" );
         CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerParamCommand" );
