@@ -77,6 +77,7 @@ public class GameAPITest {
         CommandRegistry.set( "TELEPORT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.TeleportPlayerCommand" );
         CommandRegistry.set( "CLEAR_INVENTORY_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ClearPlayerInventoryCommand" );
         CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyAllViaChatCommand" );
         CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ResetFlagCommand" );
         CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerHealthCommand" );
         CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerParamCommand" );
@@ -149,7 +150,7 @@ public class GameAPITest {
                         "Player (salaboy) with the Flag in the Chasm! , Respawing in: NamedLocation{name=" + assignedTeam + "}" ) );
 
         Queue<Command> callbacks = game.getCallbacks();
-        assertEquals( 8, callbacks.size() );
+        assertEquals( 9, callbacks.size() );
         // TODO assert each callback in order with callbacks poll. Assert Type and Arguments of each callback
         game.drop( player );
 
@@ -231,7 +232,7 @@ public class GameAPITest {
                         "Score! Player: salaboy just enter the " + enemyTeam + " Score Zone ( Team " + assignedTeam + " - score: 1 )" ) );
 
         Queue<Command> callbacks = game.getCallbacks();
-        assertEquals( 4, callbacks.size() );
+        assertEquals( 5, callbacks.size() );
         // TODO assert each callback in order with callbacks poll. Assert Type and Arguments of each callback
 
         game.drop( player );
