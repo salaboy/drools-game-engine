@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import org.drools.game.capture.flag.cmds.CommandRegistry;
 import org.drools.game.capture.flag.cmds.EnterZoneCommand;
 import org.drools.game.capture.flag.cmds.PickFlagCommand;
 import org.drools.game.capture.flag.model.Chest;
@@ -41,6 +42,7 @@ import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -69,6 +71,16 @@ public class GameAPITest {
 
     @Inject
     private GameSession game;
+
+    @BeforeClass
+    public static void setup() {
+        CommandRegistry.set( "TELEPORT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.TeleportPlayerCommand" );
+        CommandRegistry.set( "CLEAR_INVENTORY_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ClearPlayerInventoryCommand" );
+        CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ResetFlagCommand" );
+        CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerHealthCommand" );
+        CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerParamCommand" );
+    }
 
     /*
 
@@ -200,7 +212,7 @@ public class GameAPITest {
         game.execute( new EnterZoneCommand( player, selectedScoreZone ) );
 
         assertEquals( 0, player.getInventory().getItems().size() );
-        
+
         assertTrue( selectedScoreZone.getPlayersInZone().isEmpty() );
 
         List<GameMessage> messages = game.getAllMessages( player.getName() );
