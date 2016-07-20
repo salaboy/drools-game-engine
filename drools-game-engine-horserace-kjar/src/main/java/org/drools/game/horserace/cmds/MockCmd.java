@@ -14,47 +14,37 @@
  * limitations under the License.
  */
 
-package org.drools.game.capture.flag.tests.cmds;
+package org.drools.game.horserace.cmds;
 
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
+import org.drools.game.core.api.GameMessageService;
+import org.drools.game.horserace.model.Checkpoint;
 import org.drools.game.model.api.Player;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 
-public class SetPlayerParamCommand extends BaseCommand<Void> {
+public class MockCmd extends BaseCommand<Void> {
 
-    
-    private String param;
-    private Integer power;
-    private Integer duration;
+    private Checkpoint checkpoint;
 
-    public SetPlayerParamCommand( Player player, String param, Integer duration, Integer power  ) {
+    public MockCmd( Player player ) {
         super( player );
-        this.param = param;
-        this.duration = duration;
-        this.power = power;
-        
     }
 
     @Override
     public Void execute( Context ctx ) {
+        KieSession session = ( KieSession ) ctx.getData().get( "session" );
+        GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
+        session.insert(messageService.newGameMessage(getPlayer().getName(), ", Mock command executed." ) );
         return null;
     }
 
-    public String getParam() {
-        return param;
-    }
 
-    public void setParam( String param ) {
-        this.param = param;
-    }
 
-    public Integer getPower() {
-        return power;
+    @Override
+    public String toString() {
+        return "MockCmd{ }";
     }
-
-    public void setPower( Integer power ) {
-        this.power = power;
-    }
-
 
 }

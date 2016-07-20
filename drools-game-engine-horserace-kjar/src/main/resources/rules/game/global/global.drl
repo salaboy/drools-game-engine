@@ -1,0 +1,11 @@
+package org.drools.game.horserace;
+
+declare CheckpointHit
+    player: Player @key
+    checkpointNumber: int @key
+end
+
+declare PlayerScore
+    player: Player @key
+    currentCheckpoint: int @key
+end

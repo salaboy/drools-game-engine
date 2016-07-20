@@ -20,41 +20,26 @@ import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-public class SetPlayerParamCommand extends BaseCommand<Void> {
+public class NotifyAllViaChatCommand extends BaseCommand<Void> {
 
-    
-    private String param;
-    private Integer power;
-    private Integer duration;
+    private String message;
 
-    public SetPlayerParamCommand( Player player, String param, Integer duration, Integer power  ) {
+    public NotifyAllViaChatCommand( Player player, String message ) {
         super( player );
-        this.param = param;
-        this.duration = duration;
-        this.power = power;
-        
+        this.message = message;
     }
 
     @Override
     public Void execute( Context ctx ) {
-        return null;
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public String getParam() {
-        return param;
+    public String getMessage() {
+        return message;
     }
 
-    public void setParam( String param ) {
-        this.param = param;
+    public void setMessage( String message ) {
+        this.message = message;
     }
-
-    public Integer getPower() {
-        return power;
-    }
-
-    public void setPower( Integer power ) {
-        this.power = power;
-    }
-
 
 }

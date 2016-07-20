@@ -1,6 +1,5 @@
 package org.drools.game.capture.flag;
 
-
 declare UnassignedPlayer
     player: Player @key
 end
