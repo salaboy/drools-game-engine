@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import org.drools.game.core.BasePlayerConfigurationImpl;
 import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameSessionImpl;
+import org.drools.game.core.api.CommandExecutor;
 import org.drools.game.core.api.GameCallbackService;
 import org.drools.game.core.api.GameSession;
 import org.drools.game.model.api.Player;
@@ -54,7 +55,7 @@ public class GameServiceTest {
 	public static Archive createDeployment() throws IllegalArgumentException, Exception {
 		JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
 		deployment.setContextRoot("/api");
-		deployment.addClass(GameSession.class).addClass(GameCallbackService.class)
+		deployment.addClass(GameSession.class).addClass(CommandExecutor.class).addClass(GameCallbackService.class)
 				.addClass(GameCallbackServiceImpl.class).addPackage(GameSession.class.getPackage())
 				.addPackage(GameSessionImpl.class.getPackage()).addClass(GameSession.class)
 				.addClass(GameSessionImpl.class).addClass(GameService.class).addClass(GameServiceImpl.class)
