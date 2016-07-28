@@ -18,6 +18,9 @@ public class Checkpoint {
     private int order;
     private boolean isStartFinish;
     private List<String> players = new ArrayList<>();
+    
+    private Location lowerBound;
+    private Location upperBound;
 
     private Checkpoint() {
         
@@ -36,6 +39,19 @@ public class Checkpoint {
         this.order = order;
         this.isStartFinish = isStartFinish;
     }
+    
+    public Checkpoint( String id, int order, int x, int y, int z, int fx, int fy, int fz, boolean isStartFinish ) {
+        this( id, order, isStartFinish );
+        lowerBound = new Location( Math.min( x, fx ), Math.min( y, fy ), Math.min( z, fz ) );
+        upperBound = new Location( Math.max( x, fx ), Math.max( y, fy ), Math.max( z, fz ) );
+    }
+    
+        public Checkpoint( String id, int order, int x, int y, int z, int fx, int fy, int fz) {
+        this( id, order, false );
+        lowerBound = new Location( Math.min( x, fx ), Math.min( y, fy ), Math.min( z, fz ) );
+        upperBound = new Location( Math.max( x, fx ), Math.max( y, fy ), Math.max( z, fz ) );
+    }
+    
     public String getId() {
         return id;
     }
@@ -79,11 +95,26 @@ public class Checkpoint {
     {
         this.isStartFinish = isStartFinish;
     }
-    /*
-    private String id;
-    private int order;
-    private boolean isStartFinish;
-    private List<String> players = new ArrayList<>();*/
+
+    public Location getLowerBound()
+    {
+        return lowerBound;
+    }
+
+    public void setLowerBound(Location lowerBound)
+    {
+        this.lowerBound = lowerBound;
+    }
+
+    public Location getUpperBound()
+    {
+        return upperBound;
+    }
+
+    public void setUpperBound(Location upperBound)
+    {
+        this.upperBound = upperBound;
+    }
 
     @Override
     public String toString() {

@@ -21,6 +21,7 @@ import org.drools.game.core.api.GameCallbackService;
 import org.drools.game.core.api.GameConfiguration;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.core.api.PlayerConfiguration;
+import org.drools.game.horserace.cmds.CommandRegistry;
 import org.drools.game.horserace.cmds.EnterCheckpointCommand;
 import org.drools.game.horserace.cmds.LeaveCheckpointCommand;
 import org.drools.game.horserace.model.Checkpoint;
@@ -36,6 +37,7 @@ import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.runtime.rule.FactHandle;
@@ -65,6 +67,12 @@ public class GameAPITest {
 
     @Inject
     private GameSession game;
+    
+        @BeforeClass
+    public static void setup() {
+        CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyAllViaChatCommand" );
+    }
 
     /*
 

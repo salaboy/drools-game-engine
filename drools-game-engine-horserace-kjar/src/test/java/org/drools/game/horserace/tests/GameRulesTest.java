@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameMessageServiceImpl;
 import org.drools.game.core.api.GameMessageService;
+import org.drools.game.horserace.cmds.CommandRegistry;
 import org.drools.game.horserace.model.Checkpoint;
 import org.drools.game.model.api.Player;
 import org.drools.game.model.impl.base.BasePlayerImpl;
@@ -21,6 +22,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.KieBase;
@@ -45,6 +47,12 @@ public class GameRulesTest {
     @Inject
     @KBase( "gameKBase" )
     private KieBase kBase;
+    
+    @BeforeClass
+    public static void setup() {
+        CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyViaChatCommand" );
+    }
 
     /*
     * This test checks that the player is teleported back to the spawn location of its team
