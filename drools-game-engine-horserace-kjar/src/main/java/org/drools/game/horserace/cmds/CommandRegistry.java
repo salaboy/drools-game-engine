@@ -16,6 +16,18 @@
 
 package org.drools.game.horserace.cmds;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CommandRegistry {
-    public static final String MOCK_COMMAND = "org.drools.game.horserace.cmds.MockCmd";
+
+    private static final Map<String, String> cmds = new HashMap<String, String>();
+
+    public static void set( String key, String value ) {
+        cmds.put( key, value );
+    }
+
+    public static String get( String key ) {
+        return cmds.get( key );
+    }
 }

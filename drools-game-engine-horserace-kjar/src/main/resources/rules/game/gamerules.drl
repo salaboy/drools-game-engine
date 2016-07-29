@@ -16,7 +16,8 @@ rule "Player Setup"
     then
         insert(  messageService.newGameMessage(  "Welcome, " + $player.getName() + ". Venture forth to the stables and mount a mighty steed!" ) );
         insert(  new PlayerScore($player, 0) );
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.MOCK_COMMAND, $player));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("NOTIFY_ALL_VIA_CHAT_CALLBACK"), $player,
+             "Welcome, " + $player.getName() + ". Venture forth to the stables and mount a mighty steed!" ));
 end
 
 rule "general checkpoint"
@@ -33,7 +34,7 @@ end
 rule "passess general checkpoint hit"
     lock-on-active true
         when
-            $playerscore : PlayerScore()
+            $playerscore : PlayerScore($player: player)
             $checkpoints : List(  ) from collect( Checkpoint() )
             $checkpointhit : CheckpointHit(checkpointNumber == (($playerscore.currentCheckpoint + 1) % $checkpoints.size()))
             $checkpoint : Checkpoint(order == $checkpointhit.checkpointNumber && !isStartFinish)
@@ -41,12 +42,14 @@ rule "passess general checkpoint hit"
             int modTo = $checkpointhit.getCheckpointNumber();
             modify($playerscore){setCurrentCheckpoint(modTo)};
             insert(  messageService.newGameMessage(  "Contestant " + $playerscore.getPlayer().getName() + " has crossed checkpoint " + modTo ) );
+            callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("NOTIFY_ALL_VIA_CHAT_CALLBACK"), $player,
+                 "Contestant " + $playerscore.getPlayer().getName() + " has crossed checkpoint " + modTo ));
 end
 
 rule "passess victory checkpoint hit"
     lock-on-active true
         when
-            $playerscore : PlayerScore()
+            $playerscore : PlayerScore( $player: player )
             $checkpoints : List( ) from collect( Checkpoint() )
             $checkpointhit : CheckpointHit(checkpointNumber == (($playerscore.currentCheckpoint + 1) % $checkpoints.size()))
             $checkpoint : Checkpoint(order == $checkpointhit.checkpointNumber && isStartFinish)
@@ -54,4 +57,6 @@ rule "passess victory checkpoint hit"
             int modTo = $checkpointhit.getCheckpointNumber();
             modify($playerscore){setCurrentCheckpoint(modTo)};
             insert(  messageService.newGameMessage(  "Contestant " + $playerscore.getPlayer().getName() + " has crossed a the finish line!" ) );
+            callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("NOTIFY_ALL_VIA_CHAT_CALLBACK"), $player,
+                 "Contestant " + $playerscore.getPlayer().getName() + " has crossed a the finish line!" ));
 end
