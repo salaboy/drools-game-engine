@@ -40,7 +40,7 @@ public class GameServiceImpl implements GameService {
     private Map<String, GameSession> games = new HashMap<String, GameSession>();
 
     @Override
-    public String newGameSession( String playerId ) {
+    public String newGameSession( ) {
         GameSession gameSession = sessions.get();
         List initialData = new ArrayList(); // Get the initial facts from store
         gameSession.bootstrap( new BaseGameConfigurationImpl( initialData, "" ) );

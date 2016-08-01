@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
-package org.drools.game.services;
+package com.drools.game.services.endpoint.test.cmds;
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.wildfly.swarm.container.Container;
-import org.wildfly.swarm.jaxrs.JAXRSArchive;
+import org.drools.game.core.api.BaseCommand;
+import org.drools.game.core.api.Context;
+import org.drools.game.model.api.Player;
 
-public class App {
+public class ClearPlayerInventoryCommand extends BaseCommand<Void> {
 
-    public static void main( String[] args ) throws Exception {
-        Container container = new Container();
-
-        container.start();
-
-        JAXRSArchive deployment = ShrinkWrap.create( JAXRSArchive.class );
-
-        deployment.setContextRoot( "/api" );
-
-        deployment.addAllDependencies();
-
-        container.deploy( deployment );
+    public ClearPlayerInventoryCommand( Player player ) {
+        super( player );
     }
+
+    @Override
+    public Void execute( Context ctx ) {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

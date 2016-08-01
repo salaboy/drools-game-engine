@@ -19,16 +19,37 @@ package org.drools.game.model.impl.base;
 import java.util.List;
 import org.drools.game.model.api.Inventory;
 import org.drools.game.model.api.Item;
-import org.drools.game.model.api.Player;
 
 public class BaseInventoryImpl implements Inventory {
 
-    private Player player;
+    
+    private String playerName;
     private List<Item> items;
+    private String name;
+    private boolean open = true;
 
-    public BaseInventoryImpl( Player player, List<Item> items ) {
-        this.player = player;
+    public BaseInventoryImpl() {
+    }
+
+    public BaseInventoryImpl( String playerName, List<Item> items ) {
+        this.playerName = playerName;
         this.items = items;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName( String playerName ) {
+        this.playerName = playerName;
+    }
+
+    public void setItems( List<Item> items ) {
+        this.items = items;
+    }
+
+    public void setName( String name ) {
+        this.name = name;
     }
 
     @Override
@@ -38,17 +59,17 @@ public class BaseInventoryImpl implements Inventory {
 
     @Override
     public String getName() {
-        return "Players Inventory";
+        return name;
     }
 
     @Override
     public boolean isOpen() {
-        return true;
+        return open;
     }
 
     @Override
     public void setOpen( boolean open ) {
-        // the player's inventory is always open by default to browse
+        this.open = open;
     }
 
 }
