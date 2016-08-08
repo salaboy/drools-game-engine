@@ -81,6 +81,7 @@ public class GameAPITest {
         CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ResetFlagCommand" );
         CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerHealthCommand" );
         CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerParamCommand" );
+        CommandRegistry.set( "CHANGE_SCORE_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ChangeScoreCommand" );
     }
 
     /*
@@ -232,7 +233,7 @@ public class GameAPITest {
                         "Score! Player: salaboy just enter the " + enemyTeam + " Score Zone ( Team " + assignedTeam + " - score: 1 )" ) );
 
         Queue<Command> callbacks = game.getCallbacks();
-        assertEquals( 5, callbacks.size() );
+        assertEquals( 6, callbacks.size() );
         // TODO assert each callback in order with callbacks poll. Assert Type and Arguments of each callback
 
         game.drop( player );
