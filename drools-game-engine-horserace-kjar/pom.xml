@@ -20,11 +20,6 @@
             <version>6.4.0.Final</version>
         </dependency>
         <dependency>
-            <groupId>org.kie</groupId>
-            <artifactId>kie-ci</artifactId>
-            <version>6.4.0.Final</version>
-        </dependency>
-        <dependency>
             <groupId>org.drools.game</groupId>
             <artifactId>drools-game-engine-horserace-model</artifactId>
             <version>${project.version}</version>
@@ -59,7 +54,8 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.11</version>
+            <scope>test</scope>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -78,18 +74,6 @@
             <artifactId>arquillian-weld-se-embedded-1.1</artifactId>
             <version>1.0.0.CR9</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-core</artifactId>
-            <version>1.1.10.Final</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.container</groupId>
-            <artifactId>arquillian-container-test-api</artifactId>
-            <version>1.1.10.Final</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
     

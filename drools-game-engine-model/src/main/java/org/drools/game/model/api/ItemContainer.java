@@ -5,12 +5,14 @@
  */
 package org.drools.game.model.api;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 
 /**
  *
  * @author salaboy
  */
+@JsonTypeInfo( use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT )
 public interface ItemContainer {
 
     String getName();

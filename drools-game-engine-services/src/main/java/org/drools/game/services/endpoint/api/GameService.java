@@ -17,7 +17,6 @@
 package org.drools.game.services.endpoint.api;
 
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -33,7 +32,9 @@ public interface GameService {
 
     @POST
     @Path( "" )
-    String newGameSession( @NotNull String playerId );
+    @Consumes( value = APPLICATION_JSON )
+    @Produces( value = APPLICATION_JSON )
+    String newGameSession( );
 
     @GET
     @Path( "" )
@@ -43,5 +44,7 @@ public interface GameService {
 
     @POST
     @Path( "{sessionId}" )
+    @Consumes( value = APPLICATION_JSON )
+    @Produces( value = APPLICATION_JSON )
     void joinGameSession( @PathParam( "sessionId" ) String sessionId, Player p );
 }
