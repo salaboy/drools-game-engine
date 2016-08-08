@@ -43,7 +43,7 @@ rule "Give a point when the flag enters the Score Zone"
         "Score! Player: " + $player.getName() 
                         + " just enter the "+ $sc.getName() +" Score Zone ( Team " +$t.getName() 
                         + " - score: "+$t.getPoints()+" )" ));
-        
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("CHANGE_SCORE_CALLBACK"), $player, $t));
 end
 
 
