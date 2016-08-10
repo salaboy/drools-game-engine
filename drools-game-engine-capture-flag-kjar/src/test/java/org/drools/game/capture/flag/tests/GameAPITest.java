@@ -110,6 +110,10 @@ public class GameAPITest {
         initFacts.add( flag );
         Zone chasm = new Zone( "Chasm" );
         initFacts.add( chasm );
+        Zone speedPowerup = new Zone( "SpeedPowerup" );
+        initFacts.add( speedPowerup );
+        Zone jumpPowerup = new Zone( "JumpPowerup" );
+        initFacts.add( jumpPowerup );
         // Bootstrap the Game with the constructed house for this player
         GameConfiguration gameConfiguration = new BaseGameConfigurationImpl( initFacts, "" );
 
