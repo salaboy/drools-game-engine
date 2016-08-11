@@ -51,6 +51,7 @@ public class GameRulesTest {
     public static void setup() {
         CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyViaChatCommand" );
         CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyAllViaChatCommand" );
+        CommandRegistry.set( "CHANGE_SCORE_CALLBACK", "org.drools.game.horserace.tests.cmds.ChangeScoreCommand" );
     }
 
     /*

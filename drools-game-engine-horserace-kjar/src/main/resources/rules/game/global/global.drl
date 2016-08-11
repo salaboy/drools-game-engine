@@ -8,4 +8,5 @@ end
 declare PlayerScore
     player: Player @key
     currentCheckpoint: int @key
+    laps: int @key
 end

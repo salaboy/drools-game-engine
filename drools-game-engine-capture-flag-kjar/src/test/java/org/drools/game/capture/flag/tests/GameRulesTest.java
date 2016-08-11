@@ -62,6 +62,7 @@ public class GameRulesTest {
         CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ResetFlagCommand" );
         CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerHealthCommand" );
         CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerParamCommand" );
+        CommandRegistry.set( "CHANGE_SCORE_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ChangeScoreCommand" );
     }
 
     @Inject

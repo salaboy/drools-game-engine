@@ -69,6 +69,7 @@ public class GameAPITest {
     public static void setup() {
         CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyViaChatCommand" );
         CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.horserace.tests.cmds.NotifyAllViaChatCommand" );
+        CommandRegistry.set( "CHANGE_SCORE_CALLBACK", "org.drools.game.horserace.tests.cmds.ChangeScoreCommand" );
     }
 
     /*
@@ -115,7 +116,7 @@ public class GameAPITest {
         List<GameMessage> messages = game.getAllMessages( player.getName() );
         messages.addAll( game.getAllMessages( "system" ) );
 
-        assertEquals( 25, messages.size() );
+        assertEquals( 24, messages.size() );
 
         Set<String> messageTexts = messages.stream().map( m -> m.getText() ).collect( Collectors.toSet() );
 
