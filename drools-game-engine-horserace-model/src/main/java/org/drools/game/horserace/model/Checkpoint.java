@@ -17,12 +17,12 @@ public class Checkpoint {
     private String id;
     private int order;
     private boolean isStartFinish;
-    private List<String> players = new ArrayList<>();
+    private List<String> players;
     private Location lowerBound;
     private Location upperBound;
 
     private Checkpoint() {
-
+        players = new ArrayList<>();
     }
 
     public Checkpoint( String id, int order, int x, int y, int z, int fx, int fy, int fz, boolean isStartFinish ) {
