@@ -1,9 +1,7 @@
-
 package org.drools.game.services.endpoint.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import org.drools.game.model.impl.base.BasePlayerImpl;
 import org.drools.game.services.endpoint.api.GameService;
 import org.drools.game.services.endpoint.impl.GameServiceImpl;
 import org.drools.game.services.infos.GameSessionInfo;
-import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
@@ -26,13 +23,11 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
-
 
 @RunWith(Arquillian.class)
 public class GameServiceTest {
@@ -71,7 +66,7 @@ public class GameServiceTest {
 	}
 
 	@Deployment
-	public static Archive createDeployment1() throws IllegalArgumentException, Exception {
+	public static Archive createDeployment() throws IllegalArgumentException, Exception {
 		JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
 		deployment.addPackages(true, "com.google.common");
 		deployment.addClass(GameService.class);
