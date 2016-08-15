@@ -16,6 +16,9 @@
 
 package org.drools.game.services;
 
+import org.drools.game.services.endpoint.api.GameService;
+import org.drools.game.services.endpoint.impl.GameServiceImpl;
+import org.drools.game.services.infos.GameSessionInfo;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
@@ -30,8 +33,9 @@ public class App {
         JAXRSArchive deployment = ShrinkWrap.create( JAXRSArchive.class );
 
         deployment.setContextRoot( "/api" );
-
-        deployment.addAsLibrary( container.createDefaultDeployment() );
+        deployment.addClass( GameService.class );
+        deployment.addClass( GameServiceImpl.class );
+        deployment.addClass( GameSessionInfo.class );
         deployment.addAllDependencies();
 
         container.deploy( deployment );

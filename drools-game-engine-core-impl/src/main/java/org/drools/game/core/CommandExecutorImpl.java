@@ -6,14 +6,16 @@
 package org.drools.game.core;
 
 import org.drools.game.core.api.Command;
+import org.drools.game.core.api.CommandExecutor;
 import org.drools.game.core.api.Context;
 
 /**
  *
  * @author salaboy
  */
-public class CommandExecutor {
+public class CommandExecutorImpl implements CommandExecutor{
 
+    @Override
     public <T> T execute( Command<T> cmd, Context ctx ) {
         return cmd.execute( ctx );
     }

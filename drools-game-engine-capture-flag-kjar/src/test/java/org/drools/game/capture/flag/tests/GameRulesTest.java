@@ -7,12 +7,13 @@ package org.drools.game.capture.flag.tests;
  * and open the template in the editor.
  */
 import javax.inject.Inject;
+import org.drools.game.capture.flag.cmds.CommandRegistry;
 import org.drools.game.capture.flag.model.Chest;
 import org.drools.game.capture.flag.model.Flag;
 import org.drools.game.capture.flag.model.Location;
 import org.drools.game.capture.flag.model.NamedLocation;
-import org.drools.game.capture.flag.model.Room;
 import org.drools.game.capture.flag.model.Team;
+import org.drools.game.capture.flag.model.Zone;
 import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameMessageServiceImpl;
 import org.drools.game.core.api.GameMessageService;
@@ -26,6 +27,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.KieBase;
@@ -49,6 +51,18 @@ public class GameRulesTest {
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
 //        System.out.println( jar.toString( true ) );
         return jar;
+    }
+
+    @BeforeClass
+    public static void setup() {
+        CommandRegistry.set( "TELEPORT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.TeleportPlayerCommand" );
+        CommandRegistry.set( "CLEAR_INVENTORY_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ClearPlayerInventoryCommand" );
+        CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.capture.flag.tests.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ResetFlagCommand" );
+        CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerHealthCommand" );
+        CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.capture.flag.tests.cmds.SetPlayerParamCommand" );
+        CommandRegistry.set( "CHANGE_SCORE_CALLBACK", "org.drools.game.capture.flag.tests.cmds.ChangeScoreCommand" );
     }
 
     @Inject
@@ -76,17 +90,17 @@ public class GameRulesTest {
         // Red team
         Team redTeam = new Team( "red" );
         kSession.insert( redTeam );
-        Room scoreZoneRed = new Room( 0, 0, 0, 0, 0, 0, "red" );
+        Zone scoreZoneRed = new Zone( "red" );
         kSession.insert( scoreZoneRed );
-        NamedLocation redSpawn = new NamedLocation( 0, 0, 0, "red" );
+        NamedLocation redSpawn = new NamedLocation( "red" );
         kSession.insert( redSpawn );
 
         // Blue team
         Team blueTeam = new Team( "blue" );
         kSession.insert( blueTeam );
-        Room scoreZoneBlue = new Room( 0, 0, 0, 0, 0, 0, "blue" );
+        Zone scoreZoneBlue = new Zone( "blue" );
         kSession.insert( scoreZoneBlue );
-        NamedLocation blueSpawn = new NamedLocation( 0, 0, 0, "blue" );
+        NamedLocation blueSpawn = new NamedLocation( "blue" );
         kSession.insert( blueSpawn );
 
         int fired = kSession.fireAllRules();
@@ -96,7 +110,7 @@ public class GameRulesTest {
         Flag flag = new Flag( "Flag", "banner" );
         kSession.insert( flag );
 
-        Room chasm = new Room( 0, 0, 0, 0, 0, 0, "Chasm" );
+        Zone chasm = new Zone( "Chasm" );
         FactHandle chasmFH = kSession.insert( chasm );
 
         fired = kSession.fireAllRules();
@@ -114,6 +128,10 @@ public class GameRulesTest {
 
         fired = kSession.fireAllRules();
         assertEquals( 1, fired );
+
+        assertEquals( 0, salaboy.getInventory().getItems().size() );
+
+        assertTrue( chasm.getPlayersInZone().isEmpty() );
 
         kSession.dispose();
     }
@@ -138,7 +156,7 @@ public class GameRulesTest {
         // Red team
         Team redTeam = new Team( "red" );
         kSession.insert( redTeam );
-        Room scoreZoneRed = new Room(  "red" );
+        Zone scoreZoneRed = new Zone( "red" );
         FactHandle redScoreZoneFH = kSession.insert( scoreZoneRed );
         NamedLocation redSpawn = new NamedLocation( "red" );
         kSession.insert( redSpawn );
@@ -146,9 +164,9 @@ public class GameRulesTest {
         // Blue team
         Team blueTeam = new Team( "blue" );
         kSession.insert( blueTeam );
-        Room scoreZoneBlue = new Room(  "blue" );
-        kSession.insert( scoreZoneBlue );
-        NamedLocation blueSpawn = new NamedLocation(  "blue" );
+        Zone scoreZoneBlue = new Zone( "blue" );
+        FactHandle blueScoreZoneFH = kSession.insert( scoreZoneBlue );
+        NamedLocation blueSpawn = new NamedLocation( "blue" );
         kSession.insert( blueSpawn );
 
         int fired = kSession.fireAllRules();
@@ -158,7 +176,7 @@ public class GameRulesTest {
         Flag flag = new Flag( "Flag", "banner" );
         kSession.insert( flag );
 
-        Room chasm = new Room(  "Chasm" );
+        Zone chasm = new Zone( "Chasm" );
         FactHandle chasmFH = kSession.insert( chasm );
 
         fired = kSession.fireAllRules();
@@ -170,12 +188,41 @@ public class GameRulesTest {
         fired = kSession.fireAllRules();
         assertEquals( 0, fired );
 
+        String assignedTeam = null;
+        String enemyTeam = null;
+        if ( blueTeam.getPlayersInTeam().contains( salaboy.getName() ) ) {
+            assignedTeam = blueTeam.getName();
+            enemyTeam = redTeam.getName();
+        } else if ( redTeam.getPlayersInTeam().contains( salaboy.getName() ) ) {
+            assignedTeam = redTeam.getName();
+            enemyTeam = blueTeam.getName();
+        }
+        assertTrue( assignedTeam != null && !assignedTeam.isEmpty() );
+        assertTrue( enemyTeam != null && !enemyTeam.isEmpty() );
+        // Select the enemy score Zone
+        Zone selectedScoreZone = null;
+        FactHandle selectedZoneFH = null;
+        if ( assignedTeam.equals( "red" ) ) {
+            selectedScoreZone = scoreZoneBlue;
+            selectedZoneFH = blueScoreZoneFH;
+
+        } else if ( assignedTeam.equals( "blue" ) ) {
+            selectedScoreZone = scoreZoneRed;
+            selectedZoneFH = redScoreZoneFH;
+        }
+        assertNotNull( selectedScoreZone );
+        assertNotNull( selectedZoneFH );
+
         // Player moves to the Score Zone and needs to be teleported back
-        scoreZoneRed.addPlayer( salaboy.getName() );
-        kSession.update( redScoreZoneFH, scoreZoneRed );
+        selectedScoreZone.addPlayer( salaboy.getName() );
+        kSession.update( selectedZoneFH, selectedScoreZone );
 
         fired = kSession.fireAllRules();
-        assertEquals( 0, fired );
+        assertEquals( 1, fired );
+
+        assertEquals( 0, salaboy.getInventory().getItems().size() );
+
+        assertTrue( scoreZoneRed.getPlayersInZone().isEmpty() );
 
         kSession.dispose();
     }
@@ -197,11 +244,11 @@ public class GameRulesTest {
 
         NamedLocation redTeamSpawn = new NamedLocation( "red" );
         kSession.insert( redTeamSpawn );
-        NamedLocation blueTeamSpawn = new NamedLocation(  "blue" );
+        NamedLocation blueTeamSpawn = new NamedLocation( "blue" );
         kSession.insert( blueTeamSpawn );
-        Room redScoreZone = new Room( "red" );
+        Zone redScoreZone = new Zone( "red" );
         kSession.insert( redScoreZone );
-        Room blueScoreZone = new Room( "blue" );
+        Zone blueScoreZone = new Zone( "blue" );
         kSession.insert( blueScoreZone );
 
         Player salaboy = new BasePlayerImpl( "salaboy" );

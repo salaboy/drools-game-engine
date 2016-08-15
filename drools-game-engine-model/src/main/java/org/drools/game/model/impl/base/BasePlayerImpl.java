@@ -23,10 +23,13 @@ public class BasePlayerImpl implements Player {
 
     private Inventory inventory;
 
+    public BasePlayerImpl() {
+    }
+
     public BasePlayerImpl( String name ) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.inventory = new BaseInventoryImpl( this, new ArrayList<Item>() );
+        this.inventory = new BaseInventoryImpl( this.id, new ArrayList<Item>() );
     }
 
     @Override

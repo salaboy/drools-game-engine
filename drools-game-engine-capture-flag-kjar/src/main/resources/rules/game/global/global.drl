@@ -1,6 +1,5 @@
 package org.drools.game.capture.flag;
 
-
 declare UnassignedPlayer
     player: Player @key
 end
@@ -8,6 +7,6 @@ end
 declare TeamBundle
     name: String @key
     spawn: NamedLocation @key
-    score: Room @key
+    score: Zone @key
 end
 

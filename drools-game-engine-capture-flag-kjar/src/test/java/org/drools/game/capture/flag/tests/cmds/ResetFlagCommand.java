@@ -17,6 +17,7 @@
 package org.drools.game.capture.flag.tests.cmds;
 
 import org.drools.game.capture.flag.model.Chest;
+import org.drools.game.capture.flag.model.Flag;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
@@ -24,17 +25,17 @@ import org.drools.game.model.api.Player;
 public class ResetFlagCommand extends BaseCommand<Void> {
 
     private Chest chest;
+    private Flag flag;
 
-    public ResetFlagCommand( Player player, Chest chest ) {
+    public ResetFlagCommand( Player player, Chest chest, Flag flag ) {
         super( player );
         this.chest = chest;
+        this.flag = flag;
     }
-    
-    
-    
+
     @Override
     public Void execute( Context ctx ) {
-        
+
         return null;
     }
 
@@ -46,5 +47,12 @@ public class ResetFlagCommand extends BaseCommand<Void> {
         this.chest = chest;
     }
 
-    
+    public Flag getFlag() {
+        return flag;
+    }
+
+    public void setFlag( Flag flag ) {
+        this.flag = flag;
+    }
+
 }

@@ -14,47 +14,47 @@
  * limitations under the License.
  */
 
-package org.drools.game.capture.flag.cmds;
+package org.drools.game.horserace.cmds;
 
-import org.drools.game.capture.flag.model.Room;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
+import org.drools.game.horserace.model.Checkpoint;
 import org.drools.game.model.api.Player;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
-public class HitChasmCommand extends BaseCommand<Void> {
+public class LeaveCheckpointCommand extends BaseCommand<Void> {
 
-    private Room chasm;
+    private Checkpoint checkpoint;
 
-    public HitChasmCommand( Player player, Room chasm ) {
+    public LeaveCheckpointCommand( Player player, Checkpoint scoreZone ) {
         super( player );
-        this.chasm = chasm;
+        this.checkpoint = scoreZone;
     }
 
     @Override
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
-        FactHandle chasmFH = session.getFactHandle( chasm );
-        chasm.addPlayer( getPlayer().getName() );
-        session.update( chasmFH, chasm );
-        session.insert( messageService.newGameMessage( getPlayer().getName(), "You Hit the Chasm" ) );
+        FactHandle scoreZoneFH = session.getFactHandle(checkpoint );
+        checkpoint.removePlayer( getPlayer().getName() );
+        session.update(scoreZoneFH, checkpoint );
+        session.insert(messageService.newGameMessage(getPlayer().getName(), "You left the checkpoint: " + checkpoint.getId() ) );
         return null;
     }
 
-    public Room getChasm() {
-        return chasm;
+    public Checkpoint getCheckpoint() {
+        return checkpoint;
     }
 
-    public void setChasm( Room chasm ) {
-        this.chasm = chasm;
+    public void setCheckpoint( Checkpoint checkpoint ) {
+        this.checkpoint = checkpoint;
     }
 
     @Override
     public String toString() {
-        return "HitChasmCommand{" + "chasm=" + chasm + '}';
+        return "EnterScoreZoneCommand{" + "scoreZone=" + checkpoint + '}';
     }
 
 }

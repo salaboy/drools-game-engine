@@ -3,7 +3,7 @@ package org.drools.game.capture.flag;
 import org.drools.game.core.api.*;
 import org.drools.game.model.api.*;
 import org.drools.game.capture.flag.model.*;
-import org.drools.game.capture.flag.tests.cmds.CommandRegistry;
+import org.drools.game.capture.flag.cmds.CommandRegistry;
 
 global GameMessageService messageService;
 
@@ -18,20 +18,32 @@ rule "Give a point when the flag enters the Score Zone"
         $tb: TeamBundle( name == $t.name, $spawn: spawn )
         $tbenemy: TeamBundle( name != $t.name, $sc: score)
         $flag: Flag( name == "Flag" ) from $player.getInventory().getItems()
-        $r: Room( this == $sc, playersInRoom contains $player.getName() )
+        $zone: Zone( this == $sc, playersInZone contains $player.getName() )
         $chest: Chest( name == "Flag Chest" )
     then
         modify($t){
             setPoints( $t.getPoints() + 1 )
         };
+        
+        $player.getInventory().getItems().remove($flag);
+        modify($player){
+            getInventory().getItems().remove($flag)
+        }
+        $zone.getPlayersInZone().remove($player.getName());
+        modify($zone){
+            getPlayersInZone().remove($player.getName())
+        }
         insert( messageService.newGameMessage( "Score! Player: " + $player.getName() 
-                        + " just enter the "+ $sc.getId() +" Score Zone ( Team " +$t.getName() 
+                        + " just enter the "+ $sc.getName() +" Score Zone ( Team " +$t.getName() 
                         + " - score: "+$t.getPoints()+" )"  ) );
         
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.TELEPORT_CALLBACK,$player, $spawn));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.RESET_FLAG_CALLBACK,$player, $chest));
-      
-        
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("TELEPORT_CALLBACK"),$player, $spawn));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("RESET_FLAG_CALLBACK"),$player, $chest, $flag));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("NOTIFY_ALL_VIA_CHAT_CALLBACK"), $player,
+        "Score! Player: " + $player.getName() 
+                        + " just enter the "+ $sc.getName() +" Score Zone ( Team " +$t.getName() 
+                        + " - score: "+$t.getPoints()+" )" ));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("CHANGE_SCORE_CALLBACK"), $player, $t));
 end
 
 
@@ -40,18 +52,28 @@ rule "Teleport a player who hits the chasm with the flag"
         $player: Player( )
         $t: Team( playersInTeam contains $player.name )
         $tb: TeamBundle( name == $t.name, $spawn: spawn )
-        $r: Room( id == "Chasm", playersInRoom contains $player.name )
-        Flag( name == "Flag" ) from $player.getInventory().getItems()
+        $zone: Zone( name == "Chasm", playersInZone contains $player.name )
+        $flag: Flag( name == "Flag" ) from $player.getInventory().getItems()
         $chest: Chest( name == "Flag Chest" )
     then
         insert(  messageService.newGameMessage(  "Player ("+$player.getName()+") with the Flag in the Chasm! , Respawing in: "+ $tb.getSpawn() ) ); 
-       
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.TELEPORT_CALLBACK, $player, $spawn));  
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.RESET_FLAG_CALLBACK, $player, $chest));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_HEALTH_CALLBACK, $player, 20));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_PARAM_CALLBACK, $player, "SPEED", 600));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_PARAM_CALLBACK, $player, "JUMP_BOOST", 3));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.CLEAR_INVENTORY_CALLBACK, $player));
+        
+        $player.getInventory().getItems().remove($flag);
+        modify($player){
+            getInventory().getItems().remove($flag)
+        }
+        $zone.getPlayersInZone().remove($player.getName());
+        modify($zone){
+            getPlayersInZone().remove($player.getName())
+        }
+        
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("TELEPORT_CALLBACK"), $player, $spawn));  
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("RESET_FLAG_CALLBACK"), $player, $chest, $flag));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_HEALTH_CALLBACK"), $player, 20));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_PARAM_CALLBACK"), $player, "SPEED", 999999, 1));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_PARAM_CALLBACK"), $player, "JUMP_BOOST", 999999, 3));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("CLEAR_INVENTORY_CALLBACK"), $player));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("NOTIFY_ALL_VIA_CHAT_CALLBACK"), $player, "The flagbearer fell in the chasm! The flag has returned to the chest!" ));
 
         
 end
@@ -61,16 +83,32 @@ rule "Teleport a player who hits the chasm"
         $player : Player()
         $t: Team( playersInTeam contains $player.name )
         $tb: TeamBundle( name == $t.name, $spawn: spawn )
-        $r: Room(id == "Chasm", playersInRoom contains $player.getName())
+        $zone: Zone(name == "Chasm", playersInZone contains $player.getName())
         not Flag(name == "Flag") from $player.getInventory().getItems()
     then
         insert(  messageService.newGameMessage(  "Player ("+$player.getName()+") without the Flag in the Chasm! , Respawing in: "+ $tb.getSpawn() ) );
 
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.TELEPORT_CALLBACK, $player, $spawn));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_HEALTH_CALLBACK, $player, 20));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_PARAM_CALLBACK, $player, "SPEED", 600));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.SET_PLAYER_PARAM_CALLBACK, $player, "JUMP_BOOST", 3));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("TELEPORT_CALLBACK"), $player, $spawn));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_HEALTH_CALLBACK"), $player, 20));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_PARAM_CALLBACK"), $player, "SPEED", 999999, 1));
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_PARAM_CALLBACK"), $player, "JUMP_BOOST", 999999, 3));
     
+end
+
+rule "boost a player who hits the first powerup"
+    when
+        $player : Player()
+        $zone: Zone(name == "SpeedPowerup", playersInZone contains $player.getName())
+    then
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_PARAM_CALLBACK"), $player, "SPEED", 120 * 20, 4));
+end
+
+rule "boost a player who hits the second powerup"
+    when
+        $player : Player()
+        $zone: Zone(name == "JumpPowerup", playersInZone contains $player.getName())
+    then
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("SET_PLAYER_PARAM_CALLBACK"), $player, "JUMP_BOOST", 120 * 20, 6));
 end
 
 
@@ -95,9 +133,9 @@ rule "assign player to the smaller team"
         };
         
         insert(  messageService.newGameMessage(  "Player: "+$p.getPlayer().getName() + " assigned to team: "+$t.getName() ) );
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.NOTIFY_VIA_CHAT_CALLBACK, $p.getPlayer(), 
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("NOTIFY_VIA_CHAT_CALLBACK"), $p.getPlayer(), 
                                     "Added player " + $p.getPlayer().getName() + " to team "+$t.getName() ));
-        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.TELEPORT_CALLBACK, $p.getPlayer(), $spawn));                            
+        callback.addCallback(GameCallbackService.newCallback(CommandRegistry.get("TELEPORT_CALLBACK"), $p.getPlayer(), $spawn));                            
 end
 
 
@@ -106,11 +144,11 @@ rule "Create team bundle"
         
         $t: Team()
         $spawn: NamedLocation( name == $t.getName() )
-        $r: Room( id == $t.getName() )
-        not ( TeamBundle( name == $t.name, spawn == $spawn, score == $r ) )
+        $zone: Zone( name == $t.getName() )
+        not ( TeamBundle( name == $t.name, spawn == $spawn, score == $zone ) )
     then
         
         insert( messageService.newGameMessage(  "New Team Resource Created for team: "+ $t.getName() ) );
-        insert( new TeamBundle($t.getName(), $spawn, $r) );
+        insert( new TeamBundle($t.getName(), $spawn, $zone) );
         
 end

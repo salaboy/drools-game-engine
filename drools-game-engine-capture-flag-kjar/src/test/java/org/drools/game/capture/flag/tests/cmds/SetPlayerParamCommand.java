@@ -22,13 +22,17 @@ import org.drools.game.model.api.Player;
 
 public class SetPlayerParamCommand extends BaseCommand<Void> {
 
+    
     private String param;
-    private Integer value;
+    private Integer power;
+    private Integer duration;
 
-    public SetPlayerParamCommand( Player player, String param, Integer value ) {
+    public SetPlayerParamCommand( Player player, String param, Integer duration, Integer power  ) {
         super( player );
         this.param = param;
-        this.value = value;
+        this.duration = duration;
+        this.power = power;
+        
     }
 
     @Override
@@ -44,12 +48,13 @@ public class SetPlayerParamCommand extends BaseCommand<Void> {
         this.param = param;
     }
 
-    public Integer getValue() {
-        return value;
+    public Integer getPower() {
+        return power;
     }
 
-    public void setValue( Integer value ) {
-        this.value = value;
+    public void setPower( Integer power ) {
+        this.power = power;
     }
+
 
 }

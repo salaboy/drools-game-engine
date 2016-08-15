@@ -18,7 +18,7 @@ public class NamedLocation extends Location {
         this.name = name;
     }
 
-    public NamedLocation( int x, int y, int z, String name ) {
+    public NamedLocation( String name, int x, int y, int z ) {
         super( x, y, z );
         this.name = name;
     }
@@ -35,5 +35,7 @@ public class NamedLocation extends Location {
     public String toString() {
         return "NamedLocation{" + "name=" + name + '}';
     }
+
+    
 
 }

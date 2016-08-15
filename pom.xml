@@ -17,11 +17,13 @@
         <module>drools-game-engine-services</module>
         <module>drools-game-engine-capture-flag-kjar</module>
         <module>drools-game-engine-capture-flag-model</module>
+		<module>drools-game-engine-horserace-kjar</module>
+        <module>drools-game-engine-horserace-model</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.wildfly-swarm>1.0.0.CR1</version.wildfly-swarm>
-        
+        <version.wildfly-swarm>1.0.0.Final</version.wildfly-swarm>
+        <version.arquillian>1.1.10.Final</version.arquillian>
     </properties>
     <name>Drools :: Game Engine (Parent)</name>
     <dependencyManagement>
@@ -33,7 +35,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-           
+           <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

@@ -16,8 +16,9 @@
 
 package org.drools.game.model.api;
 
-import org.drools.game.model.api.Item;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo( use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT )
 public interface Pickable extends Item {
 
 }
