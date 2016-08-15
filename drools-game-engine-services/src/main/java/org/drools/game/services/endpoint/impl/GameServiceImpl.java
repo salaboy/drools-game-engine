@@ -36,7 +36,6 @@ import org.drools.game.services.infos.GameSessionInfo;
 public class GameServiceImpl implements GameService {
 
     @Inject
-    @Any
     private Instance<GameSession> sessions;
 
     private Map<String, GameSession> games = new HashMap<String, GameSession>();
