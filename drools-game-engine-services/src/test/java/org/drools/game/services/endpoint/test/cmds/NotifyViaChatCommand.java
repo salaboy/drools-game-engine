@@ -14,45 +14,32 @@
  * limitations under the License.
  */
 
-package com.drools.game.services.endpoint.test.cmds;
+package org.drools.game.services.endpoint.test.cmds;
 
-import org.drools.game.capture.flag.model.Chest;
-import org.drools.game.capture.flag.model.Flag;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-public class ResetFlagCommand extends BaseCommand<Void> {
+public class NotifyViaChatCommand extends BaseCommand<Void> {
 
-    private Chest chest;
-    private Flag flag;
+    private String message;
 
-    public ResetFlagCommand( Player player, Chest chest, Flag flag ) {
+    public NotifyViaChatCommand( Player player, String message ) {
         super( player );
-        this.chest = chest;
-        this.flag = flag;
+        this.message = message;
     }
 
     @Override
     public Void execute( Context ctx ) {
-
-        return null;
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Chest getChest() {
-        return chest;
+    public String getMessage() {
+        return message;
     }
 
-    public void setChest( Chest chest ) {
-        this.chest = chest;
-    }
-
-    public Flag getFlag() {
-        return flag;
-    }
-
-    public void setFlag( Flag flag ) {
-        this.flag = flag;
+    public void setMessage( String message ) {
+        this.message = message;
     }
 
 }

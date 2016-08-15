@@ -1,5 +1,5 @@
 
-package com.drools.game.services.endpoint.test;
+package org.drools.game.services.endpoint.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,13 +40,13 @@ public class GameServiceTest {
     
     @BeforeClass
     public static void setupCmds() {
-        CommandRegistry.set( "TELEPORT_CALLBACK", "com.drools.game.services.endpoint.test.cmds.TeleportPlayerCommand" );
-        CommandRegistry.set( "CLEAR_INVENTORY_CALLBACK", "com.drools.game.services.endpoint.test.cmds.ClearPlayerInventoryCommand" );
-        CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "com.drools.game.services.endpoint.test.cmds.NotifyViaChatCommand" );
-        CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "com.drools.game.services.endpoint.test.cmds.NotifyAllViaChatCommand" );
-        CommandRegistry.set( "RESET_FLAG_CALLBACK", "com.drools.game.services.endpoint.test.cmds.ResetFlagCommand" );
-        CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "com.drools.game.services.endpoint.test.cmds.SetPlayerHealthCommand" );
-        CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "com.drools.game.services.endpoint.test.cmds.SetPlayerParamCommand" );
+        CommandRegistry.set( "TELEPORT_CALLBACK", "org.drools.game.services.endpoint.test.cmds.TeleportPlayerCommand" );
+        CommandRegistry.set( "CLEAR_INVENTORY_CALLBACK", "org.drools.game.services.endpoint.test.cmds.ClearPlayerInventoryCommand" );
+        CommandRegistry.set( "NOTIFY_VIA_CHAT_CALLBACK", "org.drools.game.services.endpoint.test.cmds.NotifyViaChatCommand" );
+        CommandRegistry.set( "NOTIFY_ALL_VIA_CHAT_CALLBACK", "org.drools.game.services.endpoint.test.cmds.NotifyAllViaChatCommand" );
+        CommandRegistry.set( "RESET_FLAG_CALLBACK", "org.drools.game.services.endpoint.test.cmds.ResetFlagCommand" );
+        CommandRegistry.set( "SET_PLAYER_HEALTH_CALLBACK", "org.drools.game.services.endpoint.test.cmds.SetPlayerHealthCommand" );
+        CommandRegistry.set( "SET_PLAYER_PARAM_CALLBACK", "org.drools.game.services.endpoint.test.cmds.SetPlayerParamCommand" );
     }
     
     @Before

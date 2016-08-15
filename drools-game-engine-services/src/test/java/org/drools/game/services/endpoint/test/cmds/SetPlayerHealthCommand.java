@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package com.drools.game.services.endpoint.test.cmds;
+package org.drools.game.services.endpoint.test.cmds;
 
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-public class NotifyViaChatCommand extends BaseCommand<Void> {
+public class SetPlayerHealthCommand extends BaseCommand<Void> {
 
-    private String message;
+    private Integer health;
 
-    public NotifyViaChatCommand( Player player, String message ) {
+    public SetPlayerHealthCommand( Player player, Integer health ) {
         super( player );
-        this.message = message;
+        this.health = health;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class NotifyViaChatCommand extends BaseCommand<Void> {
         throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public String getMessage() {
-        return message;
+    public Integer getHealth() {
+        return health;
     }
 
-    public void setMessage( String message ) {
-        this.message = message;
+    public void setHealth( Integer health ) {
+        this.health = health;
     }
 
 }

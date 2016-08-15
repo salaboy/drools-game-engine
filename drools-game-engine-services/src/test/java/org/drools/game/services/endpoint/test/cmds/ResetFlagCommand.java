@@ -14,32 +14,45 @@
  * limitations under the License.
  */
 
-package com.drools.game.services.endpoint.test.cmds;
+package org.drools.game.services.endpoint.test.cmds;
 
+import org.drools.game.capture.flag.model.Chest;
+import org.drools.game.capture.flag.model.Flag;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-public class SetPlayerHealthCommand extends BaseCommand<Void> {
+public class ResetFlagCommand extends BaseCommand<Void> {
 
-    private Integer health;
+    private Chest chest;
+    private Flag flag;
 
-    public SetPlayerHealthCommand( Player player, Integer health ) {
+    public ResetFlagCommand( Player player, Chest chest, Flag flag ) {
         super( player );
-        this.health = health;
+        this.chest = chest;
+        this.flag = flag;
     }
 
     @Override
     public Void execute( Context ctx ) {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+
+        return null;
     }
 
-    public Integer getHealth() {
-        return health;
+    public Chest getChest() {
+        return chest;
     }
 
-    public void setHealth( Integer health ) {
-        this.health = health;
+    public void setChest( Chest chest ) {
+        this.chest = chest;
+    }
+
+    public Flag getFlag() {
+        return flag;
+    }
+
+    public void setFlag( Flag flag ) {
+        this.flag = flag;
     }
 
 }
