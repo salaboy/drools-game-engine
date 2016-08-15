@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.drools.game.services.endpoint.test.cmds;
+package org.drools.game.services.endpoint.test.cmds;
 
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
