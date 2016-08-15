@@ -76,28 +76,76 @@ public class GameServiceTest {
         return deployment;
     }
     
-    @Test
-    @RunAsClient
-    public void newGameSession() {
-        GameService proxy = target.proxy( GameService.class );
-        String playerName = "salaboy";
-        
-        String id = proxy.newGameSession();
-        assertNotNull( id );
-        List<GameSessionInfo> allGameSessions = proxy.getAllGameSessions();
-        assertEquals( 1, allGameSessions.size() );
-        GameSessionInfo sessionInfo = allGameSessions.get( 0 );
-        assertEquals( id, sessionInfo.getId() );
-        assertTrue( sessionInfo.getPlayers().isEmpty() );
-        
-        proxy.joinGameSession( id, new BasePlayerImpl( playerName ) );
-        
-        allGameSessions = proxy.getAllGameSessions();
-        assertEquals( 1, allGameSessions.size() );
-        sessionInfo = allGameSessions.get( 0 );
-        assertEquals( id, sessionInfo.getId() );
-        assertTrue( sessionInfo.getPlayers().contains( playerName ) );
-        
-    }
+	@Test
+	@RunAsClient
+	public void newGameSession() {
+		GameService proxy = target.proxy(GameService.class);
+		String playerName = "salaboy";
+
+		final int numberSessions = proxy.getAllGameSessions().size();
+
+		String id = proxy.newGameSession();
+		assertNotNull(id);
+		List<GameSessionInfo> allGameSessions = proxy.getAllGameSessions();
+		assertEquals(1 + numberSessions, allGameSessions.size());
+		GameSessionInfo sessionInfo = filterSessionsById(id, allGameSessions);
+		assertEquals(id, sessionInfo.getId());
+		assertTrue(sessionInfo.getPlayers().isEmpty());
+
+		proxy.joinGameSession(id, new BasePlayerImpl(playerName));
+
+		allGameSessions = proxy.getAllGameSessions();
+		assertEquals(1, allGameSessions.size());
+		sessionInfo = allGameSessions.get(0);
+		assertEquals(id, sessionInfo.getId());
+		assertTrue(sessionInfo.getPlayers().contains(playerName));
+
+	}
+
+	@Test
+	@RunAsClient
+	public void dropUserFromSession() {
+		GameService proxy = target.proxy(GameService.class);
+		String playerName = "salaboy";
+
+		String id = proxy.newGameSession();
+		proxy.joinGameSession(id, new BasePlayerImpl(playerName));
+
+		List<GameSessionInfo> allGameSessions = proxy.getAllGameSessions();
+		GameSessionInfo sessionInfo = filterSessionsById(id, allGameSessions);
+		
+		assertEquals(1, sessionInfo.getPlayers().size());
+
+		proxy.drop(id, playerName);
+
+		allGameSessions = proxy.getAllGameSessions();
+	
+		sessionInfo = filterSessionsById(id, allGameSessions);
+		assertEquals(0, sessionInfo.getPlayers().size());
+
+	}
+
+	@Test
+	@RunAsClient
+	public void destroySession() {
+
+		GameService proxy = target.proxy(GameService.class);
+		String playerName = "salaboy";
+
+		String id = proxy.newGameSession();
+		proxy.joinGameSession(id, new BasePlayerImpl(playerName));
+		proxy.drop(id, playerName);
+		proxy.destroy(id);
+		
+	}
+
+	private GameSessionInfo filterSessionsById(String id, List<GameSessionInfo> allGameSessions) {
+		for (GameSessionInfo gameSessionInfo : allGameSessions) {
+			if (gameSessionInfo.getId().equals(id)) {
+				return gameSessionInfo;
+			}
+		}
+		return null;
+	}
 
 }
