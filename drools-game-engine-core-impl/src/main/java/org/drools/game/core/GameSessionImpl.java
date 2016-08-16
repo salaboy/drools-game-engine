@@ -215,6 +215,10 @@ public class GameSessionImpl implements GameSession {
         if ( currentGameSession == null ) {
             throw new IllegalStateException( "0008 - Error: There is no game session to destroy!" );
         }
+    	List<String> playersName = getPlayers();
+        if( !playersName.isEmpty() ){
+            throw new IllegalStateException( "0010 - Error: There are players in the game session; playersName = " + playersName );        	
+        }
         gameMessageNotifications.close();
         currentGameSession.dispose();
         currentGameSession = null;

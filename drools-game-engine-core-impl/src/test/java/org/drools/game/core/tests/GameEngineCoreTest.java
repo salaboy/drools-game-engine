@@ -7,25 +7,29 @@ package org.drools.game.core.tests;
  * and open the template in the editor.
  */
 import java.util.List;
+
 import javax.inject.Inject;
-import org.drools.game.core.api.BaseCommand;
+
 import org.drools.game.core.BaseGameConfigurationImpl;
 import org.drools.game.core.BasePlayerConfigurationImpl;
 import org.drools.game.core.CommandExecutorImpl;
 import org.drools.game.core.GameCallbackServiceImpl;
 import org.drools.game.core.GameMessageServiceImpl;
 import org.drools.game.core.GameSessionImpl;
+import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameCallbackService;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.core.api.GameSession;
 import org.drools.game.model.api.Player;
 import org.drools.game.model.impl.base.BasePlayerImpl;
+import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,6 +74,25 @@ public class GameEngineCoreTest {
         
         
 
+    }
+
+    
+    @Test
+    public void destroySessionNotEmpty(){
+        Player p = new BasePlayerImpl( "salaboy" );
+        List initialData = null;
+
+        gameSession.bootstrap( new BaseGameConfigurationImpl( initialData,
+                "org.drools.game:drools-game-engine-core-kjar:1.0-SNAPSHOT:coreGameKBase" ) );
+
+        gameSession.join( p, new BasePlayerConfigurationImpl( initialData ) );
+        
+        try{
+        	gameSession.destroy();
+        	Assert.fail("Destroy session has to throw exception when still there are players on the game session");
+        }catch(IllegalStateException e){
+        	Assert.assertThat(e.getMessage(),Matchers.startsWith("0010 - Error"));
+        }    
     }
 
     private static class MockCommand extends BaseCommand<List<Player>> {
