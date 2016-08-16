@@ -14,34 +14,32 @@
  * limitations under the License.
  */
 
-package com.drools.game.services.endpoint.test.cmds;
+package org.drools.game.services.endpoint.test.cmds;
 
-import org.drools.game.capture.flag.model.NamedLocation;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-public class TeleportPlayerCommand extends BaseCommand<Void> {
+public class NotifyViaChatCommand extends BaseCommand<Void> {
 
-    private NamedLocation spawn;
+    private String message;
 
-    public TeleportPlayerCommand( Player player, NamedLocation spawn ) {
+    public NotifyViaChatCommand( Player player, String message ) {
         super( player );
-        this.spawn = spawn;
+        this.message = message;
     }
 
     @Override
     public Void execute( Context ctx ) {
-        System.out.println( "Teleporting player: " + getPlayer().getName() + " to spawn location:" + spawn.getName() );
-        return null;
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public NamedLocation getSpawn() {
-        return spawn;
+    public String getMessage() {
+        return message;
     }
 
-    public void setSpawn( NamedLocation spawn ) {
-        this.spawn = spawn;
+    public void setMessage( String message ) {
+        this.message = message;
     }
 
 }

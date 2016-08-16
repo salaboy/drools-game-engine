@@ -64,5 +64,19 @@ public class GameServiceImpl implements GameService {
         }
         return infos;
     }
+    
+    @Override
+    public void drop( String sessionId, String playerName ) {
+        GameSession gameSession = games.get( sessionId );
+        Player p = gameSession.getPlayerByName( playerName );
+		gameSession.drop(p);
+    }
+    
+
+    @Override
+    public void destroy( String sessionId ) {
+        GameSession gameSession = games.get( sessionId );        
+		gameSession.destroy();
+	}
 
 }

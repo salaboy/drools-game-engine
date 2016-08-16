@@ -14,45 +14,34 @@
  * limitations under the License.
  */
 
-package com.drools.game.services.endpoint.test.cmds;
+package org.drools.game.horserace.tests.cmds;
 
-import org.drools.game.capture.flag.model.Chest;
-import org.drools.game.capture.flag.model.Flag;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-public class ResetFlagCommand extends BaseCommand<Void> {
-
-    private Chest chest;
-    private Flag flag;
-
-    public ResetFlagCommand( Player player, Chest chest, Flag flag ) {
+public class ChangeScoreCommand extends BaseCommand<Void> {
+    
+    private int amount;
+    
+    public ChangeScoreCommand( Player player, int amount) {
         super( player );
-        this.chest = chest;
-        this.flag = flag;
+        this.amount = amount;
     }
 
+    public int getAmount()
+    {
+        return amount;
+    }
+
+    public void setAmount(int amount)
+    {
+        this.amount = amount;
+    }
+    
     @Override
     public Void execute( Context ctx ) {
-
-        return null;
-    }
-
-    public Chest getChest() {
-        return chest;
-    }
-
-    public void setChest( Chest chest ) {
-        this.chest = chest;
-    }
-
-    public Flag getFlag() {
-        return flag;
-    }
-
-    public void setFlag( Flag flag ) {
-        this.flag = flag;
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
