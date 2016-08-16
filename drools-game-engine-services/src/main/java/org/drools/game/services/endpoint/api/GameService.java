@@ -18,6 +18,7 @@ package org.drools.game.services.endpoint.api;
 
 import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -47,4 +48,20 @@ public interface GameService {
     @Consumes( value = APPLICATION_JSON )
     @Produces( value = APPLICATION_JSON )
     void joinGameSession( @PathParam( "sessionId" ) String sessionId, Player p );
+
+
+
+    @DELETE
+    @Path( "{sessionId}" )
+    @Consumes( value = APPLICATION_JSON )
+    @Produces( value = APPLICATION_JSON )
+    void drop( @PathParam( "sessionId" ) String sessionId, String playerName );
+
+
+    @DELETE
+    @Path( "" )
+    @Consumes( value = APPLICATION_JSON )
+    @Produces( value = APPLICATION_JSON )
+    void destroy( String sessionId );
+
 }

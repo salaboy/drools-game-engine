@@ -20,13 +20,14 @@ import org.drools.game.services.endpoint.api.GameService;
 import org.drools.game.services.endpoint.impl.GameServiceImpl;
 import org.drools.game.services.infos.GameSessionInfo;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.container.Container;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
 public class App {
 
     public static void main( String[] args ) throws Exception {
-        Container container = new Container();
+        Container container = new Swarm();
 
         container.start();
 

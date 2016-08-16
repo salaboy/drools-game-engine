@@ -14,21 +14,34 @@
  * limitations under the License.
  */
 
-package com.drools.game.services.endpoint.test.cmds;
+package org.drools.game.services.endpoint.test.cmds;
 
+import org.drools.game.capture.flag.model.NamedLocation;
 import org.drools.game.core.api.BaseCommand;
 import org.drools.game.core.api.Context;
 import org.drools.game.model.api.Player;
 
-public class ClearPlayerInventoryCommand extends BaseCommand<Void> {
+public class TeleportPlayerCommand extends BaseCommand<Void> {
 
-    public ClearPlayerInventoryCommand( Player player ) {
+    private NamedLocation spawn;
+
+    public TeleportPlayerCommand( Player player, NamedLocation spawn ) {
         super( player );
+        this.spawn = spawn;
     }
 
     @Override
     public Void execute( Context ctx ) {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
+        System.out.println( "Teleporting player: " + getPlayer().getName() + " to spawn location:" + spawn.getName() );
+        return null;
+    }
+
+    public NamedLocation getSpawn() {
+        return spawn;
+    }
+
+    public void setSpawn( NamedLocation spawn ) {
+        this.spawn = spawn;
     }
 
 }
