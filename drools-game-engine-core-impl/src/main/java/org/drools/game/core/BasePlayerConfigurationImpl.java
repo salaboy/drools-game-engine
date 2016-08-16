@@ -20,6 +20,10 @@ import java.io.PrintStream;
 import java.util.List;
 import org.drools.game.core.api.PlayerConfiguration;
 
+/**
+ * Basic implementation of PlayerConfiguration that handles the getter-setter busywork of standard usecases for you.
+ * @author salaboy
+ */
 public class BasePlayerConfigurationImpl implements PlayerConfiguration {
 
     private List initialData;

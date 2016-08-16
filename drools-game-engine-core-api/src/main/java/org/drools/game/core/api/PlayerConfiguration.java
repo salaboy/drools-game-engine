@@ -19,6 +19,10 @@ package org.drools.game.core.api;
 import java.io.PrintStream;
 import java.util.List;
 
+/**
+ * Stores configuration for a given player.
+ * @author salaboy
+ */
 public interface PlayerConfiguration {
     List getInitialData();
     boolean isDebugEnabled();
