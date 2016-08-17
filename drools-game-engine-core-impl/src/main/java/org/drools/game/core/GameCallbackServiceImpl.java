@@ -21,6 +21,10 @@ import java.util.Queue;
 import org.drools.game.core.api.Command;
 import org.drools.game.core.api.GameCallbackService;
 
+/**
+ * Basic GameCallbackService implementation.
+ * @author salaboy
+ */
 public class GameCallbackServiceImpl implements GameCallbackService {
 
     private Queue<Command> callbacksQueue = new LinkedList<Command>();

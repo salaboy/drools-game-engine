@@ -68,6 +68,10 @@ public class GameSessionImpl implements GameSession {
 
     }
 
+    /**
+     * Starts up the game session.
+     * @param config 
+     */
     @Override
     public void bootstrap( GameConfiguration config ) {
         if ( currentGameSession != null ) {
@@ -127,6 +131,11 @@ public class GameSessionImpl implements GameSession {
 
     }
 
+    /**
+     * Adds a player with a given configuration to the game session.
+     * @param player
+     * @param playerConfig 
+     */
     @Override
     public void join( Player player, PlayerConfiguration playerConfig ) {
         if ( currentGameSession == null ) {
@@ -140,6 +149,7 @@ public class GameSessionImpl implements GameSession {
         currentGameSession.fireAllRules();
     }
 
+    
     @Override
     public List<Command> getSuggestions( Player p ) {
 
@@ -156,6 +166,12 @@ public class GameSessionImpl implements GameSession {
         return cmds;
     }
 
+    /**
+     * Executes a command using the CommandExecutor and fires all rules.
+     * @param <T>
+     * @param cmd
+     * @return 
+     */
     @Override
     public <T> T execute( Command<T> cmd ) {
         if ( executor == null ) {
@@ -210,6 +226,9 @@ public class GameSessionImpl implements GameSession {
         return messages;
     }
 
+    /**
+     * Destroys the GameSession.
+     */
     @Override
     public void destroy() {
         if ( currentGameSession == null ) {
@@ -231,32 +250,57 @@ public class GameSessionImpl implements GameSession {
 
     }
 
+    /**
+     * Returns all players currently in the session.
+     * @return 
+     */
     @Override
     public List<String> getPlayers() {
         return new ArrayList<String>( currentPlayers.keySet() );
     }
 
+    /**
+     * Given a player's name, returns that player if it exists within the game.
+     * @param name
+     * @return 
+     */
     public Player getPlayerByName( String name ) {
         FactHandle playerFH = currentPlayers.get( name );
         return ( Player ) currentGameSession.getObject( playerFH );
     }
 
+    /**
+     * Removes a player from the game.
+     * @param p 
+     */
     @Override
     public void drop( Player p ) {
         FactHandle playerFH = currentPlayers.remove( p.getName() );
         currentGameSession.delete( playerFH );
     }
 
+    /**
+     * Returns queued callbacks.
+     * @return 
+     */
     @Override
     public Queue<Command> getCallbacks() {
         return callbackService.getCallbacks();
     }
 
+    /**
+     * Returns the session's CommandExecutor.
+     * @return 
+     */
     @Override
     public CommandExecutor getExecutor() {
         return executor;
     }
 
+    /**
+     * Sets the session's CommandExecutor
+     * @param executor 
+     */
     @Override
     public void setExecutor( CommandExecutor executor ) {
         this.executor = executor;
@@ -272,16 +316,30 @@ public class GameSessionImpl implements GameSession {
         this.messageService = messageService;
     }
 
+    /**
+     * Returns the game's CallbackService
+     * @return 
+     */
     @Override
     public GameCallbackService getCallbackService() {
         return callbackService;
     }
 
+    /**
+     * Sets the game's CallbackService
+     * @param callbackService 
+     */
     @Override
     public void setCallbackService( GameCallbackService callbackService ) {
         this.callbackService = callbackService;
     }
 
+    /**
+     * Returns all game objects within a session corresponding to the given type.
+     * @param <T>
+     * @param type
+     * @return 
+     */
     @Override
     public <T> Collection<T> getGameObjects( Class<T> type ) {
         Collection<? extends Object> objects = currentGameSession.getObjects(  new ClassObjectFilter(type) );

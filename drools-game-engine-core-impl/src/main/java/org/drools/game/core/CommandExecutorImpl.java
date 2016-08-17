@@ -10,7 +10,7 @@ import org.drools.game.core.api.CommandExecutor;
 import org.drools.game.core.api.Context;
 
 /**
- *
+ * Barebones implementation of CommandExecutor that is capable of executing a command given a context.
  * @author salaboy
  */
 public class CommandExecutorImpl implements CommandExecutor{

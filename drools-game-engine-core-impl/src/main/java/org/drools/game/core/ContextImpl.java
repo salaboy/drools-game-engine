@@ -10,7 +10,7 @@ import java.util.Map;
 import org.drools.game.core.api.Context;
 
 /**
- *
+ * Basic context implementation capable of storing arbitrary data.
  * @author salaboy
  */
 public class ContextImpl implements Context {

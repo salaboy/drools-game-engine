@@ -16,6 +16,10 @@
 
 package org.drools.game.core.api;
 
+/**
+ * Responsible for executing a command within a given context.
+ * @author salaboy
+ */
 public interface CommandExecutor {
     <T> T execute( Command<T> cmd, Context ctx );
 }
