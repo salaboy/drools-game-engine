@@ -20,10 +20,22 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Queue;
 
+/**
+ * Stores callbacks and makes callbacks accessible to rules.
+ * @author salaboy
+ */
 public interface GameCallbackService {
 
+    /**
+     * Queues a command into the callback service.
+     * @param cmd 
+     */
     void addCallback( Command cmd );
 
+    /**
+     * Returns queued callbacks.
+     * @return 
+     */
     Queue<Command> getCallbacks();
     
     

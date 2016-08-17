@@ -18,7 +18,15 @@ package org.drools.game.core.api;
 
 import java.util.Map;
 
+/**
+ * Context stores data for easy retrieval when--among other things--executing commands.
+ * @author salaboy
+ */
 public interface Context {
 
+    /**
+     * Retrieves a map containing all the data in the context.
+     * @return 
+     */
     Map<String, Object> getData();
 }

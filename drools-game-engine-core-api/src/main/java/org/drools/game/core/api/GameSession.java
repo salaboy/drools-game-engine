@@ -21,8 +21,9 @@ import java.util.List;
 import java.util.Queue;
 import org.drools.game.model.api.Player;
 
-/*
+/**
  * Defines a Multi player capable Game Session
+ * 
  */
 public interface GameSession {
 

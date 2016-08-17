@@ -18,7 +18,10 @@ package org.drools.game.core.api;
 
 import java.io.PrintStream;
 import java.util.List;
-
+/**
+ * Stores game configuration for future use.
+ * @author salaboy
+ */
 public interface GameConfiguration {
     List getInitialData();
     String getGamePackage();

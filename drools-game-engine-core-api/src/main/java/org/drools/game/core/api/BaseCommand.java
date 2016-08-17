@@ -18,6 +18,13 @@ package org.drools.game.core.api;
 
 import org.drools.game.model.api.Player;
 
+/**
+ * Abstract implementation of Command with the get and set player
+ * busy work handled for you. To use this, extend and write the
+ * execute method.
+ * @author salaboy
+ * @param <T> 
+ */
 public abstract class BaseCommand<T> implements Command<T> {
 
     private Player player;
@@ -30,7 +37,11 @@ public abstract class BaseCommand<T> implements Command<T> {
     public Player getPlayer() {
         return player;
     }
-
+    
+    /**
+     * Sets the player.
+     * @param player 
+     */
     public void setPlayer( Player player ) {
         this.player = player;
     }
