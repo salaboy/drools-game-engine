@@ -26,8 +26,8 @@ import org.drools.game.core.api.PlayerConfiguration;
 import org.drools.game.model.api.Player;
 import org.kie.api.KieBase;
 import org.kie.api.KieServices;
-import org.kie.api.event.rule.DefaultAgendaEventListener;
-import org.kie.api.event.rule.DefaultRuleRuntimeEventListener;
+import org.kie.api.event.rule.DebugAgendaEventListener;
+import org.kie.api.event.rule.DebugRuleRuntimeEventListener;
 import org.kie.api.runtime.ClassObjectFilter;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -170,8 +170,8 @@ public class GameSessionImpl implements GameSession {
     }
 
     private void setupGameListeners() {
-        currentGameSession.addEventListener( new DefaultAgendaEventListener() );
-        currentGameSession.addEventListener( new DefaultRuleRuntimeEventListener() );
+        currentGameSession.addEventListener( new DebugAgendaEventListener() );
+        currentGameSession.addEventListener( new DebugRuleRuntimeEventListener() );
     }
 
     private void setupPlayerMessageNotifications( Player p, PrintStream out ) {
