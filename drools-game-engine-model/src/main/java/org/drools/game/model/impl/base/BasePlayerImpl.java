@@ -7,6 +7,7 @@ package org.drools.game.model.impl.base;
 
 import java.util.ArrayList;
 import java.util.UUID;
+
 import org.drools.game.model.api.Inventory;
 import org.drools.game.model.api.Item;
 import org.drools.game.model.api.Player;
@@ -61,4 +62,19 @@ public class BasePlayerImpl implements Player {
         return "BasePlayerImpl{" + "id=" + id + ", name=" + name + ", inventory=" + inventory + '}';
     }
 
+    
+    @Override
+    public boolean equals(Object obj) {
+    	//TODO implement
+    	return this.name.equals(((BasePlayerImpl)obj).getName());
+    }
+    
+    
+    @Override
+    public int hashCode() {
+    	//TODO implement
+    	return name.hashCode();
+    }
+
+    
 }

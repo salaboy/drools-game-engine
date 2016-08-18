@@ -22,12 +22,18 @@ import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.model.api.Player;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.ObjectFilter;
 import org.kie.api.runtime.rule.FactHandle;
+
 
 public class PickFlagCommand extends BaseCommand<Void> {
 
     private Flag flag;
 
+    public PickFlagCommand() {
+	
+    }
+    
     public PickFlagCommand( Player player, Flag flag ) {
         super( player );
         this.flag = flag;
@@ -37,7 +43,22 @@ public class PickFlagCommand extends BaseCommand<Void> {
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
+        
         FactHandle playerFH = session.getFactHandle( getPlayer());
+
+//        FactHandle playerFH = session.getFactHandles(new ObjectFilter() {
+//			@Override
+//			public boolean accept(Object object) {
+//				if(object instanceof Player){
+//					Player p = (Player)object;
+//        			if(p.getName().equals(getPlayer().getName())){
+//						return true;
+//					}
+//				}
+//				return false;
+//			}
+//		}).iterator().next();
+
         getPlayer().getInventory().getItems().add( flag );
         session.update( playerFH, getPlayer() );
         session.insert( messageService.newGameMessage( getPlayer().getName(), "Picked the Flag" ) );

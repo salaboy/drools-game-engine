@@ -12,8 +12,11 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.drools.game.capture.flag.cmds.CommandRegistry;
+import org.drools.game.core.api.StoreFacts;
+import org.drools.game.model.api.Player;
 import org.drools.game.model.impl.base.BasePlayerImpl;
 import org.drools.game.services.endpoint.api.GameService;
+import org.drools.game.services.endpoint.impl.CommandRest;
 import org.drools.game.services.endpoint.impl.GameServiceImpl;
 import org.drools.game.services.infos.GameSessionInfo;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -66,10 +69,15 @@ public class GameServiceTest {
     public static Archive createDeployment() throws IllegalArgumentException, Exception {
         JAXRSArchive deployment = ShrinkWrap.create( JAXRSArchive.class );
         deployment.addPackages( true, "com.google.common" );
+        deployment.addPackage( "org.drools.game.services.endpoint.test.cmds" );
         deployment.addClass( GameService.class );
         deployment.addClass( GameServiceImpl.class );
         deployment.addClass( GameSessionInfo.class );
-        
+        deployment.addClass( StoreFacts.class );
+        deployment.addClass( StoreFactsTestImp.class );
+        deployment.addClass( CommandRest.class );
+        deployment.addClass( Player.class );
+
         deployment.addAllDependencies()
                 .addAsManifestResource( EmptyAsset.INSTANCE, "beans.xml" );
         
