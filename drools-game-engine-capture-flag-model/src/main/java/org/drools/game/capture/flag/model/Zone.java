@@ -90,5 +90,19 @@ public class Zone {
     public String toString() {
         return "Zone{" + "id=" + name + ", lowerBound=" + lowerBound + ", upperBound=" + upperBound + ", dimension=" + dimension + ", playersInZone=" + playersInZone + '}';
     }
+    
+    
+    @Override
+    public boolean equals(Object obj) {
+    	//TODO implement
+    	return this.name.equals(((Zone)obj).getName());
+    }
+    
+    
+    @Override
+    public int hashCode() {
+    	//TODO implement
+    	return name.hashCode();
+    }
 
 }

@@ -22,12 +22,16 @@ import org.drools.game.core.api.Context;
 import org.drools.game.core.api.GameMessageService;
 import org.drools.game.model.api.Player;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.ObjectFilter;
 import org.kie.api.runtime.rule.FactHandle;
 
 public class EnterZoneCommand extends BaseCommand<Void> {
 
     private Zone zone;
 
+    public EnterZoneCommand() {
+    }
+    
     public EnterZoneCommand( Player player, Zone zone ) {
         super( player );
         this.zone = zone;
@@ -37,7 +41,21 @@ public class EnterZoneCommand extends BaseCommand<Void> {
     public Void execute( Context ctx ) {
         KieSession session = ( KieSession ) ctx.getData().get( "session" );
         GameMessageService messageService = ( GameMessageService ) ctx.getData().get( "messageService" );
+        
         FactHandle zoneFH = session.getFactHandle( zone );
+
+//        FactHandle zoneFH = session.getFactHandles(new ObjectFilter() {
+//			@Override
+//			public boolean accept(Object object) {
+//				if(object instanceof Zone){					
+//					if(getScoreZone().getName().equals(((Zone)object ).getName())){
+//						return true;
+//					}
+//				}
+//				return false;
+//			}
+//		}).iterator().next();
+//        
         zone.addPlayer( getPlayer().getName() );
         session.update( zoneFH, zone );
         session.insert( messageService.newGameMessage( getPlayer().getName(), "You entered the Zone: " + zone.getName() ) );

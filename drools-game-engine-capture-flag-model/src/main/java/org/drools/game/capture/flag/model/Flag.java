@@ -22,6 +22,9 @@ public class Flag implements WorldItem {
     private String type;
     private Location location;
 
+    public Flag() {
+	}
+    
     public Flag( String name, String type ) {
         this.name = name;
         this.type = type;
@@ -48,4 +51,18 @@ public class Flag implements WorldItem {
         return name;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+    	//TODO implement
+    	return this.name.equals(((Flag)obj).getName());
+    }
+    
+    
+    @Override
+    public int hashCode() {
+    	//TODO implement    	
+    	return name.hashCode();
+    }
+
+    
 }

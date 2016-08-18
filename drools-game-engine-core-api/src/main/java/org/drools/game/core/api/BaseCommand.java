@@ -29,6 +29,10 @@ public abstract class BaseCommand<T> implements Command<T> {
 
     private Player player;
 
+    public BaseCommand( ) {
+    }
+
+    
     public BaseCommand( Player player ) {
         this.player = player;
     }
