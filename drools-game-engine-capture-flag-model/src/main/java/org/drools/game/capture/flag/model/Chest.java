@@ -72,4 +72,42 @@ public class Chest implements WorldItem {
         return "Chest{" + "name=" + name + ", content=" + contents + '}';
     }
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((contents == null) ? 0 : contents.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Chest))
+			return false;
+		Chest other = (Chest) obj;
+		if (contents == null) {
+			if (other.contents != null)
+				return false;
+		} else if (!contents.equals(other.contents))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
 }
