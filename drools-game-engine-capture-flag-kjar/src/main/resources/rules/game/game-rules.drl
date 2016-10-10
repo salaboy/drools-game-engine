@@ -18,7 +18,7 @@ rule "Give a point when the flag enters the Score Zone"
         $tb: TeamBundle( name == $t.name, $spawn: spawn )
         $tbenemy: TeamBundle( name != $t.name, $sc: score)
         $flag: Flag( name == "Flag" ) from $player.getInventory().getItems()
-        $zone: Zone( this == $sc, playersInZone contains $player.getName() )
+        $zone: Zone( name == $sc.name, playersInZone contains $player.getName() )
         $chest: Chest( name == "Flag Chest" )
     then
         modify($t){

@@ -22,8 +22,7 @@ import org.drools.game.model.api.Item;
 
 public class BaseInventoryImpl implements Inventory {
 
-    
-    private String playerName;
+	private String playerName;
     private List<Item> items;
     private String name;
     private boolean open = true;
@@ -71,5 +70,45 @@ public class BaseInventoryImpl implements Inventory {
     public void setOpen( boolean open ) {
         this.open = open;
     }
+
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((items == null) ? 0 : items.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + (open ? 1231 : 1237);
+		result = prime * result + ((playerName == null) ? 0 : playerName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof BaseInventoryImpl))
+			return false;
+		BaseInventoryImpl other = (BaseInventoryImpl) obj;
+		if (items == null) {
+			if (other.items != null)
+				return false;
+		} else if (!items.equals(other.items))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (open != other.open)
+			return false;
+		if (playerName == null) {
+			if (other.playerName != null)
+				return false;
+		} else if (!playerName.equals(other.playerName))
+			return false;
+		return true;
+	}
 
 }

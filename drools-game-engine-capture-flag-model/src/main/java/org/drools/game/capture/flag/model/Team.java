@@ -60,4 +60,38 @@ public class Team {
         return "Team{" + "name=" + name + ", points=" + points + ", playersInTeam=" + playersInTeam + '}';
     }
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((playersInTeam == null) ? 0 : playersInTeam.hashCode());
+		result = prime * result + points;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Team))
+			return false;
+		Team other = (Team) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (playersInTeam == null) {
+			if (other.playersInTeam != null)
+				return false;
+		} else if (!playersInTeam.equals(other.playersInTeam))
+			return false;
+		if (points != other.points)
+			return false;
+		return true;
+	}
+
 }
